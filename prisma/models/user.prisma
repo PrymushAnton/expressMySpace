@@ -7,4 +7,5 @@ model User {
   birthDate   DateTime
   image       String?
   password    String
+  username String @unique
 }

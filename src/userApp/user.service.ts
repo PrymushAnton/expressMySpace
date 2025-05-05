@@ -1,0 +1,135 @@
+import { UserAuthPayload, UserRegPayloadTwoPasswords } from "./types";
+import userRepository from "./user.repository";
+// import parsePhoneNumberFromString from "libphonenumber-js";
+// import isEmail from "validator/lib/isEmail";
+// import { REGEX } from "../constants/constants";
+import { hash, compare } from "bcryptjs";
+// import { capitalizeWords } from "../tools/capitalizeWords";
+import { sign } from "jsonwebtoken";
+import { SECRET_KEY } from "../config/token";
+// import nodemailer from "nodemailer";
+import { UserValidation } from "./user.validate";
+import { ValidationError } from "yup";
+import { Result, IReturnError } from "../types/types";
+
+// const moment = require("moment");
+
+async function reg(data: UserRegPayloadTwoPasswords): Promise<Result<string>> {
+	try {
+		await UserValidation.register.validate(data, { abortEarly: false });
+	} catch (error) {
+		if (error instanceof ValidationError) {
+			const fieldErrors: IReturnError[] = [];
+			for (const err of error.inner) {
+				if (
+					err.path &&
+					err.message &&
+					!fieldErrors.some((e) => e.path === err.path)
+				) {
+					fieldErrors.push({
+						path: err.path,
+						message: err.message,
+					});
+				}
+			}
+			return { status: "error-validation", data: fieldErrors };
+		}
+	}
+
+	const { username, email, password, confirmPassword } = data;
+
+	const userEmail = await userRepository.getUserByEmail(email);
+	if (userEmail)
+		// return {
+		// 	status: "error",
+		// 	message: "Користувач з такою поштою вже існує",
+		// };
+		return {
+			status: "error-validation",
+			data: [{ path: "email", message: "Користувач з такою поштою вже існує" }],
+		};
+
+	const hashedPassword = await hash(password, 10);
+	const hashedData = {
+		// name: newName,
+		// surname: newSurname,
+		email: email,
+		// phoneNumber: numberResult.number,
+		// birthDate: date,
+		password: hashedPassword,
+		username: username,
+	};
+
+	const user = await userRepository.createUser(hashedData);
+	if (!user) return { status: "error", message: "Помилка при реєстрації" };
+	if (typeof user === "string")
+		return { status: "error", message: "Помилка на сервері" };
+
+	const token = sign({ id: user.id }, SECRET_KEY, { expiresIn: "7d" });
+
+	return { status: "success", data: token };
+}
+
+async function auth(data: UserAuthPayload): Promise<Result<string>> {
+	let requestData;
+	try {
+		requestData = await UserValidation.login.validate(data, {
+			abortEarly: false,
+		});
+	} catch (error) {
+		const fieldErrors: IReturnError[] = [];
+		for (const err of (error as ValidationError).inner) {
+			if (
+				err.path &&
+				err.message &&
+				!fieldErrors.some((e) => e.path === err.path)
+			) {
+				fieldErrors.push({
+					path: err.path,
+					message: err.message,
+				});
+			}
+		}
+		return { status: "error-validation", data: fieldErrors };
+	}
+
+	const { email, password } = requestData;
+
+	const user = await userRepository.getUserByEmail(email);
+
+	if (!user)
+		// return { status: "error", message: "Такого користувача не існує" };
+		return {
+			status: "error-validation",
+			data: [{ path: "email", message: "Такого користувача не існує" }],
+		};
+
+	if (typeof user === "string")
+		return { status: "error", message: "Помилка на сервері" };
+
+	const isPasswordValid = await compare(password, user.password);
+
+	if (!isPasswordValid)
+		// return { status: "error", message: "Невірний пароль" };
+		return {
+			status: "error-validation",
+			data: [{ path: "password", message: "Невірний пароль" }],
+		};
+	const token = sign({ id: user.id }, SECRET_KEY, { expiresIn: "7d" });
+	return { status: "success", data: token };
+}
+
+async function me(id: number) {
+	const user = await userRepository.getUserById(id);
+	if (!user)
+		return { status: "error", message: "Такого користувача не існує" };
+	return { status: "success", data: user };
+}
+
+const userService = {
+	reg: reg,
+	auth: auth,
+	me: me,
+};
+
+export default userService;

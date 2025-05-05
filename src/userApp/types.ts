@@ -1,21 +1,27 @@
-import { Prisma } from "../../prisma/generated/prisma"
+import { Prisma } from "../generated/prisma"
 
 
 export type UserRegPayload = Prisma.UserGetPayload<{
     omit: {
         id: true
         image: true
+        name: true
+        surname: true
+        birthDate: true
+        phoneNumber: true
     }
 }>
 
-
-export type UserRegPayloadTwoPasswords = Prisma.UserGetPayload<{
-    omit: {
-        id: true
-        image: true
-    }
-}> & {confirmPassword: string}
-
+export type UserRegPayloadTwoPasswords = {
+    name: string;
+    surname: string;
+    email: string;
+    phoneNumber: string;
+    birthDate: string;
+    password: string;
+    confirmPassword: string;
+    username: string
+}
 
 export type UserAuthPayload = Partial<Prisma.UserGetPayload<{
     select: {

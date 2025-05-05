@@ -8,3 +8,15 @@ export interface ISuccess<T>{
     status: "success",
     data: T
 }
+
+export interface IReturnError{
+    path: string
+    message: string
+}
+
+export interface IErrorValidation{
+    status: "error-validation",
+    data: IReturnError[]
+}
+
+export type Result<T> = IError | ISuccess<T> | IErrorValidation

@@ -25,7 +25,7 @@ async function me(req: Request, res: Response){
     res.json(result)
 }
 
-async function sendEmailCode(req: Request, res: Response){
+async function sendEmailCode(req: Request, res: Response): Promise<any>{
 	const { email } = req.body;
 
 	if (!email) {
@@ -42,7 +42,7 @@ async function sendEmailCode(req: Request, res: Response){
 };
 
 // 2. Проверка кода
-async function checkEmailCode(req: Request, res: Response) {
+async function checkEmailCode(req: Request, res: Response): Promise<any> {
 	const { email, code } = req.body;
 
 	if (!email || !code) {

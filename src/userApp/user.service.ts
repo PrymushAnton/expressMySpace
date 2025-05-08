@@ -151,7 +151,7 @@ async function registerEmail(email: string): Promise<Result<null>> {
 
 	try {
 		await transporter.sendMail({
-			from: `"NoReply" <${process.env.SMTP_USER}>`,
+			from: `"mySpace App" <${process.env.SMTP_USER}>`,
 			to: email,
 			subject: "Код підтвердження електронної пошти",
 			text: `Ваш код: ${code}`,
@@ -164,19 +164,22 @@ async function registerEmail(email: string): Promise<Result<null>> {
 	}
 }
 
-function verifyEmailCode(email: string, inputCode: string): Result<null> {
-	const storedCode = emailVerificationCodes.get(email);
-	if (!storedCode) {
-		return { status: "error", message: "Код не знайдено або він протермінований" };
-	}
+function verifyEmailCode(email: string, code: number): Result<null> {
+    const storedCode = emailVerificationCodes.get(email);
+    
+    if (!storedCode) {
+        return { status: "error", message: "Код не знайдено або він протермінований" };
+    }
 
-	if (storedCode !== inputCode) {
-		return { status: "error", message: "Невірний код" };
-	}
+    // Приводим оба к строкам для корректного сравнения
+    if (storedCode.toString() !== code.toString()) {
+        return { status: "error", message: "Невірний код" };
+    }
 
-	emailVerificationCodes.delete(email);
-	return { status: "success", data: null };
+    emailVerificationCodes.delete(email);
+    return { status: "success", data: null };
 }
+
 
 async function me(id: number) {
 	const user = await userRepository.getUserById(id);

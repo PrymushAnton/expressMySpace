@@ -120,7 +120,7 @@ async function auth(data: UserAuthPayload): Promise<Result<string>> {
 	return { status: "success", data: token };
 }
 
-const emailVerificationCodes = new Map<string, string>();
+const emailVerificationCodes = new Map<string, number>();
 
 async function registerEmail(email: string): Promise<Result<null>> {
 	// 1. Валидация
@@ -132,7 +132,7 @@ async function registerEmail(email: string): Promise<Result<null>> {
 	}
 
 	// 2. Генерация 6-значного кода
-	const code = Math.floor(100000 + Math.random() * 900000).toString();
+	const code = Math.floor(100000 + Math.random() * 900000)
 
 	// 3. Сохранение во временное хранилище (удаление через 10 мин)
 	emailVerificationCodes.set(email, code);
@@ -164,7 +164,7 @@ async function registerEmail(email: string): Promise<Result<null>> {
 	}
 }
 
-function verifyEmailCode(email: string, code: number): Result<null> {
+function verifyEmailCode(email: string, code: string): Result<null> {
     const storedCode = emailVerificationCodes.get(email);
     
     if (!storedCode) {

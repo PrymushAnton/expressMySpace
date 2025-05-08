@@ -7,10 +7,11 @@ import { hash, compare } from "bcryptjs";
 // import { capitalizeWords } from "../tools/capitalizeWords";
 import { sign } from "jsonwebtoken";
 import { SECRET_KEY } from "../config/token";
-// import nodemailer from "nodemailer";
+import nodemailer from "nodemailer";
 import { UserValidation } from "./user.validate";
 import { ValidationError } from "yup";
 import { Result, IReturnError } from "../types/types";
+import isEmail from "validator/lib/isEmail"; //для валидации почты
 
 // const moment = require("moment");
 
@@ -119,6 +120,64 @@ async function auth(data: UserAuthPayload): Promise<Result<string>> {
 	return { status: "success", data: token };
 }
 
+const emailVerificationCodes = new Map<string, string>();
+
+async function registerEmail(email: string): Promise<Result<null>> {
+	// 1. Валидация
+	if (!isEmail(email)) {
+		return {
+			status: "error-validation",
+			data: [{ path: "email", message: "Некоректна email адреса" }],
+		};
+	}
+
+	// 2. Генерация 6-значного кода
+	const code = Math.floor(100000 + Math.random() * 900000).toString();
+
+	// 3. Сохранение во временное хранилище (удаление через 10 мин)
+	emailVerificationCodes.set(email, code);
+	setTimeout(() => emailVerificationCodes.delete(email), 10 * 60 * 1000);
+
+	// 4. Настройка и отправка письма
+	const transporter = nodemailer.createTransport({
+		host: process.env.SMTP_HOST,
+		port: parseInt(process.env.SMTP_PORT || "587"),
+		secure: false,
+		auth: {
+			user: process.env.SMTP_USER,
+			pass: process.env.SMTP_PASS,
+		},
+	});
+
+	try {
+		await transporter.sendMail({
+			from: `"NoReply" <${process.env.SMTP_USER}>`,
+			to: email,
+			subject: "Код підтвердження електронної пошти",
+			text: `Ваш код: ${code}`,
+		});
+
+		return { status: "success", data: null };
+	} catch (error) {
+		console.error("Email send error:", error);
+		return { status: "error", message: "Не вдалося надіслати листа" };
+	}
+}
+
+function verifyEmailCode(email: string, inputCode: string): Result<null> {
+	const storedCode = emailVerificationCodes.get(email);
+	if (!storedCode) {
+		return { status: "error", message: "Код не знайдено або він протермінований" };
+	}
+
+	if (storedCode !== inputCode) {
+		return { status: "error", message: "Невірний код" };
+	}
+
+	emailVerificationCodes.delete(email);
+	return { status: "success", data: null };
+}
+
 async function me(id: number) {
 	const user = await userRepository.getUserById(id);
 	if (!user)
@@ -130,6 +189,8 @@ const userService = {
 	reg: reg,
 	auth: auth,
 	me: me,
+	registerEmail: registerEmail,
+	verifyEmailCode: verifyEmailCode
 };
 
 export default userService;

@@ -4,7 +4,7 @@ import userRouter from './userApp/user.router';
 
 const app: Express = express()
 const PORT = 3001
-const HOST = '192.168.3.11'
+const HOST = '192.168.1.10'
 // const HOST = 'localhost'
 
 

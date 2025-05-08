@@ -127,7 +127,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Oleh\\Desktop\\expressMySpace\\src\\generated\\prisma",
+      "value": "C:\\Users\\Bulkin\\Desktop\\expressMySpaceProjectJSTeam4\\expressMySpace\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -141,7 +141,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Oleh\\Desktop\\expressMySpace\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\Bulkin\\Desktop\\expressMySpaceProjectJSTeam4\\expressMySpace\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -155,12 +155,11 @@ const config = {
     "db"
   ],
   "activeProvider": "sqlite",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "file:./db/Database.db"
       }
     }
   },

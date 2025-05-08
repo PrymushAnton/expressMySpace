@@ -25,10 +25,45 @@ async function me(req: Request, res: Response){
     res.json(result)
 }
 
+async function sendEmailCode(req: Request, res: Response){
+	const { email } = req.body;
+
+	if (!email) {
+		return res.status(400).json({ message: "Email обов'язковий" });
+	}
+
+	const result = await userService.registerEmail(email);
+
+	if (result.status === "error-validation") {
+		return res.status(400).json(result);
+	}
+
+	res.status(200).json(result);
+};
+
+// 2. Проверка кода
+async function checkEmailCode(req: Request, res: Response) {
+	const { email, code } = req.body;
+
+	if (!email || !code) {
+		return res.status(400).json({ message: "Email і код обов'язкові" });
+	}
+
+	const result = await userService.verifyEmailCode(email, code);
+
+	if (result.status !== "success") {
+		return res.status(400).json(result);
+	}
+
+	res.status(200).json(result);
+};
+
 const userController = {
     reg: reg,
-    auth:auth,
-    me:me
+    auth: auth,
+    me: me,
+    sendEmailCode: sendEmailCode,
+    checkEmailCode: checkEmailCode
 }
 
 export default userController

@@ -23,6 +23,14 @@ export type UserRegPayloadTwoPasswords = {
     username: string
 }
 
+export type UserRegData = Prisma.UserGetPayload<{
+    select: {
+        email: true
+        password: true
+        username: true
+    }
+}>
+
 export type UserAuthPayload = Partial<Prisma.UserGetPayload<{
     select: {
         email: true

@@ -1,4 +1,4 @@
-import { UserAuthPayload, UserRegPayloadTwoPasswords } from "./types";
+import { UserAuthPayload, UserRegData, UserRegPayloadTwoPasswords } from "./types";
 import userRepository from "./user.repository";
 // import parsePhoneNumberFromString from "libphonenumber-js";
 // import isEmail from "validator/lib/isEmail";
@@ -7,10 +7,11 @@ import { hash, compare } from "bcryptjs";
 // import { capitalizeWords } from "../tools/capitalizeWords";
 import { sign } from "jsonwebtoken";
 import { SECRET_KEY } from "../config/token";
-// import nodemailer from "nodemailer";
+import nodemailer from "nodemailer";
 import { UserValidation } from "./user.validate";
 import { ValidationError } from "yup";
 import { Result, IReturnError } from "../types/types";
+import isEmail from "validator/lib/isEmail"; //для валидации почты
 
 // const moment = require("moment");
 
@@ -49,25 +50,7 @@ async function reg(data: UserRegPayloadTwoPasswords): Promise<Result<string>> {
 			data: [{ path: "email", message: "Користувач з такою поштою вже існує" }],
 		};
 
-	const hashedPassword = await hash(password, 10);
-	const hashedData = {
-		// name: newName,
-		// surname: newSurname,
-		email: email,
-		// phoneNumber: numberResult.number,
-		// birthDate: date,
-		password: hashedPassword,
-		username: username,
-	};
-
-	const user = await userRepository.createUser(hashedData);
-	if (!user) return { status: "error", message: "Помилка при реєстрації" };
-	if (typeof user === "string")
-		return { status: "error", message: "Помилка на сервері" };
-
-	const token = sign({ id: user.id }, SECRET_KEY, { expiresIn: "7d" });
-
-	return { status: "success", data: token };
+	return { status: "success", data: "" }
 }
 
 async function auth(data: UserAuthPayload): Promise<Result<string>> {
@@ -119,6 +102,84 @@ async function auth(data: UserAuthPayload): Promise<Result<string>> {
 	return { status: "success", data: token };
 }
 
+const emailVerificationCodes = new Map<string, number>();
+
+async function registerEmail(email: string): Promise<Result<null>> {
+	if (!isEmail(email)) {
+		return {
+			status: "error-validation",
+			data: [{ path: "email", message: "Некоректна email адреса" }],
+		};
+	}
+
+	const code = Math.floor(100000 + Math.random() * 900000)
+
+	emailVerificationCodes.set(email, code);
+	setTimeout(() => emailVerificationCodes.delete(email), 10 * 60 * 1000);
+
+	const transporter = nodemailer.createTransport({
+		host: process.env.SMTP_HOST,
+		port: parseInt(process.env.SMTP_PORT || "587"),
+		secure: false,
+		auth: {
+			user: process.env.SMTP_USER,
+			pass: process.env.SMTP_PASS,
+		},
+	});
+
+	try {
+		await transporter.sendMail({
+			from: `"mySpace App" <${process.env.SMTP_USER}>`,
+			to: email,
+			subject: "Код підтвердження електронної пошти",
+			text: `Ваш код: ${code}`,
+		});
+
+		return { status: "success", data: null };
+	} catch (error) {
+		console.error("Email send error:", error);
+		return { status: "error", message: "Не вдалося надіслати листа" };
+	}
+}
+
+async function verifyEmailCode(data: UserRegData, code: string): Promise<Result<string>> {
+
+	const { username, email, password } = data;
+
+    const storedCode = emailVerificationCodes.get(email);
+    
+    if (!storedCode) {
+        return { status: "error", message: "Код не знайдено або він протермінований" };
+    }
+
+    if (storedCode.toString() !== code.toString()) {
+        return { status: "error", message: "Невірний код" };
+    }
+
+    emailVerificationCodes.delete(email);
+
+	const hashedPassword = await hash(password, 10);
+	const hashedData = {
+		// name: newName,
+		// surname: newSurname,
+		email: email,
+		// phoneNumber: numberResult.number,
+		// birthDate: date,
+		password: hashedPassword,
+		username: username,
+	};
+
+	const user = await userRepository.createUser(hashedData);
+	if (!user) return { status: "error", message: "Помилка при реєстрації" };
+	if (typeof user === "string")
+		return { status: "error", message: "Помилка на сервері" };
+
+	const token = sign({ id: user.id }, SECRET_KEY, { expiresIn: "7d" });
+
+	return { status: "success", data: token };
+}
+
+
 async function me(id: number) {
 	const user = await userRepository.getUserById(id);
 	if (!user)
@@ -130,6 +191,8 @@ const userService = {
 	reg: reg,
 	auth: auth,
 	me: me,
+	registerEmail: registerEmail,
+	verifyEmailCode: verifyEmailCode
 };
 
 export default userService;

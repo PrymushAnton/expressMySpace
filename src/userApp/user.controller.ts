@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import userService from "./user.service"
+import { UserRegData } from "./types";
 
 async function reg(req: Request, res: Response){
     const data = req.body
@@ -28,7 +29,7 @@ async function sendEmailCode(req: Request, res: Response): Promise<any> {
 	const { email } = req.body;
 
 	if (!email) {
-		return res.status(400).json({ message: "Email обов'язковий" });
+		return res.status(400).json({ status: "error", message: "Email обов'язковий" });
 	}
 
 	// Генерация и отправка кода
@@ -39,25 +40,24 @@ async function sendEmailCode(req: Request, res: Response): Promise<any> {
 	}
 
 	// Отправляем успешный ответ, в котором содержится информация о коде
-	res.status(200).json({ message: "Код отправлен", status: "success" });
+	res.status(200).json({ data: "Код відправлено", status: "success" });
 };
 
 async function checkEmailCode(req: Request, res: Response): Promise<any> {
-	const { email, code } = req.body;
-
-	if (!email || !code) {
-		return res.status(400).json({ message: "Email і код обов'язкові" });
+	const { code, ...otherData } = req.body;
+	if (!((otherData as UserRegData).email) || !code) {
+		return res.status(400).json({ status: "error", message: "Email і код обов'язкові" });
 	}
 
 	// Проверка правильности кода
-	const result = await userService.verifyEmailCode(email, code);
+	const result = await userService.verifyEmailCode(otherData as UserRegData, code);
 
 	if (result.status !== "success") {
 		return res.status(400).json(result);
 	}
 
 	// Если код правильный, просто отправляем успех
-	res.status(200).json({ message: "Код подтвержден" });
+	res.status(200).json(result);
 }
 
 

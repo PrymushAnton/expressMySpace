@@ -105,7 +105,6 @@ async function auth(data: UserAuthPayload): Promise<Result<string>> {
 const emailVerificationCodes = new Map<string, number>();
 
 async function registerEmail(email: string): Promise<Result<null>> {
-	// 1. Валидация
 	if (!isEmail(email)) {
 		return {
 			status: "error-validation",
@@ -113,14 +112,11 @@ async function registerEmail(email: string): Promise<Result<null>> {
 		};
 	}
 
-	// 2. Генерация 6-значного кода
 	const code = Math.floor(100000 + Math.random() * 900000)
 
-	// 3. Сохранение во временное хранилище (удаление через 10 мин)
 	emailVerificationCodes.set(email, code);
 	setTimeout(() => emailVerificationCodes.delete(email), 10 * 60 * 1000);
 
-	// 4. Настройка и отправка письма
 	const transporter = nodemailer.createTransport({
 		host: process.env.SMTP_HOST,
 		port: parseInt(process.env.SMTP_PORT || "587"),
@@ -156,7 +152,6 @@ async function verifyEmailCode(data: UserRegData, code: string): Promise<Result<
         return { status: "error", message: "Код не знайдено або він протермінований" };
     }
 
-    // Приводим оба к строкам для корректного сравнения
     if (storedCode.toString() !== code.toString()) {
         return { status: "error", message: "Невірний код" };
     }

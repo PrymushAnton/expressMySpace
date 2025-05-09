@@ -32,14 +32,12 @@ async function sendEmailCode(req: Request, res: Response): Promise<any> {
 		return res.status(400).json({ status: "error", message: "Email обов'язковий" });
 	}
 
-	// Генерация и отправка кода
-	const result = await userService.registerEmail(email); // Генерация кода, сохранение в БД, отправка email
+	const result = await userService.registerEmail(email);
 
 	if (result.status === "error-validation") {
 		return res.status(400).json(result);
 	}
 
-	// Отправляем успешный ответ, в котором содержится информация о коде
 	res.status(200).json({ data: "Код відправлено", status: "success" });
 };
 
@@ -49,14 +47,12 @@ async function checkEmailCode(req: Request, res: Response): Promise<any> {
 		return res.status(400).json({ status: "error", message: "Email і код обов'язкові" });
 	}
 
-	// Проверка правильности кода
 	const result = await userService.verifyEmailCode(otherData as UserRegData, code);
 
 	if (result.status !== "success") {
 		return res.status(400).json(result);
 	}
 
-	// Если код правильный, просто отправляем успех
 	res.status(200).json(result);
 }
 

@@ -13,12 +13,6 @@ export const UserValidation = {
 			.trim("Видаліть пробіли на початку і в кінці")
 	}),
     register: yup.object({
-        username: yup
-            .string()
-            .required("Це поле обов'язкове")
-            .min(3, "Довжина повинна бути 3 або більше")
-            .max(32, "Довжина повинна бути менше або 32")
-            .trim("Видаліть пробіли на початку і в кінці"),
         email: yup
             .string()
             .email("Некоректна пошта")
@@ -44,9 +38,5 @@ export const UserValidation = {
             .test("special", "Має бути хоча б один спеціальний символ", (v) =>
                 /[!@#$%^&*(),.?":{}|<>]/.test(v || "")
             ),
-        confirmPassword: yup
-            .string()
-            .required("Це поле обов'язкове")
-            .oneOf([yup.ref("password")], "Паролі не співпадають"),
     })
 };

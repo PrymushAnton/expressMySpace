@@ -144,7 +144,7 @@ async function registerEmail(email: string): Promise<Result<null>> {
 
 async function verifyEmailCode(data: UserRegData, code: string): Promise<Result<string>> {
 
-	const { username, email, password } = data;
+	const { email, password } = data;
 
     const storedCode = emailVerificationCodes.get(email);
     
@@ -166,7 +166,7 @@ async function verifyEmailCode(data: UserRegData, code: string): Promise<Result<
 		// phoneNumber: numberResult.number,
 		// birthDate: date,
 		password: hashedPassword,
-		username: username,
+		// username: username,
 	};
 
 	const user = await userRepository.createUser(hashedData);

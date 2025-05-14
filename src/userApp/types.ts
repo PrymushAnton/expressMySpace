@@ -9,6 +9,7 @@ export type UserRegPayload = Prisma.UserGetPayload<{
         surname: true
         birthDate: true
         phoneNumber: true
+        username: true
     }
 }>
 
@@ -27,7 +28,6 @@ export type UserRegData = Prisma.UserGetPayload<{
     select: {
         email: true
         password: true
-        username: true
     }
 }>
 

@@ -61,8 +61,9 @@ async function createUser(data: UserRegPayload){
                 ...data,
                 name: "",
                 surname: "",
-                birthDate: new Date(2000, 12, 12),
-                phoneNumber: "+1 (234) 567 89 011"
+                birthDate: new Date(2000, 12, 31),
+                phoneNumber: "+1 (234) 567 89 011",
+                username: "NewUser127"
             }
             
         })

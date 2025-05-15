@@ -37,7 +37,7 @@ async function reg(data: UserRegPayloadTwoPasswords): Promise<Result<string>> {
 		}
 	}
 
-	const { username, email, password, confirmPassword } = data;
+	const { username, email, password} = data;
 
 	const userEmail = await userRepository.getUserByEmail(email);
 	if (userEmail)

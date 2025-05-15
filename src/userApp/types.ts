@@ -14,14 +14,13 @@ export type UserRegPayload = Prisma.UserGetPayload<{
 }>
 
 export type UserRegPayloadTwoPasswords = {
-    name: string;
-    surname: string;
+    name?: string;
+    surname?: string;
     email: string;
-    phoneNumber: string;
-    birthDate: string;
+    phoneNumber?: string;
+    birthDate?: string;
     password: string;
-    confirmPassword: string;
-    username: string
+    username?: string
 }
 
 export type UserRegData = Prisma.UserGetPayload<{

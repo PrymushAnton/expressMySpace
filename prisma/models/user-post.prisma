@@ -1,0 +1,7 @@
+model UserPost {
+    id          Int       @id @default(autoincrement())
+    theme       String
+    description String
+    Tags         PostTag[]
+    Images       Image[]
+}

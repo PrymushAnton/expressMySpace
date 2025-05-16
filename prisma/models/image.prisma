@@ -1,0 +1,5 @@
+model Image {
+    id     Int        @id @default(autoincrement())
+    base64 String
+    Posts  UserPost[]
+}

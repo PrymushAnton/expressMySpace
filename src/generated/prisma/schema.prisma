@@ -1,3 +1,24 @@
+model Image {
+  id     Int        @id @default(autoincrement())
+  base64 String
+  Posts  UserPost[]
+}
+
+model PostTag {
+  id      Int        @id @default(autoincrement())
+  name    String
+  default Boolean
+  Posts   UserPost[]
+}
+
+model UserPost {
+  id          Int       @id @default(autoincrement())
+  theme       String
+  description String
+  Tags        PostTag[]
+  Images      Image[]
+}
+
 model User {
   id          Int       @id @default(autoincrement())
   name        String?

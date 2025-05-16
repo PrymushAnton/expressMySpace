@@ -1,0 +1,6 @@
+model PostTag{
+    id        Int         @id @default(autoincrement())
+    name      String
+    default   Boolean     @default(false)
+    posts     UserPost[]  @relation("PostTags")
+}

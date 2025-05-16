@@ -8,4 +8,8 @@ model User {
   image       String?
   password    String
   username String @unique
+  
+  posts       UserPost[]   @relation("UserPosts")
+  views       PostView[]
+  likes       PostLike[]
 }

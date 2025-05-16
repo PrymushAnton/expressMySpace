@@ -1,0 +1,13 @@
+model UserPost{
+    id Int @id @default(autoincrement())
+    name String
+    topic String
+    content String
+    
+    views     PostView[]
+    likes     PostLike[]
+
+    tags      PostTag[]   @relation("PostTags")
+    images    Image[]     @relation("PostImages")
+    users     User[]      @relation("UserPosts")
+}

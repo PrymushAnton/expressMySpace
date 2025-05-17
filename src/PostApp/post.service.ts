@@ -30,8 +30,8 @@ async function deletePost(postId: number): Promise<Response<string>>{
 }
 
 
-async function findPostByUserId(userId: number): Promise<Response<FindPost>>{
-    const result = await postRepository.findPostByUserId(userId)
+async function findPostsByUserId(userId: number): Promise<Response<FindPost[]>>{
+    const result = await postRepository.findPostsByUserId(userId)
 
  	if (!result) return {status: "error", message: "Помилка при отриманні постів"}
     if (typeof(result) === "string") return {status: "error", message: result}
@@ -48,14 +48,23 @@ async function findAllPosts(): Promise<Response<FindPost[]>>{
     return {status: "success", data: result}
 }
 
+async function findAllTags(): Promise<Response<string[]>>{
+
+    const result = await postRepository.findAllTags()
+
+ 	if (!result) return {status: "error", message: "Помилка при отриманні постів"}
+    if (typeof(result) === "string") return {status: "error", message: result}
+    return {status: "success", data: result}
+}
 
 
 const userService = {
 	createPost: createPost,
 	updatePost: updatePost,
 	deletePost: deletePost,
-	findPostByUserId: findPostByUserId,
-	findAllPosts: findAllPosts
+	findPostsByUserId: findPostsByUserId,
+	findAllPosts: findAllPosts,
+	findAllTags: findAllTags
 };
 
 export default userService;

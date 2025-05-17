@@ -5,8 +5,10 @@ import postController from "./post.controller";
 const postRouter = Router()
 
 
-postRouter.get("/find-by-user-id/:id", postController.findPostByUserId)
+postRouter.get("/find-by-user-id/:id", postController.findPostsByUserId)
 postRouter.get("/find-all-posts", postController.findAllPosts)
+postRouter.get("/find-all-tags", postController.findAllTags)
+
 
 
 postRouter.use(authTokenMiddleware)

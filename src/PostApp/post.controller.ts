@@ -31,9 +31,9 @@ async function deletePost(req: Request, res: Response){
 }
 
 
-async function findPostByUserId(req: Request, res: Response){
+async function findPostsByUserId(req: Request, res: Response){
     const id = req.params.id
-    const result = await postService.findPostByUserId(+id)
+    const result = await postService.findPostsByUserId(+id)
 
     res.json(result)
 }
@@ -44,13 +44,20 @@ async function findAllPosts(req: Request, res: Response){
     res.json(result)
 }
 
+async function findAllTags(req: Request, res: Response){
+    const result = await postService.findAllTags()
+
+    res.json(result)
+}
+
 
 const userController = {
     createPost: createPost,
     updatePost: updatePost,
 	deletePost: deletePost,
-	findPostByUserId: findPostByUserId,
-    findAllPosts: findAllPosts
+	findPostsByUserId: findPostsByUserId,
+    findAllPosts: findAllPosts,
+    findAllTags: findAllTags
 }
 
 export default userController

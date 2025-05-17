@@ -152,46 +152,34 @@ async function deletePost(postId: number){
     }
 }
 
-async function findPostByUserId(userId: number){
+async function findPostsByUserId(userId: number){
 
     try{
-        const post = await client.post.findFirst({
+
+        const posts = await client.post.findMany({
             where: {
                 userId: userId
+            },
+            include: {
+                tags: {
+                    include: {
+                        tag: true
+                    }
+                },
+                images: true
+
             }
         })
 
-        if (!post) {
-            return "Пост не знайдено"
-        }
-
-        const tags = await client.tagToPost.findMany({
-            where: {
-                postId: post.id
+        const formattedPosts = posts.map((post) => {
+            return {
+                ...post,
+                tags: post.tags.map((tag) => tag.tag.name),
+                images: post.images.map((image) => image.base64)
             }
         })
 
-        const foundTags = await client.tag.findMany({
-            where: {
-                id: {
-                    in: tags.map((tag) => tag.tagId)
-                }
-            }
-        })
-
-        const foundImages = await client.image.findMany({
-            where: {
-                postId: post.id
-            }
-        })
-        
-        const fullPost = {
-            ...post,
-            tags: foundTags.map((tag) => tag.name),
-            images: foundImages.map((image) => image.base64),
-        }
-
-        return fullPost
+        return formattedPosts
     } catch (error) {
         console.log((error as Error).message)
         return "Помилка при роботі з базою даних"
@@ -230,12 +218,36 @@ async function findAllPosts(){
     }
 }
 
+
+async function findAllTags(){
+
+    try{
+        const tags = await client.tag.findMany({
+            select: {
+                name: true
+            }
+        })
+
+        const formattedTags: string[] = []
+        Object.values(tags).forEach((tag) => {
+            formattedTags.push(tag.name)
+        })
+
+        return formattedTags
+    } catch (error) {
+        console.log((error as Error).message)
+        return "Помилка при роботі з базою даних"
+    }
+}
+
+
 const userRepository = {
     createPost: createPost,
     updatePost: updatePost,
     deletePost: deletePost,
-    findPostByUserId: findPostByUserId,
-    findAllPosts: findAllPosts
+    findPostsByUserId: findPostsByUserId,
+    findAllPosts: findAllPosts,
+    findAllTags: findAllTags
 }
 
 export default userRepository;

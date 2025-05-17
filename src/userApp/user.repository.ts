@@ -57,15 +57,7 @@ async function getUserByPhoneNumber(phoneNumber: string){
 async function createUser(data: UserRegPayload){
     try{
         const user = await client.user.create({
-            data: {
-                ...data,
-                name: "",
-                surname: "",
-                birthDate: new Date(2000, 12, 31),
-                phoneNumber: "+1 (234) 567 89 011",
-                username: "NewUser127"
-            }
-            
+            data: data
         })
         return user
     } catch (error) {

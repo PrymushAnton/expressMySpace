@@ -19,4 +19,4 @@ export interface IErrorValidation{
     data: IReturnError[]
 }
 
-export type Result<T> = IError | ISuccess<T> | IErrorValidation
+export type Response<T> = IError | ISuccess<T> | IErrorValidation

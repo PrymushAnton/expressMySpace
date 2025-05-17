@@ -1,13 +1,52 @@
+model Image {
+  id     Int    @id @default(autoincrement())
+  base64 String
+
+  postId Int
+  post   Post @relation(fields: [postId], references: [id])
+}
+
+model Post {
+  id    Int    @id @default(autoincrement())
+  title String
+  text  String
+  views Int    @default(0)
+  likes Int    @default(0)
+
+  tags   TagToPost[]
+  images Image[]
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model TagToPost {
+  tag    Tag  @relation(fields: [tagId], references: [id])
+  tagId  Int
+  post   Post @relation(fields: [postId], references: [id])
+  postId Int
+
+  @@id([tagId, postId])
+}
+
+model Tag {
+  id    Int         @id @default(autoincrement())
+  name  String      @unique
+  posts TagToPost[]
+}
+
 model User {
-  id          Int      @id @default(autoincrement())
-  name        String
-  surname     String
-  email       String   @unique
-  phoneNumber String   @unique
-  birthDate   DateTime
+  id          Int       @id @default(autoincrement())
+  name        String?
+  surname     String?
+  email       String    @unique
+  phoneNumber String?   @unique
+  birthDate   DateTime?
   image       String?
   password    String
-  username    String   @unique
+  username    String?   @unique
+
+  posts Post[]
 }
 
 // This is your Prisma schema file,

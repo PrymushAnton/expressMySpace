@@ -6,8 +6,8 @@ import postRouter from './PostApp/post.router';
 
 const app: Express = express()
 const PORT = 3001
-// const HOST = '192.168.3.11'
-const HOST = 'localhost'
+const HOST = '192.168.3.11'
+// const HOST = 'localhost'
 
 
 // app.use(cors({

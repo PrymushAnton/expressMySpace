@@ -4,9 +4,9 @@ import { CreatePost, UpdatePost } from "./types";
 
 
 async function createPost(req: Request, res: Response){
-    const data: CreatePost = req.body
+    const data = req.body
     const userId: number = res.locals.userId
-
+    
     const result = await postService.createPost(data, +userId)
 
     res.json(result)

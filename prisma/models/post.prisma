@@ -4,6 +4,7 @@ model Post {
   text  String
   views Int    @default(0)
   likes Int    @default(0)
+  link String?
 
   tags   TagToPost[]
   images Image[]

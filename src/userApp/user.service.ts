@@ -1,4 +1,4 @@
-import { UserAuthPayload, UserRegData, UserRegPayloadTwoPasswords } from "./types";
+import { UserAuthPayload, UserRegPayload } from "./types";
 import userRepository from "./user.repository";
 // import parsePhoneNumberFromString from "libphonenumber-js";
 // import isEmail from "validator/lib/isEmail";
@@ -10,12 +10,12 @@ import { SECRET_KEY } from "../config/token";
 import nodemailer from "nodemailer";
 import { UserValidation } from "./user.validate";
 import { ValidationError } from "yup";
-import { Result, IReturnError } from "../types/types";
+import { Response, IReturnError } from "../types/types";
 import isEmail from "validator/lib/isEmail"; //для валидации почты
 
 // const moment = require("moment");
 
-async function reg(data: UserRegPayloadTwoPasswords): Promise<Result<string>> {
+async function reg(data: UserRegPayload): Promise<Response<string>> {
 	try {
 		await UserValidation.register.validate(data, { abortEarly: false });
 	} catch (error) {
@@ -37,14 +37,10 @@ async function reg(data: UserRegPayloadTwoPasswords): Promise<Result<string>> {
 		}
 	}
 
-	const { username, email, password, confirmPassword } = data;
+	const { email, password } = data;
 
 	const userEmail = await userRepository.getUserByEmail(email);
 	if (userEmail)
-		// return {
-		// 	status: "error",
-		// 	message: "Користувач з такою поштою вже існує",
-		// };
 		return {
 			status: "error-validation",
 			data: [{ path: "email", message: "Користувач з такою поштою вже існує" }],
@@ -53,7 +49,7 @@ async function reg(data: UserRegPayloadTwoPasswords): Promise<Result<string>> {
 	return { status: "success", data: "" }
 }
 
-async function auth(data: UserAuthPayload): Promise<Result<string>> {
+async function auth(data: UserAuthPayload): Promise<Response<string>> {
 	let requestData;
 	try {
 		requestData = await UserValidation.login.validate(data, {
@@ -104,7 +100,7 @@ async function auth(data: UserAuthPayload): Promise<Result<string>> {
 
 const emailVerificationCodes = new Map<string, number>();
 
-async function registerEmail(email: string): Promise<Result<null>> {
+async function registerEmail(email: string): Promise<Response<null>> {
 	if (!isEmail(email)) {
 		return {
 			status: "error-validation",
@@ -142,7 +138,7 @@ async function registerEmail(email: string): Promise<Result<null>> {
 	}
 }
 
-async function verifyEmailCode(data: UserRegData, code: string): Promise<Result<string>> {
+async function verifyEmailCode(data: UserRegPayload, code: string): Promise<Response<string>> {
 
 	const { email, password } = data;
 

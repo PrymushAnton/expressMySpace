@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import userService from "./user.service"
-import { UserRegData } from "./types";
+import { UserRegPayload } from "./types";
 
 async function reg(req: Request, res: Response){
     const data = req.body
@@ -43,11 +43,11 @@ async function sendEmailCode(req: Request, res: Response): Promise<any> {
 
 async function checkEmailCode(req: Request, res: Response): Promise<any> {
 	const { code, ...otherData } = req.body;
-	if (!((otherData as UserRegData).email) || !code) {
+	if (!((otherData as UserRegPayload).email) || !code) {
 		return res.status(400).json({ status: "error", message: "Email і код обов'язкові" });
 	}
 
-	const result = await userService.verifyEmailCode(otherData as UserRegData, code);
+	const result = await userService.verifyEmailCode(otherData as UserRegPayload, code);
 
 	if (result.status !== "success") {
 		return res.status(400).json(result);

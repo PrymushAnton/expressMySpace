@@ -84,7 +84,7 @@ async function updatePost(data: UpdatePost){
 
         await client.tagToPost.deleteMany({
             where: {
-                postId: post.userId
+                postId: post.id
             }
         })
 

@@ -219,6 +219,39 @@ async function findAllPosts(){
 }
 
 
+async function findPostById(id: number){
+
+    try{
+        const post = await client.post.findUnique({
+            where: {
+                id: id
+            },
+            include: {
+                tags: {
+                    include: {
+                        tag: true
+                    }
+                },
+                images: true
+            }
+        })
+
+        if (!post) return "Такого посту не існує"
+
+        const formattedPost = {
+            ...post,
+            tags: post.tags.map((tag) => tag.tag.name),
+            images: post.images.map((image) => image.base64)
+        }
+
+        return formattedPost
+    } catch (error) {
+        console.log((error as Error).message)
+        return "Помилка при роботі з базою даних"
+    }
+}
+
+
 async function findAllTags(){
 
     try{
@@ -247,7 +280,8 @@ const userRepository = {
     deletePost: deletePost,
     findPostsByUserId: findPostsByUserId,
     findAllPosts: findAllPosts,
-    findAllTags: findAllTags
+    findAllTags: findAllTags,
+    findPostById: findPostById
 }
 
 export default userRepository;

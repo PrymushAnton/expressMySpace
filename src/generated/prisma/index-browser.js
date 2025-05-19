@@ -129,6 +129,7 @@ exports.Prisma.PostScalarFieldEnum = {
   text: 'text',
   views: 'views',
   likes: 'likes',
+  link: 'link',
   userId: 'userId'
 };
 

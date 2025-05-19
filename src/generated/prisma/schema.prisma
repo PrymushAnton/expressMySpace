@@ -7,11 +7,12 @@ model Image {
 }
 
 model Post {
-  id    Int    @id @default(autoincrement())
+  id    Int     @id @default(autoincrement())
   title String
   text  String
-  views Int    @default(0)
-  likes Int    @default(0)
+  views Int     @default(0)
+  likes Int     @default(0)
+  link  String?
 
   tags   TagToPost[]
   images Image[]

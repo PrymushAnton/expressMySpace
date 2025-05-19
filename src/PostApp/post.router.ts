@@ -8,6 +8,8 @@ const postRouter = Router()
 postRouter.get("/find-posts-by-user-id/:id", postController.findPostsByUserId)
 postRouter.get("/find-all-posts", postController.findAllPosts)
 postRouter.get("/find-all-tags", postController.findAllTags)
+postRouter.get("/find-post-by-id/:id", postController.findPostById)
+
 
 
 

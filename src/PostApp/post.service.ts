@@ -48,6 +48,15 @@ async function findAllPosts(): Promise<Response<FindPost[]>>{
     return {status: "success", data: result}
 }
 
+async function findPostById(id: number): Promise<Response<FindPost>>{
+
+    const result = await postRepository.findPostById(id)
+
+ 	if (!result) return {status: "error", message: "Помилка при отриманні посту"}
+    if (typeof(result) === "string") return {status: "error", message: result}
+    return {status: "success", data: result}
+}
+
 async function findAllTags(): Promise<Response<string[]>>{
 
     const result = await postRepository.findAllTags()
@@ -64,7 +73,8 @@ const userService = {
 	deletePost: deletePost,
 	findPostsByUserId: findPostsByUserId,
 	findAllPosts: findAllPosts,
-	findAllTags: findAllTags
+	findAllTags: findAllTags,
+    findPostById: findPostById
 };
 
 export default userService;

@@ -257,16 +257,12 @@ async function findAllTags(){
     try{
         const tags = await client.tag.findMany({
             select: {
+                id: true,
                 name: true
             }
         })
 
-        const formattedTags: string[] = []
-        Object.values(tags).forEach((tag) => {
-            formattedTags.push(tag.name)
-        })
-
-        return formattedTags
+        return tags
     } catch (error) {
         console.log((error as Error).message)
         return "Помилка при роботі з базою даних"

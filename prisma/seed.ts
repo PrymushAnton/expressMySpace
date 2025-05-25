@@ -9,16 +9,16 @@ async function createBaseTags(){
     try{
         const tags = await client.tag.createMany({
             data: [
-                { name: 'відпочинок' },
-                { name: 'натхнення' },
-                { name: 'життя' },
-                { name: 'природа' },
-                { name: 'читання' },
-                { name: 'спокій' },
-                { name: 'гармонія' },
-                { name: 'музика' },
-                { name: 'фільми' },
-                { name: 'подорожі' },
+                { name: 'Відпочинок' },
+                { name: 'Натхнення' },
+                { name: 'Життя' },
+                { name: 'Природа' },
+                { name: 'Читання' },
+                { name: 'Спокій' },
+                { name: 'Гармонія' },
+                { name: 'Музика' },
+                { name: 'Фільми' },
+                { name: 'Подорожі' },
             ]
         })
     } catch (error){

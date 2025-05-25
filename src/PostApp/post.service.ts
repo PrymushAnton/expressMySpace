@@ -57,7 +57,7 @@ async function findPostById(id: number): Promise<Response<FindPost>>{
     return {status: "success", data: result}
 }
 
-async function findAllTags(): Promise<Response<string[]>>{
+async function findAllTags():  Promise<Response<{ id: number; name: string }[]>> {
 
     const result = await postRepository.findAllTags()
 

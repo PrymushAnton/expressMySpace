@@ -9,6 +9,7 @@ async function getUserById(id: number){
                 id: id
             },
             select: {
+                id: true,
                 name: true,
                 surname: true,
                 email: true,

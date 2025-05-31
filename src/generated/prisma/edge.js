@@ -156,7 +156,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Bulkin\\Desktop\\ilia-post\\backend1\\expressMySpace\\src\\generated\\prisma",
+      "value": "C:\\Users\\Bulkin\\Desktop\\ilia-post\\backend2\\expressMySpace\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -170,7 +170,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Bulkin\\Desktop\\ilia-post\\backend1\\expressMySpace\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\Bulkin\\Desktop\\ilia-post\\backend2\\expressMySpace\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

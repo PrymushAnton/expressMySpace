@@ -1,4 +1,4 @@
-import { UserAuthPayload, UserRegPayload } from "./types";
+import { UserAdditionalInfo, UserAuthPayload, UserRegPayload } from "./types";
 import userRepository from "./user.repository";
 // import parsePhoneNumberFromString from "libphonenumber-js";
 // import isEmail from "validator/lib/isEmail";
@@ -43,10 +43,15 @@ async function reg(data: UserRegPayload): Promise<Response<string>> {
 	if (userEmail)
 		return {
 			status: "error-validation",
-			data: [{ path: "email", message: "Користувач з такою поштою вже існує" }],
+			data: [
+				{
+					path: "email",
+					message: "Користувач з такою поштою вже існує",
+				},
+			],
 		};
 
-	return { status: "success", data: "" }
+	return { status: "success", data: "" };
 }
 
 async function auth(data: UserAuthPayload): Promise<Response<string>> {
@@ -108,7 +113,7 @@ async function registerEmail(email: string): Promise<Response<null>> {
 		};
 	}
 
-	const code = Math.floor(100000 + Math.random() * 900000)
+	const code = Math.floor(100000 + Math.random() * 900000);
 
 	emailVerificationCodes.set(email, code);
 	setTimeout(() => emailVerificationCodes.delete(email), 10 * 60 * 1000);
@@ -138,21 +143,26 @@ async function registerEmail(email: string): Promise<Response<null>> {
 	}
 }
 
-async function verifyEmailCode(data: UserRegPayload, code: string): Promise<Response<string>> {
-
+async function verifyEmailCode(
+	data: UserRegPayload,
+	code: string
+): Promise<Response<string>> {
 	const { email, password } = data;
 
-    const storedCode = emailVerificationCodes.get(email);
-    
-    if (!storedCode) {
-        return { status: "error", message: "Код не знайдено або він протермінований" };
-    }
+	const storedCode = emailVerificationCodes.get(email);
 
-    if (storedCode.toString() !== code.toString()) {
-        return { status: "error", message: "Невірний код" };
-    }
+	if (!storedCode) {
+		return {
+			status: "error",
+			message: "Код не знайдено або він протермінований",
+		};
+	}
 
-    emailVerificationCodes.delete(email);
+	if (storedCode.toString() !== code.toString()) {
+		return { status: "error", message: "Невірний код" };
+	}
+
+	emailVerificationCodes.delete(email);
 
 	const hashedPassword = await hash(password, 10);
 	const hashedData = {
@@ -175,7 +185,6 @@ async function verifyEmailCode(data: UserRegPayload, code: string): Promise<Resp
 	return { status: "success", data: token };
 }
 
-
 async function me(id: number) {
 	const user = await userRepository.getUserById(id);
 	if (!user)
@@ -183,12 +192,34 @@ async function me(id: number) {
 	return { status: "success", data: user };
 }
 
+async function update(email: string, data: any): Promise<Response<null>> {
+	const user = await userRepository.getUserByEmail(email);
+	if (!user || typeof user === "string") {
+		return { status: "error", message: "Користувача не знайдено" };
+	}
+
+	const payload: UserAdditionalInfo = {
+		username: data.username ?? null,
+		name: data.name ?? null,
+		surname: data.surname ?? null,
+	};
+
+	const updated = await userRepository.update(email, payload);
+	if (!updated || typeof updated === "string") {
+		return { status: "error", message: "Не вдалося оновити дані" };
+	}
+
+	return { status: "success", data: null };
+}
+
+
 const userService = {
 	reg: reg,
 	auth: auth,
 	me: me,
 	registerEmail: registerEmail,
-	verifyEmailCode: verifyEmailCode
+	verifyEmailCode: verifyEmailCode,
+	update: update
 };
 
 export default userService;

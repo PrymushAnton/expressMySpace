@@ -62,8 +62,9 @@ async function checkEmailCode(req: Request, res: Response): Promise<any> {
 }
 
 async function update(req: Request, res: Response) {
-	const { email, data } = req.body;
-	const result = await userService.update(email, data);
+	const { ...data } = req.body;
+	const id = res.locals.userId
+	const result = await userService.update(+id, data);
 	res.json(result);
 }
 

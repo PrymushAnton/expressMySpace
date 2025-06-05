@@ -76,11 +76,11 @@ async function auth(data: any) {
 	}
 }
 
-async function update(email: string, data: UserAdditionalInfo) {
+async function update(id: number, data: UserAdditionalInfo) {
 	try {
 		const user = await client.user.update({
-			where: { email },
-			data,
+			where: { id },
+			data: data,
 		});
 		return user;
 	} catch (error) {

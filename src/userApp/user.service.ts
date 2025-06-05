@@ -192,8 +192,8 @@ async function me(id: number) {
 	return { status: "success", data: user };
 }
 
-async function update(email: string, data: any): Promise<Response<null>> {
-	const user = await userRepository.getUserByEmail(email);
+async function update(id: number, data: any): Promise<Response<null>> {
+	const user = await userRepository.getUserById(id);
 	if (!user || typeof user === "string") {
 		return { status: "error", message: "Користувача не знайдено" };
 	}
@@ -204,7 +204,7 @@ async function update(email: string, data: any): Promise<Response<null>> {
 		surname: data.surname ?? null,
 	};
 
-	const updated = await userRepository.update(email, payload);
+	const updated = await userRepository.update(id, payload);
 	if (!updated || typeof updated === "string") {
 		return { status: "error", message: "Не вдалося оновити дані" };
 	}

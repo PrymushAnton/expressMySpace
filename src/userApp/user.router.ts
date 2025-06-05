@@ -9,6 +9,6 @@ userRouter.post("/auth", userController.auth)
 userRouter.get("/me", authTokenMiddleware, userController.me)
 userRouter.post("/send-email-code", userController.sendEmailCode);
 userRouter.post("/verify-email-code", userController.checkEmailCode);
-userRouter.post("/update", userController.update)
+userRouter.post("/update", authTokenMiddleware, userController.update)
 
 export default userRouter

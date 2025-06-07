@@ -5,7 +5,7 @@ import postRouter from './PostApp/post.router';
 
 
 const app: Express = express()
-const PORT = 3001
+const PORT = 3011
 const HOST = '192.168.1.10'
 // const HOST = 'localhost'
 

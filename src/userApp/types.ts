@@ -19,3 +19,11 @@ export type UserAuthPayload = Partial<Prisma.UserGetPayload<{
         password: true
     }
 }>
+
+export type UserAdditionalInfo = Prisma.UserGetPayload<{
+    select: {
+        name: true,
+        surname: true,
+        username: true
+    }
+}>

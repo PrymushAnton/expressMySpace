@@ -192,26 +192,22 @@ async function me(id: number) {
 	return { status: "success", data: user };
 }
 
-async function update(id: number, data: any): Promise<Response<null>> {
+async function update(id: number, data: any): Promise<Response<string>> {
 	const user = await userRepository.getUserById(id);
-	if (!user || typeof user === "string") {
-		return { status: "error", message: "Користувача не знайдено" };
-	}
+	if (!user) return { status: "error", message: "Користувача не знайдено" };
+	if (typeof user === "string")
+		return { status: "error", message: "Помилка на сервері" };
 
-	const payload: UserAdditionalInfo = {
-		username: data.username ?? null,
-		name: data.name ?? null,
-		surname: data.surname ?? null,
-	};
 
-	const updated = await userRepository.update(id, payload);
-	if (!updated || typeof updated === "string") {
-		return { status: "error", message: "Не вдалося оновити дані" };
-	}
+	
 
-	return { status: "success", data: null };
+	const updated = await userRepository.update(id, data);
+	if (!updated) return { status: "error", message: "Не вдалося оновити дані" };
+	if (typeof updated === "string")
+		return { status: "error", message: "Помилка на сервері" };
+
+	return { status: "success", data: "Дані успішно оновлено" };
 }
-
 
 const userService = {
 	reg: reg,
@@ -219,7 +215,7 @@ const userService = {
 	me: me,
 	registerEmail: registerEmail,
 	verifyEmailCode: verifyEmailCode,
-	update: update
+	update: update,
 };
 
 export default userService;

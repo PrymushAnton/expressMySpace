@@ -15,6 +15,7 @@ async function getUserById(id: number) {
 				phoneNumber: true,
 				birthDate: true,
 				username: true,
+				image: true
 			},
 		});
 		return user;

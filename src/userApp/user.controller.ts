@@ -64,6 +64,8 @@ async function checkEmailCode(req: Request, res: Response): Promise<any> {
 async function update(req: Request, res: Response) {
 	const { ...data } = req.body;
 	const id = res.locals.userId
+	if (!data.birthDate) data.birthDate = new Date()
+	data.birthDate = new Date(data.birthDate)
 	const result = await userService.update(+id, data);
 	res.json(result);
 }

@@ -1,3 +1,10 @@
+model FriendRequest {
+  id         Int     @id @default(autoincrement())
+  fromUser   Int
+  toUser     Int
+  isAccepted Boolean
+}
+
 model Image {
   id     Int    @id @default(autoincrement())
   base64 String

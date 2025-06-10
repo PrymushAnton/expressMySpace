@@ -4,6 +4,6 @@ import friendController from "./friend.controller";
 
 const friendRouter = Router()
 
-friendRouter.post('/friend/send-friend-request', authTokenMiddleware, friendController.sendFriendRequestHandler)
+friendRouter.post('/send-friend-request', authTokenMiddleware, friendController.sendFriendRequestHandler)
 
 export default friendRouter

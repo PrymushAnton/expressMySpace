@@ -6,6 +6,7 @@ async function findFriendRequestBetweenUsers(
 ) {
 	return client.friendRequest.findFirst({
 		where: {
+            // OR - ИЛИ, тут мы ищем запрос на дружбу от юзеров
 			OR: [
 				{ fromUser, toUser },
 				{ fromUser: toUser, toUser: fromUser },

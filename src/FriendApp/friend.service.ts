@@ -1,27 +1,40 @@
 import friendRepository from "./friend.repository";
 
 async function sendFriendRequest(fromUser: number, toUser: number) {
-	if (toUser === fromUser) {
+	if (toUser === fromUser)
 		throw new Error("You can't send a request to yourself");
-	}
 
 	const existing = await friendRepository.findFriendRequestBetweenUsers(
 		fromUser,
 		toUser
 	);
-	if (existing) {
-		throw new Error("The request already exists");
-	}
+	if (existing) throw new Error("Request already exists");
 
-	const friendRequest = await friendRepository.createFriendRequest(
-		fromUser,
-		toUser
-	);
-	return friendRequest;
+	return friendRepository.createFriendRequest(fromUser, toUser);
+}
+
+async function acceptRequest(requestId: number) {
+	return friendRepository.acceptFriendRequest(requestId);
+}
+
+async function rejectRequest(requestId: number) {
+	return friendRepository.rejectFriendRequest(requestId);
+}
+
+async function getPendingRequests(userId: number) {
+	return friendRepository.getPendingRequests(userId);
+}
+
+async function getAllUsers() {
+	return friendRepository.getAllUsers();
 }
 
 const friendService = {
-    sendFriendRequest: sendFriendRequest
-}
+	sendFriendRequest,
+	acceptRequest,
+	rejectRequest,
+	getPendingRequests,
+	getAllUsers,
+};
 
-export default friendService
+export default friendService;

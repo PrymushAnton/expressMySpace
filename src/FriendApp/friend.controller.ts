@@ -9,27 +9,65 @@ async function sendFriendRequestHandler(req: Request, res: Response) {
 		if (!toUser || typeof toUser !== "number") {
 			res.status(400).json({
 				status: "error",
-				message: "wrong toUser",
+				message: "Invalid toUser",
 			});
-			return;
 		}
 
 		const friendRequest = await friendService.sendFriendRequest(
 			fromUser,
 			toUser
 		);
-
 		res.json({ status: "success", friendRequest });
-	} catch (error: any) {
-		res.status(400).json({
-			status: "error",
-			message: error.message || "error backend friend request",
-		});
+	} catch (e: any) {
+		res.status(400).json({ status: "error", message: e.message });
+	}
+}
+
+async function acceptRequestHandler(req: Request, res: Response) {
+	try {
+		const { requestId } = req.body;
+		const result = await friendService.acceptRequest(requestId);
+		res.json({ status: "success", result });
+	} catch (e: any) {
+		res.status(400).json({ status: "error", message: e.message });
+	}
+}
+
+async function rejectRequestHandler(req: Request, res: Response) {
+	try {
+		const { requestId } = req.body;
+		const result = await friendService.rejectRequest(requestId);
+		res.json({ status: "success", result });
+	} catch (e: any) {
+		res.status(400).json({ status: "error", message: e.message });
+	}
+}
+
+async function getPendingRequestsHandler(req: Request, res: Response) {
+	try {
+		const userId = res.locals.userId;
+		const requests = await friendService.getPendingRequests(userId);
+		res.json({ status: "success", requests });
+	} catch (e: any) {
+		res.status(400).json({ status: "error", message: e.message });
+	}
+}
+
+async function getAllUsersHandler(req: Request, res: Response) {
+	try {
+		const users = await friendService.getAllUsers();
+		res.json({ status: "success", users });
+	} catch (e: any) {
+		res.status(400).json({ status: "error", message: e.message });
 	}
 }
 
 const friendController = {
-    sendFriendRequestHandler: sendFriendRequestHandler
-}
+	sendFriendRequestHandler,
+	acceptRequestHandler,
+	rejectRequestHandler,
+	getPendingRequestsHandler,
+	getAllUsersHandler,
+};
 
-export default friendController
+export default friendController;

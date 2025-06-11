@@ -62,29 +62,43 @@ async function checkEmailCode(req: Request, res: Response): Promise<any> {
 	res.status(200).json(result);
 }
 
-
-
 async function update(req: Request, res: Response) {
 	const { ...data } = req.body;
-	const id = res.locals.userId
+	const id = res.locals.userId;
 	let result;
-	console.log(data, id)
+	console.log(data, id);
 	if (!data.birthDate) {
-		const {birthDate, ...otherData} = data
-		otherData.phoneNumber = parsePhoneNumberFromString(otherData.phoneNumber)?.number
-		result = await userService.update(+id, otherData);
+		if (data.phoneNumber) {
+			const { birthDate, ...otherData } = data;
+			otherData.phoneNumber = parsePhoneNumberFromString(
+				otherData.phoneNumber
+			)?.number;
+			result = await userService.update(+id, otherData);
+		} else {
+			const { birthDate, ...otherData } = data;
+			result = await userService.update(+id, otherData);
+		}
 	} else {
-		data.phoneNumber = parsePhoneNumberFromString(data.phoneNumber)?.number
-		result = await userService.update(+id, data);
+		if (data.phoneNumber) {
+			data.phoneNumber = parsePhoneNumberFromString(
+				data.phoneNumber
+			)?.number;
+			result = await userService.update(+id, data);
+		} else {
+			data.phoneNumber = parsePhoneNumberFromString(
+				data.phoneNumber
+			)?.number;
+			result = await userService.update(+id, data);
+		}
 	}
-	
+
 	res.json(result);
 }
 
 async function updateAvatar(req: Request, res: Response) {
 	const data = req.body;
-	const id = res.locals.userId
-	
+	const id = res.locals.userId;
+
 	const result = await userService.updateAvatar(+id, data);
 
 	res.json(result);
@@ -97,7 +111,7 @@ const userController = {
 	sendEmailCode: sendEmailCode,
 	checkEmailCode: checkEmailCode,
 	update: update,
-	updateAvatar:updateAvatar
+	updateAvatar: updateAvatar,
 };
 
 export default userController;

@@ -198,8 +198,19 @@ async function update(id: number, data: any): Promise<Response<string>> {
 	if (typeof user === "string")
 		return { status: "error", message: "Помилка на сервері" };
 
+	const updated = await userRepository.update(id, data);
+	if (!updated) return { status: "error", message: "Не вдалося оновити дані" };
+	if (typeof updated === "string")
+		return { status: "error", message: "Помилка на сервері" };
 
-	
+	return { status: "success", data: "Дані успішно оновлено" };
+}
+
+async function updateAvatar(id: number, data: any): Promise<Response<string>> {
+	const user = await userRepository.getUserById(id);
+	if (!user) return { status: "error", message: "Користувача не знайдено" };
+	if (typeof user === "string")
+		return { status: "error", message: "Помилка на сервері" };
 
 	const updated = await userRepository.update(id, data);
 	if (!updated) return { status: "error", message: "Не вдалося оновити дані" };
@@ -216,6 +227,7 @@ const userService = {
 	registerEmail: registerEmail,
 	verifyEmailCode: verifyEmailCode,
 	update: update,
+	updateAvatar: updateAvatar
 };
 
 export default userService;

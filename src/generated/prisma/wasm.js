@@ -117,6 +117,13 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.FriendRequestScalarFieldEnum = {
+  id: 'id',
+  fromUser: 'fromUser',
+  toUser: 'toUser',
+  isAccepted: 'isAccepted'
+};
+
 exports.Prisma.ImageScalarFieldEnum = {
   id: 'id',
   base64: 'base64',
@@ -167,6 +174,7 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
+  FriendRequest: 'FriendRequest',
   Image: 'Image',
   Post: 'Post',
   TagToPost: 'TagToPost',

@@ -4,7 +4,7 @@ model Post {
   text  String
   views Int    @default(0)
   likes Int    @default(0)
-  link String?
+  link Link[]
 
   tags   TagToPost[]
   images Image[]
@@ -12,3 +12,4 @@ model Post {
   userId Int
   user   User @relation(fields: [userId], references: [id])
 }
+

@@ -73,6 +73,23 @@ async function getAllFriendsHandler(req: Request, res: Response) {
 	}
 }
 
+async function deleteFriendHandler(req: Request, res: Response): Promise<void> {
+	try {
+		const currentUserId = res.locals.userId;
+		const { friendId } = req.body;
+
+		if (!friendId || typeof friendId !== "number") {
+			res.status(400).json({ status: "error", message: "Invalid friendId" });
+			return;
+		}
+
+		const result = await friendService.deleteFriend(currentUserId, friendId);
+		res.json({ status: "success", result });
+	} catch (e: any) {
+		res.status(400).json({ status: "error", message: e.message });
+	}
+}
+
 const friendController = {
 	sendFriendRequestHandler,
 	acceptRequestHandler,
@@ -80,6 +97,7 @@ const friendController = {
 	getPendingRequestsHandler,
 	getAllUsersHandler,
 	getAllFriendsHandler,
+	deleteFriendHandler,
 };
 
 export default friendController;

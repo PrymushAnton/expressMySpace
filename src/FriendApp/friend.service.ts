@@ -33,6 +33,10 @@ async function getAllFriends(userId: number) {
 	return friendRepository.getAllFriends(userId);
 }
 
+async function deleteFriend(currentUserId: number, friendId: number) {
+	return friendRepository.deleteFriend(currentUserId, friendId);
+}
+
 const friendService = {
 	sendFriendRequest,
 	acceptRequest,
@@ -40,6 +44,7 @@ const friendService = {
 	getPendingRequests,
 	getRecommendedUsers,
 	getAllFriends,
+	deleteFriend,
 };
 
 export default friendService;

@@ -113,6 +113,19 @@ async function getAllFriends(userId: number) {
 	});
 }
 
+async function deleteFriend(fromUser: number, toUser: number) {
+	const existing = await findFriendRequestBetweenUsers(fromUser, toUser);
+	if (!existing || !existing.isAccepted) {
+		throw new Error("Friendship does not exist");
+	}
+
+	return client.friendRequest.delete({
+		where: {
+			id: existing.id,
+		},
+	});
+}
+
 const friendRepository = {
 	findFriendRequestBetweenUsers,
 	createFriendRequest,
@@ -121,6 +134,7 @@ const friendRepository = {
 	getPendingRequests,
 	getRecommendedUsers,
 	getAllFriends,
+	deleteFriend,
 };
 
 export default friendRepository;

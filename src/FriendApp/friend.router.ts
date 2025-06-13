@@ -10,5 +10,6 @@ friendRouter.post("/reject-request", authTokenMiddleware, friendController.rejec
 friendRouter.get("/pending-requests", authTokenMiddleware, friendController.getPendingRequestsHandler);
 friendRouter.get("/all-users", authTokenMiddleware, friendController.getAllUsersHandler);
 friendRouter.get("/all-friends", authTokenMiddleware, friendController.getAllFriendsHandler);
+friendRouter.post("/delete-friend", authTokenMiddleware, friendController.deleteFriendHandler);
 
 export default friendRouter;

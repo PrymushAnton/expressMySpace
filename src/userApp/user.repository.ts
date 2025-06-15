@@ -39,11 +39,26 @@ async function getUserByEmail(email: string) {
 	}
 }
 
+
 async function getUserByPhoneNumber(phoneNumber: string) {
 	try {
 		const user = await client.user.findUnique({
 			where: {
 				phoneNumber: phoneNumber,
+			},
+		});
+		return user;
+	} catch (error) {
+		console.log((error as Error).message);
+		return "Помилка при роботі з базою даних";
+	}
+}
+
+async function getUserByUsername(username: string) {
+	try {
+		const user = await client.user.findUnique({
+			where: {
+				username: username,
 			},
 		});
 		return user;
@@ -94,6 +109,7 @@ const userRepository = {
 	getUserById: getUserById,
 	getUserByEmail: getUserByEmail,
 	getUserByPhoneNumber: getUserByPhoneNumber,
+	getUserByUsername: getUserByUsername,
 	createUser: createUser,
 	auth: auth,
 	update: update,

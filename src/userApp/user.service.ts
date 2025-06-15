@@ -193,13 +193,71 @@ async function me(id: number) {
 }
 
 async function update(id: number, data: any): Promise<Response<string>> {
-	const user = await userRepository.getUserById(id);
-	if (!user) return { status: "error", message: "Користувача не знайдено" };
-	if (typeof user === "string")
+	const userById = await userRepository.getUserById(id);
+	if (!userById)
+		return { status: "error", message: "Користувача не знайдено" };
+	if (typeof userById === "string")
 		return { status: "error", message: "Помилка на сервері" };
 
+	let isEmailValid = true;
+	if (data.email) {
+		const userByEmail = await userRepository.getUserByEmail(data.email);
+		if (typeof userByEmail === "string")
+			return { status: "error", message: "Помилка на сервері" };
+		if (userByEmail) {
+			isEmailValid = userByEmail.id === userById.id;
+		} else {
+			isEmailValid = true;
+		}
+	}
+	if (!isEmailValid) return { status: "error", message: "Помилка з поштою" };
+
+	let isPhoneNumberValid = true;
+	if (data.phoneNumber) {
+		const userByPhone = await userRepository.getUserByPhoneNumber(data.phoneNumber);
+		if (typeof userByPhone === "string")
+			return { status: "error", message: "Помилка на сервері" };
+		if (userByPhone) {
+			isPhoneNumberValid = userByPhone.id === userById.id;
+		} else {
+			isPhoneNumberValid = true;
+		}
+	}
+	if (!isPhoneNumberValid) return { status: "error", message: "Помилка з номером телефону" };
+
+	if (data && data.birthDate < new Date("1900-01-01")) return { status: "error", message: "Некоректна дата народження" };
+
 	const updated = await userRepository.update(id, data);
-	if (!updated) return { status: "error", message: "Не вдалося оновити дані" };
+	if (!updated)
+		return { status: "error", message: "Не вдалося оновити дані" };
+	if (typeof updated === "string")
+		return { status: "error", message: "Помилка на сервері" };
+
+	return { status: "success", data: "Дані успішно оновлено" };
+}
+
+async function updateFirstLogin(id: number, data: any): Promise<Response<string>> {
+	const userById = await userRepository.getUserById(id);
+	if (!userById) return { status: "error", message: "Користувача не знайдено" };
+	if (typeof userById === "string")
+		return { status: "error", message: "Помилка на сервері" };
+
+	let isUsernameValid = true;
+	if (data.username) {
+		const userByUsername = await userRepository.getUserByUsername(data.username);
+		if (typeof userByUsername === "string")
+			return { status: "error", message: "Помилка на сервері" };
+		if (userByUsername) {
+			isUsernameValid = userByUsername.id === userById.id;
+		} else {
+			isUsernameValid = true;
+		}
+	}
+	if (!isUsernameValid) return { status: "error", message: "Помилка з ніком" };
+
+	const updated = await userRepository.update(id, data);
+	if (!updated)
+		return { status: "error", message: "Не вдалося оновити дані" };
 	if (typeof updated === "string")
 		return { status: "error", message: "Помилка на сервері" };
 
@@ -207,13 +265,27 @@ async function update(id: number, data: any): Promise<Response<string>> {
 }
 
 async function updateAvatar(id: number, data: any): Promise<Response<string>> {
-	const user = await userRepository.getUserById(id);
-	if (!user) return { status: "error", message: "Користувача не знайдено" };
-	if (typeof user === "string")
+	const userById = await userRepository.getUserById(id);
+	if (!userById) return { status: "error", message: "Користувача не знайдено" };
+	if (typeof userById === "string")
 		return { status: "error", message: "Помилка на сервері" };
 
+	let isUsernameValid = true;
+	if (data.username) {
+		const userByUsername = await userRepository.getUserByUsername(data.username);
+		if (typeof userByUsername === "string")
+			return { status: "error", message: "Помилка на сервері" };
+		if (userByUsername) {
+			isUsernameValid = userByUsername.id === userById.id;
+		} else {
+			isUsernameValid = true;
+		}
+	}
+	if (!isUsernameValid) return { status: "error", message: "Помилка з ніком" };
+
 	const updated = await userRepository.update(id, data);
-	if (!updated) return { status: "error", message: "Не вдалося оновити дані" };
+	if (!updated)
+		return { status: "error", message: "Не вдалося оновити дані" };
 	if (typeof updated === "string")
 		return { status: "error", message: "Помилка на сервері" };
 
@@ -227,7 +299,8 @@ const userService = {
 	registerEmail: registerEmail,
 	verifyEmailCode: verifyEmailCode,
 	update: update,
-	updateAvatar: updateAvatar
+	updateAvatar: updateAvatar,
+	updateFirstLogin: updateFirstLogin
 };
 
 export default userService;

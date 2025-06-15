@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import userService from "./user.service";
 import { UserRegPayload } from "./types";
 import parsePhoneNumberFromString from "libphonenumber-js";
+import userRepository from "./user.repository";
 
 async function reg(req: Request, res: Response) {
 	const data = req.body;
@@ -62,35 +63,43 @@ async function checkEmailCode(req: Request, res: Response): Promise<any> {
 	res.status(200).json(result);
 }
 
+
+
+
+async function updateFirstLogin(req: Request, res: Response) {
+	const { ...data } = req.body;
+	const id = res.locals.userId;
+
+	Object.entries(data).forEach(([key, object]) => {
+		if (data[key] === "") {
+			data[key] = null;
+		}
+	});
+
+	const result = await userService.update(+id, data);
+	res.json(result);
+}
+
 async function update(req: Request, res: Response) {
 	const { ...data } = req.body;
 	const id = res.locals.userId;
-	let result;
 	console.log(data, id);
-	if (!data.birthDate) {
-		if (data.phoneNumber) {
-			const { birthDate, ...otherData } = data;
-			otherData.phoneNumber = parsePhoneNumberFromString(
-				otherData.phoneNumber
-			)?.number;
-			result = await userService.update(+id, otherData);
-		} else {
-			const { birthDate, ...otherData } = data;
-			result = await userService.update(+id, otherData);
-		}
-	} else {
-		if (data.phoneNumber) {
-			data.phoneNumber = parsePhoneNumberFromString(
-				data.phoneNumber
-			)?.number;
-			result = await userService.update(+id, data);
-		} else {
-			data.phoneNumber = parsePhoneNumberFromString(
-				data.phoneNumber
-			)?.number;
-			result = await userService.update(+id, data);
-		}
+
+	if (data) {
+		data.birthDate = new Date(data.birthDate);
 	}
+
+	if (data.phoneNumber !== "") {
+		data.phoneNumber = parsePhoneNumberFromString(data.phoneNumber)?.number;
+	}
+
+	Object.entries(data).forEach(([key, object]) => {
+		if (data[key] === "") {
+			data[key] = null;
+		}
+	});
+
+	const result = await userService.update(+id, data)
 
 	res.json(result);
 }
@@ -98,6 +107,12 @@ async function update(req: Request, res: Response) {
 async function updateAvatar(req: Request, res: Response) {
 	const data = req.body;
 	const id = res.locals.userId;
+
+	Object.entries(data).forEach(([key, object]) => {
+		if (data[key] === "") {
+			data[key] = null;
+		}
+	});
 
 	const result = await userService.updateAvatar(+id, data);
 
@@ -112,6 +127,7 @@ const userController = {
 	checkEmailCode: checkEmailCode,
 	update: update,
 	updateAvatar: updateAvatar,
+	updateFirstLogin: updateFirstLogin,
 };
 
 export default userController;

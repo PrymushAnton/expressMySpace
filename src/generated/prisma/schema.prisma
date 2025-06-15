@@ -17,18 +17,25 @@ model Image {
 }
 
 model Post {
-  id    Int     @id @default(autoincrement())
+  id    Int    @id @default(autoincrement())
   title String
   text  String
-  views Int     @default(0)
-  likes Int     @default(0)
-  link  String?
+  views Int    @default(0)
+  likes Int    @default(0)
+  link  Link[]
 
   tags   TagToPost[]
   images Image[]
 
   userId Int
   user   User @relation(fields: [userId], references: [id])
+}
+
+model Link {
+  id     Int    @id @default(autoincrement())
+  url    String
+  post   Post   @relation(fields: [postId], references: [id])
+  postId Int
 }
 
 model TagToPost {

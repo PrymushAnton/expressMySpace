@@ -25,8 +25,16 @@ async function getPendingRequests(userId: number) {
 	return friendRepository.getPendingRequests(userId);
 }
 
-async function getAllUsers() {
-	return friendRepository.getAllUsers();
+async function getRecommendedUsers(userId: number) {
+	return friendRepository.getRecommendedUsers(userId);
+}
+
+async function getAllFriends(userId: number) {
+	return friendRepository.getAllFriends(userId);
+}
+
+async function deleteFriend(currentUserId: number, friendId: number) {
+	return friendRepository.deleteFriend(currentUserId, friendId);
 }
 
 const friendService = {
@@ -34,7 +42,9 @@ const friendService = {
 	acceptRequest,
 	rejectRequest,
 	getPendingRequests,
-	getAllUsers,
+	getRecommendedUsers,
+	getAllFriends,
+	deleteFriend,
 };
 
 export default friendService;

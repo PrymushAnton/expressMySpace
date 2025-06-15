@@ -63,6 +63,9 @@ async function checkEmailCode(req: Request, res: Response): Promise<any> {
 	res.status(200).json(result);
 }
 
+
+
+
 async function updateFirstLogin(req: Request, res: Response) {
 	const { ...data } = req.body;
 	const id = res.locals.userId;

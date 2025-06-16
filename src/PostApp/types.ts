@@ -12,6 +12,7 @@ export type CreatePost = Prisma.PostGetPayload<{
     existingTags: string[]
     newTags: string[]
     images: string[]
+    link: string[]
 }
 
 
@@ -25,6 +26,7 @@ export type UpdatePost = Prisma.PostGetPayload<{
     existingTags: string[]
     newTags: string[]
     images: string[]
+    link: string[] 
 }
 
     

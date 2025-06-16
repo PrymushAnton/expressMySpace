@@ -55,8 +55,36 @@ async function getPendingRequestsHandler(req: Request, res: Response) {
 
 async function getAllUsersHandler(req: Request, res: Response) {
 	try {
-		const users = await friendService.getAllUsers();
+		const userId = res.locals.userId;
+		const users = await friendService.getRecommendedUsers(userId);
 		res.json({ status: "success", users });
+	} catch (e: any) {
+		res.status(400).json({ status: "error", message: e.message });
+	}
+}
+
+async function getAllFriendsHandler(req: Request, res: Response) {
+	try {
+		const userId = res.locals.userId;
+		const friends = await friendService.getAllFriends(userId);
+		res.json({ status: "success", friends });
+	} catch (e: any) {
+		res.status(500).json({ status: "error", message: e.message });
+	}
+}
+
+async function deleteFriendHandler(req: Request, res: Response): Promise<void> {
+	try {
+		const currentUserId = res.locals.userId;
+		const { friendId } = req.body;
+
+		if (!friendId || typeof friendId !== "number") {
+			res.status(400).json({ status: "error", message: "Invalid friendId" });
+			return;
+		}
+
+		const result = await friendService.deleteFriend(currentUserId, friendId);
+		res.json({ status: "success", result });
 	} catch (e: any) {
 		res.status(400).json({ status: "error", message: e.message });
 	}
@@ -68,6 +96,8 @@ const friendController = {
 	rejectRequestHandler,
 	getPendingRequestsHandler,
 	getAllUsersHandler,
+	getAllFriendsHandler,
+	deleteFriendHandler,
 };
 
 export default friendController;

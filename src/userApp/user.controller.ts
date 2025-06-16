@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import userService from "./user.service";
 import { UserRegPayload } from "./types";
 import parsePhoneNumberFromString from "libphonenumber-js";
+import userRepository from "./user.repository";
 
 async function reg(req: Request, res: Response) {
 	const data = req.body;
@@ -64,27 +65,55 @@ async function checkEmailCode(req: Request, res: Response): Promise<any> {
 
 
 
+
+async function updateFirstLogin(req: Request, res: Response) {
+	const { ...data } = req.body;
+	const id = res.locals.userId;
+
+	Object.entries(data).forEach(([key, object]) => {
+		if (data[key] === "") {
+			data[key] = null;
+		}
+	});
+
+	const result = await userService.update(+id, data);
+	res.json(result);
+}
+
 async function update(req: Request, res: Response) {
 	const { ...data } = req.body;
-	const id = res.locals.userId
-	let result;
-	console.log(data, id)
-	if (!data.birthDate) {
-		const {birthDate, ...otherData} = data
-		otherData.phoneNumber = parsePhoneNumberFromString(otherData.phoneNumber)?.number
-		result = await userService.update(+id, otherData);
-	} else {
-		data.phoneNumber = parsePhoneNumberFromString(data.phoneNumber)?.number
-		result = await userService.update(+id, data);
+	const id = res.locals.userId;
+	console.log(data, id);
+
+	if (data) {
+		data.birthDate = new Date(data.birthDate);
 	}
-	
+
+	if (data.phoneNumber !== "") {
+		data.phoneNumber = parsePhoneNumberFromString(data.phoneNumber)?.number;
+	}
+
+	Object.entries(data).forEach(([key, object]) => {
+		if (data[key] === "") {
+			data[key] = null;
+		}
+	});
+
+	const result = await userService.update(+id, data)
+
 	res.json(result);
 }
 
 async function updateAvatar(req: Request, res: Response) {
 	const data = req.body;
-	const id = res.locals.userId
-	
+	const id = res.locals.userId;
+
+	Object.entries(data).forEach(([key, object]) => {
+		if (data[key] === "") {
+			data[key] = null;
+		}
+	});
+
 	const result = await userService.updateAvatar(+id, data);
 
 	res.json(result);
@@ -97,7 +126,8 @@ const userController = {
 	sendEmailCode: sendEmailCode,
 	checkEmailCode: checkEmailCode,
 	update: update,
-	updateAvatar:updateAvatar
+	updateAvatar: updateAvatar,
+	updateFirstLogin: updateFirstLogin,
 };
 
 export default userController;

@@ -136,8 +136,13 @@ exports.Prisma.PostScalarFieldEnum = {
   text: 'text',
   views: 'views',
   likes: 'likes',
-  link: 'link',
   userId: 'userId'
+};
+
+exports.Prisma.LinkScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  postId: 'postId'
 };
 
 exports.Prisma.TagToPostScalarFieldEnum = {
@@ -177,6 +182,7 @@ exports.Prisma.ModelName = {
   FriendRequest: 'FriendRequest',
   Image: 'Image',
   Post: 'Post',
+  Link: 'Link',
   TagToPost: 'TagToPost',
   Tag: 'Tag',
   User: 'User'

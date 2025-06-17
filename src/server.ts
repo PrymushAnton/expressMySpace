@@ -4,10 +4,9 @@ import userRouter from './userApp/user.router';
 import postRouter from './PostApp/post.router';
 import friendRouter from './FriendApp/friend.router'
 
-
 const app: Express = express()
 const PORT = 3011
-const HOST = '192.168.3.11'
+const HOST = '192.168.1.10'
 // const HOST = 'localhost'
 
 

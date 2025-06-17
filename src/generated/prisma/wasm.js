@@ -130,6 +130,12 @@ exports.Prisma.ImageScalarFieldEnum = {
   postId: 'postId'
 };
 
+exports.Prisma.LinkScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  postId: 'postId'
+};
+
 exports.Prisma.PostScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -137,12 +143,6 @@ exports.Prisma.PostScalarFieldEnum = {
   views: 'views',
   likes: 'likes',
   userId: 'userId'
-};
-
-exports.Prisma.LinkScalarFieldEnum = {
-  id: 'id',
-  url: 'url',
-  postId: 'postId'
 };
 
 exports.Prisma.TagToPostScalarFieldEnum = {
@@ -181,8 +181,8 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   FriendRequest: 'FriendRequest',
   Image: 'Image',
-  Post: 'Post',
   Link: 'Link',
+  Post: 'Post',
   TagToPost: 'TagToPost',
   Tag: 'Tag',
   User: 'User'

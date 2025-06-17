@@ -169,6 +169,7 @@ const userRepository = {
 					tags: { include: { tag: true } },
 					images: true,
 					link: true,
+					user: true
 				},
 			});
 
@@ -190,6 +191,7 @@ const userRepository = {
 					tags: { include: { tag: true } },
 					images: true,
 					link: true,
+					user: true
 				},
 			});
 
@@ -212,6 +214,7 @@ const userRepository = {
 					tags: { include: { tag: true } },
 					images: true,
 					link: true,
+					user: true
 				},
 			});
 

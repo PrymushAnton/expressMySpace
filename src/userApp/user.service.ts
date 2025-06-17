@@ -292,6 +292,14 @@ async function updateAvatar(id: number, data: any): Promise<Response<string>> {
 	return { status: "success", data: "Дані успішно оновлено" };
 }
 
+async function getUserById(id: number) {
+	const user = await userRepository.getUserById(id);
+	if (!user) return { status: "error", message: "Користувача не знайдено" };
+	if (typeof user === "string") return { status: "error", message: user };
+	return { status: "success", data: user };
+}
+
+
 const userService = {
 	reg: reg,
 	auth: auth,
@@ -300,7 +308,9 @@ const userService = {
 	verifyEmailCode: verifyEmailCode,
 	update: update,
 	updateAvatar: updateAvatar,
-	updateFirstLogin: updateFirstLogin
+	updateFirstLogin: updateFirstLogin,
+	getUserById: getUserById,
+	
 };
 
 export default userService;

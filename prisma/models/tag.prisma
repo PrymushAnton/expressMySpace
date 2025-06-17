@@ -1,5 +1,6 @@
 model Tag {
-  id      Int         @id @default(autoincrement())
-  name    String @unique
-  posts   TagToPost[]
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  posts Post[]
+  albums Album[]
 }

@@ -1,15 +1,12 @@
 model Post {
-  id    Int    @id @default(autoincrement())
-  title String
-  text  String
-  views Int    @default(0)
-  likes Int    @default(0)
-  link Link[]
-
-  tags   TagToPost[]
-  images Image[]
-
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
+  id        Int       @id @default(autoincrement())
+  title     String
+  content   String
+  authorId  Int
+  author    Profile   @relation(fields: [authorId], references: [id])
+  views     Profile[] @relation("PostViews")
+  likes     Profile[] @relation("PostLikes")
+  tags      Tag[]
+  images    Image[]
+  links     Link[]
 }
-

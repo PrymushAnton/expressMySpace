@@ -212,18 +212,18 @@ async function update(id: number, data: any): Promise<Response<string>> {
 	}
 	if (!isEmailValid) return { status: "error", message: "Помилка з поштою" };
 
-	let isPhoneNumberValid = true;
-	if (data.phoneNumber) {
-		const userByPhone = await userRepository.getUserByPhoneNumber(data.phoneNumber);
-		if (typeof userByPhone === "string")
-			return { status: "error", message: "Помилка на сервері" };
-		if (userByPhone) {
-			isPhoneNumberValid = userByPhone.id === userById.id;
-		} else {
-			isPhoneNumberValid = true;
-		}
-	}
-	if (!isPhoneNumberValid) return { status: "error", message: "Помилка з номером телефону" };
+	// let isPhoneNumberValid = true;
+	// if (data.phoneNumber) {
+	// 	const userByPhone = await userRepository.getUserByPhoneNumber(data.phoneNumber);
+	// 	if (typeof userByPhone === "string")
+	// 		return { status: "error", message: "Помилка на сервері" };
+	// 	if (userByPhone) {
+	// 		isPhoneNumberValid = userByPhone.id === userById.id;
+	// 	} else {
+	// 		isPhoneNumberValid = true;
+	// 	}
+	// }
+	// if (!isPhoneNumberValid) return { status: "error", message: "Помилка з номером телефону" };
 
 	if (data && data.birthDate < new Date("1900-01-01")) return { status: "error", message: "Некоректна дата народження" };
 
@@ -310,7 +310,7 @@ const userService = {
 	updateAvatar: updateAvatar,
 	updateFirstLogin: updateFirstLogin,
 	getUserById: getUserById,
-	
+
 };
 
 export default userService;

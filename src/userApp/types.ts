@@ -22,8 +22,10 @@ export type UserAuthPayload = Partial<Prisma.UserGetPayload<{
 
 export type UserAdditionalInfo = Prisma.UserGetPayload<{
     select: {
-        name: true,
-        surname: true,
+        first_name: true,
+        last_name: true,
         username: true
     }
-}>
+}> & {
+    dateOfBirth?: string | Date | null;
+}

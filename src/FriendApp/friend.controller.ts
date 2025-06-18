@@ -3,10 +3,10 @@ import friendService from "./friend.service";
 
 async function sendFriendRequestHandler(req: Request, res: Response) {
 	try {
-		const fromUser = res.locals.userId;
-		const { toUser } = req.body;
+		const from = res.locals.userId;
+		const { to } = req.body;
 
-		if (!toUser || typeof toUser !== "number") {
+		if (!to || typeof to !== "number") {
 			res.status(400).json({
 				status: "error",
 				message: "Invalid toUser",
@@ -14,8 +14,8 @@ async function sendFriendRequestHandler(req: Request, res: Response) {
 		}
 
 		const friendRequest = await friendService.sendFriendRequest(
-			fromUser,
-			toUser
+			from,
+			to
 		);
 		res.json({ status: "success", friendRequest });
 	} catch (e: any) {

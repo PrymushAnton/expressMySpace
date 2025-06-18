@@ -100,10 +100,25 @@ async function auth(data: any) {
 
 async function update(id: number, data: UserAdditionalInfo) {
 	try {
+		const { dateOfBirth, ...userData } = data;
+
+		const updateData: any = {
+			...userData,
+		};
+
+		if (dateOfBirth) {
+			updateData.profile = {
+				update: {
+					dateOfBirth: new Date(dateOfBirth),
+				},
+			};
+		}
+
 		const user = await client.user.update({
 			where: { id },
-			data: data,
+			data: updateData,
 		});
+
 		return user;
 	} catch (error) {
 		console.log((error as Error).message);

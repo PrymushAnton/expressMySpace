@@ -4,6 +4,7 @@ import { UserRegPayload } from "./types";
 import parsePhoneNumberFromString from "libphonenumber-js";
 import userRepository from "./user.repository";
 
+
 async function reg(req: Request, res: Response) {
 	const data = req.body;
 	const result = await userService.reg(data);
@@ -82,13 +83,9 @@ async function update(req: Request, res: Response) {
 	const id = res.locals.userId;
 	console.log(data, id);
 
-	if (data) {
-		data.dateOfBirth = new Date(data.dateOfBirth);
+	if (data.date_of_birth) {
+		data.date_of_birth = new Date(data.date_of_birth);
 	}
-
-	// if (data.phoneNumber !== "") {
-	// 	data.phoneNumber = parsePhoneNumberFromString(data.phoneNumber)?.number;
-	// }
 
 	Object.entries(data).forEach(([key, object]) => {
 		if (data[key] === "") {
@@ -116,6 +113,15 @@ async function updateAvatar(req: Request, res: Response) {
 	res.json(result);
 }
 
+async function updatePassword(req: Request, res: Response) {
+	const data = req.body;
+	const id = res.locals.userId;
+
+	const result = await userService.updatePassword(+id, data);
+
+	res.json(result);
+}
+
 async function getUserById(req: Request, res: Response) {
 	const id = Number(req.params.id);
 	if (isNaN(id)) res.status(400).json({ status: "error", message: "Некоректний ID" });
@@ -137,7 +143,8 @@ const userController = {
 	update: update,
 	updateAvatar: updateAvatar,
 	updateFirstLogin: updateFirstLogin,
-	getUserById: getUserById
+	getUserById: getUserById,
+	updatePassword: updatePassword
 };
 
 export default userController;

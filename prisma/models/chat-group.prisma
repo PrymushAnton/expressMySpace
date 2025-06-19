@@ -1,9 +1,0 @@
-model ChatGroup {
-  id        Int        @id @default(autoincrement())
-  name      String
-  adminId   Int
-  admin     Profile    @relation("AdminGroups", fields: [adminId], references: [id])
-  members   Profile[]  @relation("GroupMembers")
-  messages  ChatMessage[]
-  createdAt DateTime   @default(now())
-}

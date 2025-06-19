@@ -1,9 +1,0 @@
-model ChatMessage {
-  id         Int       @id @default(autoincrement())
-  text       String
-  senderId   Int
-  sender     Profile   @relation(fields: [senderId], references: [id])
-  groupId    Int
-  group      ChatGroup @relation(fields: [groupId], references: [id])
-  createdAt  DateTime  @default(now())
-}

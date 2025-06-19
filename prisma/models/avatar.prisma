@@ -1,8 +1,0 @@
-model Avatar {
-  id       Int     @id @default(autoincrement())
-  image    String
-  profile  Profile @relation(fields: [profileId], references: [id])
-  profileId Int
-  active   Boolean @default(true) // Чи активна ця аватарка
-  shown    Boolean @default(true) // Чи показана ця аватарка
-}

@@ -13,6 +13,7 @@ userRouter.post("/verify-email-code", userController.checkEmailCode);
 userRouter.post("/update", authTokenMiddleware, userController.update)
 userRouter.post("/update-first-login", authTokenMiddleware, userController.updateFirstLogin)
 userRouter.post("/update-avatar", authTokenMiddleware, userController.updateAvatar)
+userRouter.post("/update-password", authTokenMiddleware, userController.updatePassword)
 userRouter.get("/:id", userController.getUserById)
 
 export default userRouter

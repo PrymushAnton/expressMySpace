@@ -1,9 +1,0 @@
-model Friendship {
-  id         Int      @id @default(autoincrement())
-  fromId     Int
-  toId       Int
-  isAccepted Boolean  @default(false)
-
-  from       Profile  @relation("SentFriendRequests", fields: [fromId], references: [id])
-  to         Profile  @relation("ReceivedFriendRequests", fields: [toId], references: [id])
-}

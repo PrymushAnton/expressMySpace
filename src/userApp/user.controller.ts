@@ -63,9 +63,6 @@ async function checkEmailCode(req: Request, res: Response): Promise<any> {
 	res.status(200).json(result);
 }
 
-
-
-
 async function updateFirstLogin(req: Request, res: Response) {
 	const { ...data } = req.body;
 	const id = res.locals.userId;
@@ -86,12 +83,12 @@ async function update(req: Request, res: Response) {
 	console.log(data, id);
 
 	if (data) {
-		data.birthDate = new Date(data.birthDate);
+		data.dateOfBirth = new Date(data.dateOfBirth);
 	}
 
-	if (data.phoneNumber !== "") {
-		data.phoneNumber = parsePhoneNumberFromString(data.phoneNumber)?.number;
-	}
+	// if (data.phoneNumber !== "") {
+	// 	data.phoneNumber = parsePhoneNumberFromString(data.phoneNumber)?.number;
+	// }
 
 	Object.entries(data).forEach(([key, object]) => {
 		if (data[key] === "") {
@@ -119,6 +116,18 @@ async function updateAvatar(req: Request, res: Response) {
 	res.json(result);
 }
 
+async function getUserById(req: Request, res: Response) {
+	const id = Number(req.params.id);
+	if (isNaN(id)) res.status(400).json({ status: "error", message: "Некоректний ID" });
+
+	const result = await userService.getUserById(id);
+	if (result.status === "error") {
+		res.status(404).json(result);
+	}
+
+	res.json(result);
+}
+
 const userController = {
 	reg: reg,
 	auth: auth,
@@ -128,6 +137,7 @@ const userController = {
 	update: update,
 	updateAvatar: updateAvatar,
 	updateFirstLogin: updateFirstLogin,
+	getUserById: getUserById
 };
 
 export default userController;

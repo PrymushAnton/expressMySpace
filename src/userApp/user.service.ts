@@ -212,18 +212,18 @@ async function update(id: number, data: any): Promise<Response<string>> {
 	}
 	if (!isEmailValid) return { status: "error", message: "Помилка з поштою" };
 
-	let isPhoneNumberValid = true;
-	if (data.phoneNumber) {
-		const userByPhone = await userRepository.getUserByPhoneNumber(data.phoneNumber);
-		if (typeof userByPhone === "string")
-			return { status: "error", message: "Помилка на сервері" };
-		if (userByPhone) {
-			isPhoneNumberValid = userByPhone.id === userById.id;
-		} else {
-			isPhoneNumberValid = true;
-		}
-	}
-	if (!isPhoneNumberValid) return { status: "error", message: "Помилка з номером телефону" };
+	// let isPhoneNumberValid = true;
+	// if (data.phoneNumber) {
+	// 	const userByPhone = await userRepository.getUserByPhoneNumber(data.phoneNumber);
+	// 	if (typeof userByPhone === "string")
+	// 		return { status: "error", message: "Помилка на сервері" };
+	// 	if (userByPhone) {
+	// 		isPhoneNumberValid = userByPhone.id === userById.id;
+	// 	} else {
+	// 		isPhoneNumberValid = true;
+	// 	}
+	// }
+	// if (!isPhoneNumberValid) return { status: "error", message: "Помилка з номером телефону" };
 
 	if (data && data.birthDate < new Date("1900-01-01")) return { status: "error", message: "Некоректна дата народження" };
 
@@ -292,6 +292,14 @@ async function updateAvatar(id: number, data: any): Promise<Response<string>> {
 	return { status: "success", data: "Дані успішно оновлено" };
 }
 
+async function getUserById(id: number) {
+	const user = await userRepository.getUserById(id);
+	if (!user) return { status: "error", message: "Користувача не знайдено" };
+	if (typeof user === "string") return { status: "error", message: user };
+	return { status: "success", data: user };
+}
+
+
 const userService = {
 	reg: reg,
 	auth: auth,
@@ -300,7 +308,9 @@ const userService = {
 	verifyEmailCode: verifyEmailCode,
 	update: update,
 	updateAvatar: updateAvatar,
-	updateFirstLogin: updateFirstLogin
+	updateFirstLogin: updateFirstLogin,
+	getUserById: getUserById,
+
 };
 
 export default userService;

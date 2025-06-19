@@ -1,7 +1,10 @@
 model Image {
-  id     Int    @id @default(autoincrement())
-  base64 String
-
-  postId Int
-  post   Post @relation(fields: [postId], references: [id])
+  id         Int     @id @default(autoincrement())
+  filename   String
+  file       String
+  uploadedAt DateTime @default(now())
+  postId     Int?
+  post       Post?   @relation(fields: [postId], references: [id])
+  albumId    Int?
+  album      Album?  @relation(fields: [albumId], references: [id])
 }

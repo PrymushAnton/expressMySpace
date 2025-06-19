@@ -1,0 +1,17 @@
+model Profile {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  user        User     @relation(fields: [userId], references: [id])
+  dateOfBirth DateTime?
+  signature   String?  
+
+  avatars     Avatar[]
+  posts       Post[]
+  postsViewed Post[]   @relation("PostViews")
+  postsLiked  Post[]   @relation("PostLikes")
+  chats       ChatGroup[] @relation("GroupMembers")
+  messages    ChatMessage[]
+  administeredGroups ChatGroup[] @relation("AdminGroups")
+  sentFriendRequests     Friendship[] @relation("SentFriendRequests")
+  receivedFriendRequests Friendship[] @relation("ReceivedFriendRequests")
+}

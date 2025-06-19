@@ -117,26 +117,52 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.FriendRequestScalarFieldEnum = {
+exports.Prisma.AlbumScalarFieldEnum = {
   id: 'id',
-  fromUser: 'fromUser',
-  toUser: 'toUser',
+  name: 'name',
+  createdAt: 'createdAt',
+  previewImage: 'previewImage',
+  shown: 'shown',
+  topicId: 'topicId'
+};
+
+exports.Prisma.AvatarScalarFieldEnum = {
+  id: 'id',
+  image: 'image',
+  profileId: 'profileId',
+  active: 'active',
+  shown: 'shown'
+};
+
+exports.Prisma.ChatGroupScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  adminId: 'adminId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ChatMessageScalarFieldEnum = {
+  id: 'id',
+  text: 'text',
+  senderId: 'senderId',
+  groupId: 'groupId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.FriendshipScalarFieldEnum = {
+  id: 'id',
+  fromId: 'fromId',
+  toId: 'toId',
   isAccepted: 'isAccepted'
 };
 
 exports.Prisma.ImageScalarFieldEnum = {
   id: 'id',
-  base64: 'base64',
-  postId: 'postId'
-};
-
-exports.Prisma.PostScalarFieldEnum = {
-  id: 'id',
-  title: 'title',
-  text: 'text',
-  views: 'views',
-  likes: 'likes',
-  userId: 'userId'
+  filename: 'filename',
+  file: 'file',
+  uploadedAt: 'uploadedAt',
+  postId: 'postId',
+  albumId: 'albumId'
 };
 
 exports.Prisma.LinkScalarFieldEnum = {
@@ -145,9 +171,18 @@ exports.Prisma.LinkScalarFieldEnum = {
   postId: 'postId'
 };
 
-exports.Prisma.TagToPostScalarFieldEnum = {
-  tagId: 'tagId',
-  postId: 'postId'
+exports.Prisma.PostScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  content: 'content',
+  authorId: 'authorId'
+};
+
+exports.Prisma.ProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  dateOfBirth: 'dateOfBirth',
+  signature: 'signature'
 };
 
 exports.Prisma.TagScalarFieldEnum = {
@@ -157,14 +192,24 @@ exports.Prisma.TagScalarFieldEnum = {
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  surname: 'surname',
-  email: 'email',
-  phoneNumber: 'phoneNumber',
-  birthDate: 'birthDate',
-  image: 'image',
   password: 'password',
-  username: 'username'
+  last_login: 'last_login',
+  is_superuser: 'is_superuser',
+  username: 'username',
+  last_name: 'last_name',
+  email: 'email',
+  is_staff: 'is_staff',
+  is_active: 'is_active',
+  date_joined: 'date_joined',
+  first_name: 'first_name'
+};
+
+exports.Prisma.VerificationCodeScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  code: 'code',
+  createdAt: 'createdAt',
+  expiresAt: 'expiresAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -179,13 +224,18 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  FriendRequest: 'FriendRequest',
+  Album: 'Album',
+  Avatar: 'Avatar',
+  ChatGroup: 'ChatGroup',
+  ChatMessage: 'ChatMessage',
+  Friendship: 'Friendship',
   Image: 'Image',
-  Post: 'Post',
   Link: 'Link',
-  TagToPost: 'TagToPost',
+  Post: 'Post',
+  Profile: 'Profile',
   Tag: 'Tag',
-  User: 'User'
+  User: 'User',
+  VerificationCode: 'VerificationCode'
 };
 
 /**

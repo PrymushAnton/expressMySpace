@@ -1,12 +1,16 @@
 import { client } from "../client/prismaClient";
 import { CreatePost, UpdatePost } from "./types";
 
+function extractFilename(url: string) {
+  return url.split('/').pop() || 'unknown';
+}
+
 async function createPost(data: CreatePost, userId: number) {
 	const {
 		existingTags = [],
 		newTags = [],
-		images = [],
-		link = [],
+		images = [], // массив строк с url картинок
+		link = [], // массив строк с url ссылок
 		...otherData
 	} = data;
 
@@ -14,41 +18,29 @@ async function createPost(data: CreatePost, userId: number) {
 		const post = await client.post.create({
 			data: {
 				...otherData,
-				userId,
-				link: {
+				authorId: userId,
+				tags: {
+					connect: existingTags.map((name) => ({ name })),
+					create: newTags.map((name) => ({ name })),
+				},
+				links: {
 					create: link.map((url) => ({ url })),
 				},
 			},
-		});
-
-		if (newTags.length > 0) {
-			await client.tag.createMany({
-				data: newTags.map((tag) => ({ name: tag })),
-			});
-		}
-
-		const foundTags = await client.tag.findMany({
-			where: {
-				name: {
-					in: [...existingTags, ...newTags],
-				},
+			include: {
+				tags: true,
+				images: true,
+				links: true,
 			},
 		});
 
-		if (foundTags.length > 0) {
-			await client.tagToPost.createMany({
-				data: foundTags.map((tag) => ({
-					tagId: tag.id,
-					postId: post.id,
-				})),
-			});
-		}
-
 		if (images.length > 0) {
 			await client.image.createMany({
-				data: images.map((image) => ({
-					base64: image,
+				data: images.map((url) => ({
+					url,
 					postId: post.id,
+					file: url,
+					filename: extractFilename(url)
 				})),
 			});
 		}
@@ -58,7 +50,7 @@ async function createPost(data: CreatePost, userId: number) {
 			include: {
 				tags: true,
 				images: true,
-				link: true,
+				links: true,
 			},
 		});
 
@@ -73,8 +65,8 @@ async function updatePost(data: UpdatePost) {
 	const {
 		existingTags = [],
 		newTags = [],
-		images = [],
-		link = [],
+		images = [], // массив url картинок
+		link = [], // массив url ссылок
 		id,
 		...otherData
 	} = data;
@@ -82,41 +74,25 @@ async function updatePost(data: UpdatePost) {
 	try {
 		const post = await client.post.update({
 			where: { id },
-			data: otherData,
-		});
-
-		if (newTags.length > 0) {
-			await client.tag.createMany({
-				data: newTags.map((tag) => ({ name: tag })),
-			});
-		}
-
-		const foundTags = await client.tag.findMany({
-			where: {
-				name: {
-					in: [...existingTags, ...newTags],
+			data: {
+				...otherData,
+				tags: {
+					set: [],
+					connect: existingTags.map((name) => ({ name })),
+					create: newTags.map((name) => ({ name })),
 				},
 			},
 		});
-
-		await client.tagToPost.deleteMany({ where: { postId: post.id } });
-
-		if (foundTags.length > 0) {
-			await client.tagToPost.createMany({
-				data: foundTags.map((tag) => ({
-					tagId: tag.id,
-					postId: post.id,
-				})),
-			});
-		}
 
 		await client.image.deleteMany({ where: { postId: post.id } });
 
 		if (images.length > 0) {
 			await client.image.createMany({
-				data: images.map((image) => ({
-					base64: image,
+				data: images.map((url) => ({
+					url,
 					postId: post.id,
+					file: url,
+					filename: extractFilename(url)
 				})),
 			});
 		}
@@ -134,7 +110,7 @@ async function updatePost(data: UpdatePost) {
 			include: {
 				tags: true,
 				images: true,
-				link: true,
+				links: true,
 			},
 		});
 
@@ -150,9 +126,11 @@ const userRepository = {
 	updatePost,
 	deletePost: async function (postId: number) {
 		try {
-			await client.tagToPost.deleteMany({ where: { postId } });
 			await client.image.deleteMany({ where: { postId } });
 			await client.link.deleteMany({ where: { postId } });
+
+			// Если есть необходимость, можно удалить связи с тегами, но в модели их нет явно
+			// await client.post.update({ where: { id: postId }, data: { tags: { set: [] } } });
 
 			const post = await client.post.delete({ where: { id: postId } });
 			return post;
@@ -164,19 +142,20 @@ const userRepository = {
 	findPostsByUserId: async function (userId: number) {
 		try {
 			const posts = await client.post.findMany({
-				where: { userId },
+				where: { authorId: userId },
 				include: {
-					tags: { include: { tag: true } },
+					tags: true,
 					images: true,
-					link: true,
+					links: true,
+					author: true,
 				},
 			});
 
 			return posts.map((post) => ({
 				...post,
-				tags: post.tags.map((t) => t.tag.name),
-				images: post.images.map((img) => img.base64),
-				link: post.link.map((l) => l.url),
+				tags: post.tags.map((t) => t.name),
+				images: post.images.map((img) => img.file),
+				links: post.links.map((l) => l.url),
 			}));
 		} catch (error) {
 			console.log("findPostsByUserId error:", (error as Error).message);
@@ -187,17 +166,18 @@ const userRepository = {
 		try {
 			const posts = await client.post.findMany({
 				include: {
-					tags: { include: { tag: true } },
+					tags: true,
 					images: true,
-					link: true,
+					links: true,
+					author: true,
 				},
 			});
 
 			return posts.map((post) => ({
 				...post,
-				tags: post.tags.map((t) => t.tag.name),
-				images: post.images.map((img) => img.base64),
-				link: post.link.map((l) => l.url),
+				tags: post.tags.map((t) => t.name),
+				images: post.images.map((img) => img.file),
+				links: post.links.map((l) => l.url),
 			}));
 		} catch (error) {
 			console.log("findAllPosts error:", (error as Error).message);
@@ -209,9 +189,10 @@ const userRepository = {
 			const post = await client.post.findUnique({
 				where: { id },
 				include: {
-					tags: { include: { tag: true } },
+					tags: true,
 					images: true,
-					link: true,
+					links: true,
+					author: true,
 				},
 			});
 
@@ -219,9 +200,9 @@ const userRepository = {
 
 			return {
 				...post,
-				tags: post.tags.map((t) => t.tag.name),
-				images: post.images.map((img) => img.base64),
-				link: post.link.map((l) => l.url),
+				tags: post.tags.map((t) => t.name),
+				images: post.images.map((img) => img.file),
+				links: post.links.map((l) => l.url),
 			};
 		} catch (error) {
 			console.log("findPostById error:", (error as Error).message);

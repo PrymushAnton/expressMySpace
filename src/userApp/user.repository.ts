@@ -4,20 +4,23 @@ import { UserAdditionalInfo, UserAuthPayload, UserRegPayload } from "./types";
 async function getUserById(id: number) {
 	try {
 		const user = await client.user.findUnique({
-			where: {
-				id: id,
-			},
+			where: { id },
 			select: {
 				id: true,
-				name: true,
-				surname: true,
+				first_name: true,
+				last_name: true,
 				email: true,
-				phoneNumber: true,
-				birthDate: true,
 				username: true,
-				image: true
+				// image: true,
+				profile: {
+					select: {
+						dateOfBirth: true,
+						avatars: true,
+					},
+				},
 			},
 		});
+
 		return user;
 	} catch (error) {
 		console.log((error as Error).message);
@@ -39,20 +42,17 @@ async function getUserByEmail(email: string) {
 	}
 }
 
-
-async function getUserByPhoneNumber(phoneNumber: string) {
-	try {
-		const user = await client.user.findUnique({
-			where: {
-				phoneNumber: phoneNumber,
-			},
-		});
-		return user;
-	} catch (error) {
-		console.log((error as Error).message);
-		return "Помилка при роботі з базою даних";
-	}
-}
+// async function getUserByPhoneNumber(phone: string) {
+// 	try {
+// 		const user = await client.user.findUnique({
+// 			where: { phone },
+// 		});
+// 		return user;
+// 	} catch (error) {
+// 		console.log((error as Error).message);
+// 		return "Помилка при роботі з базою даних";
+// 	}
+// }
 
 async function getUserByUsername(username: string) {
 	try {
@@ -71,7 +71,13 @@ async function getUserByUsername(username: string) {
 async function createUser(data: UserRegPayload) {
 	try {
 		const user = await client.user.create({
-			data: data,
+			data: {
+				email: data.email,
+				password: data.password,
+				username: "",
+				first_name: "",
+				last_name: "",
+			},
 		});
 		return user;
 	} catch (error) {
@@ -94,10 +100,25 @@ async function auth(data: any) {
 
 async function update(id: number, data: UserAdditionalInfo) {
 	try {
+		const { dateOfBirth, ...userData } = data;
+
+		const updateData: any = {
+			...userData,
+		};
+
+		if (dateOfBirth) {
+			updateData.profile = {
+				update: {
+					dateOfBirth: new Date(dateOfBirth),
+				},
+			};
+		}
+
 		const user = await client.user.update({
 			where: { id },
-			data: data,
+			data: updateData,
 		});
+
 		return user;
 	} catch (error) {
 		console.log((error as Error).message);
@@ -108,7 +129,7 @@ async function update(id: number, data: UserAdditionalInfo) {
 const userRepository = {
 	getUserById: getUserById,
 	getUserByEmail: getUserByEmail,
-	getUserByPhoneNumber: getUserByPhoneNumber,
+	// getUserByPhoneNumber: getUserByPhoneNumber,
 	getUserByUsername: getUserByUsername,
 	createUser: createUser,
 	auth: auth,

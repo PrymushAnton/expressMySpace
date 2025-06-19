@@ -1,16 +1,15 @@
 model User {
-  id               Int             @id @default(autoincrement())
-  name             String?       
-  surname          String?       
-  email            String          @unique
-  phoneNumber      String?         @unique
-  birthDate        DateTime?       
-  image            String?       
-  password         String      
-  username         String?         @unique
+  id             Int      @id @default(autoincrement())
+  password       String   
+  last_login     DateTime?
+  is_superuser   Boolean  @default(false)
+  username       String?   @unique
+  last_name      String?
+  email          String   @unique
+  is_staff       Boolean  @default(false)
+  is_active      Boolean  @default(true)
+  date_joined    DateTime @default(now())
+  first_name     String?
 
-  posts            Post[]
-
-  sentRequests     FriendRequest[] @relation("FromUser")
-	receivedRequests FriendRequest[] @relation("ToUser")
+  profile        Profile?
 }

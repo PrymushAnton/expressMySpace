@@ -1,10 +1,10 @@
 import { Prisma } from "../generated/prisma"
 
 
-export type CreatePost = Prisma.PostGetPayload<{
+export type CreatePost = Prisma.post_app_postGetPayload<{
     omit: {
         id: true
-        userId: true,
+        author_id: true,
         views: true,
         likes: true
     }
@@ -16,9 +16,9 @@ export type CreatePost = Prisma.PostGetPayload<{
 }
 
 
-export type UpdatePost = Prisma.PostGetPayload<{
+export type UpdatePost = Prisma.post_app_postGetPayload<{
     omit: {
-        userId: true,
+        author_id: true,
         views: true,
         likes: true
     }
@@ -30,7 +30,7 @@ export type UpdatePost = Prisma.PostGetPayload<{
 }
 
     
-export type FindPost = Prisma.PostGetPayload<{}> & {
+export type FindPost = Prisma.post_app_postGetPayload<{}> & {
     tags: string[]
     images: string[]
 }

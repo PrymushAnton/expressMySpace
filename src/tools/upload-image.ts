@@ -11,8 +11,9 @@ export async function uploadImage(base64: string, toDir: string): Promise<IUploa
     const prefixArray = base64.split(";base64,")
     const typeArray = prefixArray[0].split('/')
     const type = typeArray[typeArray.length - 1]
-
-	const fileName = `${Date.now()}.${type}`;
+	 
+	const randomSuffix = Math.random().toString(36).slice(2, 8);
+	const fileName = `${Date.now()}-${randomSuffix}.${type}`;
 	const buffer = Buffer.from(prefixArray[1], "base64");
 
 	try {

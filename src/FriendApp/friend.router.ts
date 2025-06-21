@@ -44,12 +44,12 @@ friendRouter.get("/check/:from/:to", async (req, res) => {
 	const from = Number(req.params.from);
 	const to = Number(req.params.to);
 
-	const friendship = await client.friendship.findFirst({
+	const friendship = await client.user_app_friendship.findFirst({
 		where: {
-			isAccepted: true,
+			accepted: true,
 			OR: [
-				{ from: { id: from }, to: { id: to } },
-				{ from: { id: to }, to: { id: from } },
+				{ profile1: { id: from }, profile2: { id: to } },
+				{ profile1: { id: to }, profile2: { id: from } },
 			],
 		},
 	});

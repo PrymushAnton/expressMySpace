@@ -7,7 +7,7 @@ import { client } from '../src/client/prismaClient';
 
 async function createBaseTags(){
     try{
-        const tags = await client.tag.createMany({
+        const tags = await client.post_app_tag.createMany({
             data: [
                 { name: 'Відпочинок' },
                 { name: 'Натхнення' },

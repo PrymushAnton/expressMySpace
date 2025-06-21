@@ -4,7 +4,6 @@ import { UserRegPayload } from "./types";
 import parsePhoneNumberFromString from "libphonenumber-js";
 import userRepository from "./user.repository";
 
-
 async function reg(req: Request, res: Response) {
 	const data = req.body;
 	const result = await userService.reg(data);
@@ -22,8 +21,14 @@ async function auth(req: Request, res: Response) {
 async function me(req: Request, res: Response) {
 	const id = res.locals.userId;
 	const result = await userService.me(id);
-
-	res.json(result);
+	res.json({
+		status: "success",
+		friendRequest: JSON.parse(
+			JSON.stringify(result, (_, v) =>
+				typeof v === "bigint" ? Number(v) : v
+			)
+		),
+	});
 }
 
 async function sendEmailCode(req: Request, res: Response): Promise<any> {
@@ -93,7 +98,7 @@ async function update(req: Request, res: Response) {
 		}
 	});
 
-	const result = await userService.update(+id, data)
+	const result = await userService.update(+id, data);
 
 	res.json(result);
 }
@@ -124,7 +129,8 @@ async function updatePassword(req: Request, res: Response) {
 
 async function getUserById(req: Request, res: Response) {
 	const id = Number(req.params.id);
-	if (isNaN(id)) res.status(400).json({ status: "error", message: "Некоректний ID" });
+	if (isNaN(id))
+		res.status(400).json({ status: "error", message: "Некоректний ID" });
 
 	const result = await userService.getUserById(id);
 	if (result.status === "error") {
@@ -144,7 +150,7 @@ const userController = {
 	updateAvatar: updateAvatar,
 	updateFirstLogin: updateFirstLogin,
 	getUserById: getUserById,
-	updatePassword: updatePassword
+	updatePassword: updatePassword,
 };
 
 export default userController;

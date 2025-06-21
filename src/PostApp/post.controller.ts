@@ -15,7 +15,7 @@ async function createPost(req: Request, res: Response){
 
 async function updatePost(req: Request, res: Response){
     const data: UpdatePost = req.body
-    data.id = +data.id
+    // data.id = +data.id
 
     const result = await postService.updatePost(data)
 

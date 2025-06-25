@@ -19,7 +19,14 @@ async function getUserById(id: number) {
 				profile: {
 					select: {
 						date_of_birth: true,
-						avatars: true
+						avatars: {
+							where:{
+								active: true
+							},
+							select: {
+								image: true
+							}
+						}
 					}
 				}
 			}
@@ -133,6 +140,9 @@ async function createUser(data: UserRegPayload) {
 			data: {
 				user_id: user.id,
 				date_of_birth: new Date()
+			},
+			include: {
+				user: true
 			}
 		})
 		return profile;

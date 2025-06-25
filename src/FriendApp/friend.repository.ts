@@ -1,7 +1,9 @@
 import { client } from "../client/prismaClient";
 
-async function findFriendRequestBetweenUsers(fromUserId: number, toUserId: number) {
-	
+async function findFriendRequestBetweenUsers(
+	fromUserId: number,
+	toUserId: number
+) {
 	const fromProfile = await client.user_app_profile.findFirst({
 		where: { user_id: fromUserId },
 	});
@@ -9,20 +11,25 @@ async function findFriendRequestBetweenUsers(fromUserId: number, toUserId: numbe
 		where: { user_id: toUserId },
 	});
 	if (!fromProfile || !toProfile) {
-		throw new Error('Профіль не знайдено');
+		throw new Error("Профіль не знайдено");
 	}
 	return client.user_app_friendship.findFirst({
 		where: {
 			OR: [
-				{ profile1: { id: fromProfile.id }, profile2: { id: toProfile.id } },
-				{ profile1: { id: toProfile.id }, profile2: { id: fromProfile.id } },
+				{
+					profile1: { id: fromProfile.id },
+					profile2: { id: toProfile.id },
+				},
+				{
+					profile1: { id: toProfile.id },
+					profile2: { id: fromProfile.id },
+				},
 			],
 		},
 	});
 }
 
 async function createFriendRequest(fromUserId: number, toUserId: number) {
-
 	const fromProfile = await client.user_app_profile.findFirst({
 		where: { user_id: fromUserId },
 	});
@@ -31,7 +38,7 @@ async function createFriendRequest(fromUserId: number, toUserId: number) {
 	});
 
 	if (!fromProfile || !toProfile) {
-		throw new Error('Профіль не знайдено');
+		throw new Error("Профіль не знайдено");
 	}
 	return client.user_app_friendship.create({
 		data: {
@@ -43,10 +50,35 @@ async function createFriendRequest(fromUserId: number, toUserId: number) {
 }
 
 async function acceptFriendRequest(id: number) {
-	return client.user_app_friendship.update({
+	const friendship = await client.user_app_friendship.update({
 		where: { id },
 		data: { accepted: true },
 	});
+	const randomSuffix = Math.random().toString(36).slice(2, 8);
+	const chatName = `${Date.now()}-${randomSuffix}`;
+	const personalChat = await client.chat_app_chatgroup.create({
+		data: {
+			name: chatName,
+			is_personal_chat: true,
+			avatar: null,
+			admin_id: friendship.profile1_id,
+		},
+	});
+
+	const members = await client.chat_app_chatgroup_members.createMany({
+		data: [
+			{
+				chatgroup_id: personalChat.id,
+				profile_id: friendship.profile1_id,
+			},
+			{
+				chatgroup_id: personalChat.id,
+				profile_id: friendship.profile2_id,
+			},
+		],
+	});
+
+	return friendship;
 }
 
 async function rejectFriendRequest(id: number) {
@@ -54,21 +86,19 @@ async function rejectFriendRequest(id: number) {
 }
 
 async function getPendingRequests(userId: number) {
-
 	const fromProfile = await client.user_app_profile.findFirst({
 		where: { user_id: userId },
 	});
-
-
 	if (!fromProfile) {
-		throw new Error('Профіль не знайдено');
+		throw new Error("Профіль не знайдено");
 	}
 	return client.user_app_friendship.findMany({
 		where: {
 			profile2_id: fromProfile.id,
 			accepted: false,
 		},
-		include: {
+		select: {
+			id: true,
 			profile1: {
 				select: {
 					user: {
@@ -76,19 +106,19 @@ async function getPendingRequests(userId: number) {
 							id: true,
 							first_name: true,
 							last_name: true,
-							username: true
-						}
+							username: true,
+						},
 					},
 					avatars: {
 						where: {
-							active: true
+							active: true,
 						},
 						select: {
-							image: true
+							image: true,
 						},
-						take: 1
-					}
-				}
+						take: 1,
+					},
+				},
 			},
 		},
 	});
@@ -98,21 +128,21 @@ async function getRecommendedUsers(currentUserId: number) {
 	return client.user_app_profile.findMany({
 		where: {
 			AND: [
-				{ id: { not: currentUserId } },
+				{ user_id: { not: currentUserId } },
 				{
 					NOT: {
 						OR: [
 							{
 								friendships_sent: {
 									some: {
-										profile2: { id: currentUserId },
+										profile2: { user_id: currentUserId },
 									},
 								},
 							},
 							{
 								friendships_received: {
 									some: {
-										profile1: { id: currentUserId },
+										profile1: { user_id: currentUserId },
 									},
 								},
 							},
@@ -131,13 +161,12 @@ async function getRecommendedUsers(currentUserId: number) {
 					username: true,
 				},
 			},
-			// Например, взять первый avatar (если хочешь картинку профиля)
 			avatars: {
 				where: {
-					active: true
+					active: true,
 				},
 				select: {
-					image: true, // или как у тебя называется поле с картинкой
+					image: true,
 				},
 				take: 1,
 			},
@@ -150,9 +179,8 @@ async function getAllFriends(userId: number) {
 		where: { user_id: userId },
 	});
 
-
 	if (!profile) {
-		throw new Error('Профіль не знайдено');
+		throw new Error("Профіль не знайдено");
 	}
 	return client.user_app_profile.findMany({
 		where: {
@@ -187,7 +215,7 @@ async function getAllFriends(userId: number) {
 			},
 			avatars: {
 				where: {
-					active: true
+					active: true,
 				},
 				select: {
 					image: true,
@@ -204,12 +232,66 @@ async function deleteFriend(fromUserId: number, toUserId: number) {
 		throw new Error("Friendship does not exist");
 	}
 
+	const profile1 = await client.user_app_profile.findUnique({
+		where: {
+			user_id: fromUserId
+		}
+	})
+
+	const profile2 = await client.user_app_profile.findUnique({
+		where: {
+			user_id: toUserId
+		}
+	})
+	console.log("profile1_id", profile1?.id)
+	console.log("profile2_id", profile2?.id)
+
+	const personalChat = await client.chat_app_chatgroup.findFirst({
+		where: {
+			is_personal_chat: true,
+			members: {
+				some: {
+					profile_id: profile1?.id
+				}
+			},
+			AND: {
+				members: {
+					some: {
+						profile_id: profile2?.id
+					}
+				}
+			}
+		},
+	});
+
+	if (!personalChat) {
+		throw new Error("Personal chat not found");
+	}
+
+	console.log("error??")
+
+	await client.chat_app_chatgroup_members.deleteMany({
+		where: {
+			chatgroup_id: personalChat.id,
+			profile_id: { in: [Number(profile1?.id), Number(profile2?.id)] },
+		},
+	});
+
+	await client.chat_app_chatgroup.delete({
+		where: {
+			id: personalChat.id,
+		},
+	});
+
+
 	return client.user_app_friendship.delete({
 		where: {
 			id: existing.id,
 		},
 	});
 }
+
+
 
 const friendRepository = {
 	findFriendRequestBetweenUsers,

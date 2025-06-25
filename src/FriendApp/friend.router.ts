@@ -35,6 +35,7 @@ friendRouter.get(
 	authTokenMiddleware,
 	friendController.getAllFriendsHandler
 );
+
 friendRouter.post(
 	"/delete-friend",
 	authTokenMiddleware,

@@ -7,6 +7,7 @@ const userRouter = Router()
 
 userRouter.post("/reg", userController.reg)
 userRouter.post("/auth", userController.auth)
+userRouter.post("/create-user", userController.createUser)
 userRouter.get("/me", authTokenMiddleware, userController.me)
 userRouter.post("/send-email-code", userController.sendEmailCode);
 userRouter.post("/verify-email-code", userController.checkEmailCode);
@@ -16,4 +17,4 @@ userRouter.post("/update-avatar", authTokenMiddleware, userController.updateAvat
 userRouter.post("/update-password", authTokenMiddleware, userController.updatePassword)
 userRouter.get("/:id", userController.getUserById)
 
-export default userRouter
+export default userRouter 

@@ -117,7 +117,6 @@ async function createPost(data: CreatePost, userId: number) {
 
 async function updatePost(data: UpdatePost) {
 	const { existingTags, newTags, images, link, id, ...otherData } = data;
-
 	try {
 		const post = await client.post_app_post.update({
 			where: { id },
@@ -256,6 +255,23 @@ const userRepository = {
 	updatePost,
 	deletePost: async function (postId: number) {
 		try {
+			const existsingImages = await client.post_app_post_images.findMany({
+				where: {
+					post_id: postId,
+				},
+				select: {
+					image: {
+						select: {
+							file: true,
+						},
+					},
+				},
+			});
+
+			await Promise.all(
+				existsingImages.map((img) => deleteImage(img.image.file))
+			);
+
 			await client.post_app_post_images.deleteMany({
 				where: { post_id: postId },
 			});
@@ -326,15 +342,18 @@ const userRepository = {
 									profile: {
 										select: {
 											avatars: {
+												where: {
+													active: true
+												},
 												select: {
-													image: true
-												}
-											}
-										}
-									}
-								}
-							}
-						}
+													image: true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
 					},
 					likes: true,
 					views: true,
@@ -394,21 +413,21 @@ const userRepository = {
 										select: {
 											avatars: {
 												where: {
-													active: true
+													active: true,
 												},
 												select: {
-													image: true
+													image: true,
 												},
-												take: 1
-											}
-										}
-									}
-								}
-							}
-						}
+												take: 1,
+											},
+										},
+									},
+								},
+							},
+						},
 					},
 					views: true,
-					likes: true
+					likes: true,
 				},
 			});
 
@@ -455,13 +474,13 @@ const userRepository = {
 					links: true,
 					author: true,
 					views: true,
-					likes: true
+					likes: true,
 				},
 			});
 
 			if (!post) {
 				throw new Error("Пост не знайдено");
-			};
+			}
 
 			const transformedPost = {
 				...post,
@@ -472,7 +491,7 @@ const userRepository = {
 				),
 				likes: post.likes.length,
 				views: post.views.length,
-			}
+			};
 
 			return transformedPost;
 		} catch (error) {

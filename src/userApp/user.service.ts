@@ -10,7 +10,6 @@ import { Response, IReturnError } from "../types/types";
 import isEmail from "validator/lib/isEmail"; //для валидации почты
 import { uploadImage } from "../tools/upload-image";
 
-
 async function reg(data: UserRegPayload): Promise<Response<string>> {
 	try {
 		await UserValidation.register.validate(data, { abortEarly: false });
@@ -161,7 +160,7 @@ async function verifyEmailCode(
 	const hashedPassword = await hash(password, 10);
 	const hashedData = {
 		email: email,
-		password: hashedPassword
+		password: hashedPassword,
 	};
 
 	const user = await userRepository.createUser(hashedData);
@@ -169,7 +168,9 @@ async function verifyEmailCode(
 	if (typeof user === "string")
 		return { status: "error", message: "Помилка на сервері" };
 
-	const token = sign({ id: Number(user.id) }, SECRET_KEY, { expiresIn: "7d" });
+	const token = sign({ id: Number(user.user.id) }, SECRET_KEY, {
+		expiresIn: "7d",
+	});
 
 	return { status: "success", data: token };
 }
@@ -178,7 +179,14 @@ async function me(id: number) {
 	const user = await userRepository.getUserById(id);
 	if (!user)
 		return { status: "error", message: "Такого користувача не існує" };
-	return { status: "success", data: user };
+	return {
+		status: "success",
+		data: JSON.parse(
+			JSON.stringify(user, (_, v) =>
+				typeof v === "bigint" ? Number(v) : v
+			)
+		),
+	};
 }
 
 async function update(id: number, data: any): Promise<Response<string>> {
@@ -201,10 +209,13 @@ async function update(id: number, data: any): Promise<Response<string>> {
 	}
 	if (!isEmailValid) return { status: "error", message: "Помилка з поштою" };
 
-	if (data && data.birthDate < new Date("1900-01-01")) return { status: "error", message: "Некоректна дата народження" };
+	if (data && data.birthDate < new Date("1900-01-01"))
+		return { status: "error", message: "Некоректна дата народження" };
 
-	const {date_of_birth, ...otherData} = data
-	const updated = await userRepository.update(id, otherData, {date_of_birth});
+	const { date_of_birth, ...otherData } = data;
+	const updated = await userRepository.update(id, otherData, {
+		date_of_birth,
+	});
 	if (!updated)
 		return { status: "error", message: "Не вдалося оновити дані" };
 	if (typeof updated === "string")
@@ -213,15 +224,21 @@ async function update(id: number, data: any): Promise<Response<string>> {
 	return { status: "success", data: "Дані успішно оновлено" };
 }
 
-async function updateFirstLogin(id: number, data: any): Promise<Response<string>> {
+async function updateFirstLogin(
+	id: number,
+	data: any
+): Promise<Response<string>> {
 	const userById = await userRepository.getUserById(id);
-	if (!userById) return { status: "error", message: "Користувача не знайдено" };
+	if (!userById)
+		return { status: "error", message: "Користувача не знайдено" };
 	if (typeof userById === "string")
 		return { status: "error", message: "Помилка на сервері" };
 
 	let isUsernameValid = true;
 	if (data.username) {
-		const userByUsername = await userRepository.getUserByUsername(data.username);
+		const userByUsername = await userRepository.getUserByUsername(
+			data.username
+		);
 		if (typeof userByUsername === "string")
 			return { status: "error", message: "Помилка на сервері" };
 		if (userByUsername) {
@@ -230,7 +247,8 @@ async function updateFirstLogin(id: number, data: any): Promise<Response<string>
 			isUsernameValid = true;
 		}
 	}
-	if (!isUsernameValid) return { status: "error", message: "Помилка з ніком" };
+	if (!isUsernameValid)
+		return { status: "error", message: "Помилка з ніком" };
 
 	const updated = await userRepository.update(id, data);
 	if (!updated)
@@ -243,13 +261,16 @@ async function updateFirstLogin(id: number, data: any): Promise<Response<string>
 
 async function updateAvatar(id: number, data: any): Promise<Response<string>> {
 	const userById = await userRepository.getUserById(id);
-	if (!userById) return { status: "error", message: "Користувача не знайдено" };
+	if (!userById)
+		return { status: "error", message: "Користувача не знайдено" };
 	if (typeof userById === "string")
 		return { status: "error", message: "Помилка на сервері" };
 
 	let isUsernameValid = true;
 	if (data.username) {
-		const userByUsername = await userRepository.getUserByUsername(data.username);
+		const userByUsername = await userRepository.getUserByUsername(
+			data.username
+		);
 		if (typeof userByUsername === "string")
 			return { status: "error", message: "Помилка на сервері" };
 		if (userByUsername) {
@@ -258,19 +279,22 @@ async function updateAvatar(id: number, data: any): Promise<Response<string>> {
 			isUsernameValid = true;
 		}
 	}
-	if (!isUsernameValid) return { status: "error", message: "Помилка з ніком" };
+	if (!isUsernameValid)
+		return { status: "error", message: "Помилка з ніком" };
 
 	if (data.avatar) {
-		const avatar = await uploadImage(data.avatar, "avatars")
+		const avatar = await uploadImage(data.avatar, "avatars");
 
-		const avatarResult = await userRepository.createAvatar(id, avatar.file)
-		if (!avatarResult) return { status: "error", message: "Аватарка не була створена" };
+		const avatarResult = await userRepository.createAvatar(id, avatar.file);
+		if (!avatarResult)
+			return { status: "error", message: "Аватарка не була створена" };
 		if (typeof avatarResult === "string")
 			return { status: "error", message: "Помилка на сервері" };
 	}
-	
 
-	const updated = await userRepository.update(id, {username: data.username});
+	const updated = await userRepository.update(id, {
+		username: data.username,
+	});
 	if (!updated)
 		return { status: "error", message: "Не вдалося оновити дані" };
 	if (typeof updated === "string")
@@ -279,15 +303,21 @@ async function updateAvatar(id: number, data: any): Promise<Response<string>> {
 	return { status: "success", data: "Дані успішно оновлено" };
 }
 
-async function updatePassword(id: number, data: any): Promise<Response<string>> {
+async function updatePassword(
+	id: number,
+	data: any
+): Promise<Response<string>> {
 	const userById = await userRepository.getUserById(id);
-	if (!userById) return { status: "error", message: "Користувача не знайдено" };
+	if (!userById)
+		return { status: "error", message: "Користувача не знайдено" };
 	if (typeof userById === "string")
 		return { status: "error", message: "Помилка на сервері" };
 
 	const hashedPassword = await hash(data.password, 10);
 
-	const updated = await userRepository.update(id, {password: hashedPassword});
+	const updated = await userRepository.update(id, {
+		password: hashedPassword,
+	});
 	if (!updated)
 		return { status: "error", message: "Не вдалося оновити дані" };
 	if (typeof updated === "string")
@@ -303,6 +333,26 @@ async function getUserById(id: number) {
 	return { status: "success", data: user };
 }
 
+async function createUser(data: UserRegPayload): Promise<Response<string>> {
+	const { email, password } = data;
+
+	const hashedPassword = await hash(password, 10);
+	const hashedData = {
+		email: email,
+		password: hashedPassword,
+	};
+
+	const user = await userRepository.createUser(hashedData);
+	if (!user) return { status: "error", message: "Помилка при реєстрації" };
+	if (typeof user === "string")
+		return { status: "error", message: "Помилка на сервері" };
+
+	const token = sign({ id: Number(user.user.id) }, SECRET_KEY, {
+		expiresIn: "7d",
+	});
+
+	return { status: "success", data: token };
+}
 
 const userService = {
 	reg: reg,
@@ -315,7 +365,7 @@ const userService = {
 	updateFirstLogin: updateFirstLogin,
 	updatePassword: updatePassword,
 	getUserById: getUserById,
-
+	createUser,
 };
 
 export default userService;

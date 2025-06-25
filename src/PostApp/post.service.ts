@@ -82,7 +82,7 @@ async function findPostById(id: number): Promise<Response<FindPost>> {
 		),
 	};
 }
-//: Promise<Response<{ id: number; name: string }[]>>
+
 async function findAllTags() {
 	const result = await postRepository.findAllTags();
 
@@ -98,6 +98,7 @@ async function findAllTags() {
 		),
 	};
 }
+
 
 const userService = {
 	createPost: createPost,

@@ -11,12 +11,18 @@ async function sendFriendRequestHandler(req: Request, res: Response) {
 				status: "error",
 				message: "Invalid toUser",
 			});
+			return;
 		}
 
 		const friendRequest = await friendService.sendFriendRequest(from, to);
 
-		console.log(friendRequest);
-		res.json({
+		if (typeof friendRequest === "string") {
+			res.json({
+				status: "success",
+				data: friendRequest
+			});
+		} else {
+			res.json({
 			status: "success",
 			friendRequest: JSON.parse(
 				JSON.stringify(friendRequest, (_, v) =>
@@ -24,6 +30,8 @@ async function sendFriendRequestHandler(req: Request, res: Response) {
 				)
 			),
 		});
+		}
+		
 	} catch (e: any) {
 		res.status(400).json({ status: "error", message: e.message });
 	}
@@ -69,7 +77,7 @@ async function getPendingRequestsHandler(req: Request, res: Response) {
 		const requests = await friendService.getPendingRequests(userId);
 		res.json({
 			status: "success",
-			friendRequest: JSON.parse(
+			requests: JSON.parse(
 				JSON.stringify(requests, (_, v) =>
 					typeof v === "bigint" ? Number(v) : v
 				)
@@ -86,7 +94,7 @@ async function getAllUsersHandler(req: Request, res: Response) {
 		const users = await friendService.getRecommendedUsers(userId);
 		res.json({
 			status: "success",
-			friendRequest: JSON.parse(
+			users: JSON.parse(
 				JSON.stringify(users, (_, v) =>
 					typeof v === "bigint" ? Number(v) : v
 				)
@@ -103,7 +111,7 @@ async function getAllFriendsHandler(req: Request, res: Response) {
 		const friends = await friendService.getAllFriends(userId);
 		res.json({
 			status: "success",
-			friendRequest: JSON.parse(
+			friends: JSON.parse(
 				JSON.stringify(friends, (_, v) =>
 					typeof v === "bigint" ? Number(v) : v
 				)
@@ -131,6 +139,7 @@ async function deleteFriendHandler(req: Request, res: Response): Promise<void> {
 			currentUserId,
 			friendId
 		);
+
 		res.json({
 			status: "success",
 			friendRequest: JSON.parse(
@@ -140,6 +149,7 @@ async function deleteFriendHandler(req: Request, res: Response): Promise<void> {
 			),
 		});
 	} catch (e: any) {
+		console.log(1)
 		res.status(400).json({ status: "error", message: e.message });
 	}
 }

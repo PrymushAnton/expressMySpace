@@ -11,6 +11,12 @@ async function reg(req: Request, res: Response) {
 	res.json(result);
 }
 
+async function createUser(req: Request, res: Response) {
+	const data = req.body;
+	const result = await userService.createUser(data);
+	res.json(result);
+}
+
 async function auth(req: Request, res: Response) {
 	const data = req.body;
 	const result = await userService.auth(data);
@@ -21,14 +27,7 @@ async function auth(req: Request, res: Response) {
 async function me(req: Request, res: Response) {
 	const id = res.locals.userId;
 	const result = await userService.me(id);
-	res.json({
-		status: "success",
-		friendRequest: JSON.parse(
-			JSON.stringify(result, (_, v) =>
-				typeof v === "bigint" ? Number(v) : v
-			)
-		),
-	});
+	res.json(result);
 }
 
 async function sendEmailCode(req: Request, res: Response): Promise<any> {
@@ -72,7 +71,7 @@ async function checkEmailCode(req: Request, res: Response): Promise<any> {
 async function updateFirstLogin(req: Request, res: Response) {
 	const { ...data } = req.body;
 	const id = res.locals.userId;
-
+	console.log(data, id)
 	Object.entries(data).forEach(([key, object]) => {
 		if (data[key] === "") {
 			data[key] = null;
@@ -151,6 +150,7 @@ const userController = {
 	updateFirstLogin: updateFirstLogin,
 	getUserById: getUserById,
 	updatePassword: updatePassword,
+	createUser
 };
 
 export default userController;

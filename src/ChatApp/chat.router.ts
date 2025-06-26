@@ -1,24 +1,50 @@
 import { Router } from "express";
 import { authTokenMiddleware } from "../middlewares/authTokenMiddleware";
-import friendController from "./chat.controller";
+import chatController from "./chat.controller";
 
 const chatRouter = Router();
 
 chatRouter.get(
 	"/personal-chats",
 	authTokenMiddleware,
-	friendController.getPersonalChats
+	chatController.getPersonalChats
+);
+
+chatRouter.get(
+	"/chat-info/:chatId",
+	authTokenMiddleware,
+	chatController.getChatInfo
+);
+
+chatRouter.get(
+	"/group-chats",
+	authTokenMiddleware,
+	chatController.getGroupChats
 );
 chatRouter.get(
 	"/all-messages/:chatId",
 	authTokenMiddleware,
-	friendController.getMessages
+	chatController.getMessages
+);
+
+chatRouter.get("/get-base64-from-url/:url", chatController.getBase64FromUrl);
+
+chatRouter.post(
+	"/create-group-chat",
+	authTokenMiddleware,
+	chatController.createChat
 );
 
 chatRouter.post(
-	"/create-chat",
+	"/update-group-chat",
 	authTokenMiddleware,
-	friendController.getMessages
+	chatController.updateChat
 );
 
-export default chatRouter
+chatRouter.post(
+	"/delete-group-chat",
+	authTokenMiddleware,
+	chatController.deleteChatGroup
+);
+
+export default chatRouter;

@@ -19,7 +19,7 @@ export function initSocketServer(httpServer: HttpServer) {
 	ioServer.use(socketAuthMiddleware);
 
 	ioServer.on("connection", (socket: AuthenticatedSocket) => {
-		console.log("Connected socket", socket.id);
+		// console.log("Connected socket", socket.id);
 		// socket.join(`user:${socket.data.userId}`);
 
 		socket.on("joinChat", (data) => {
@@ -50,18 +50,6 @@ export function initSocketServer(httpServer: HttpServer) {
 						)
 					),
 				});
-
-				const socketsInRoom =
-					ioServer.sockets.adapter.rooms.get(`chat:${chatId}`) ??
-					new Set();
-
-
-				for (const [id, s] of ioServer.sockets.sockets) {
-					if (!socketsInRoom.has(id) && id !== socket.id) {
-                        console.log(213123123213131)
-						s.emit("chatUpdate", { chatId });
-					}
-				}
 			} catch (error) {
 				console.log(
 					"Помилка при створенні повідомлення:",

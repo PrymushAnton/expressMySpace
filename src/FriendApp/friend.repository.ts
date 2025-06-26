@@ -268,8 +268,6 @@ async function deleteFriend(fromUserId: number, toUserId: number) {
 		throw new Error("Personal chat not found");
 	}
 
-	console.log("error??")
-
 	await client.chat_app_chatgroup_members.deleteMany({
 		where: {
 			chatgroup_id: personalChat.id,

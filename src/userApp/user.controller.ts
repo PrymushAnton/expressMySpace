@@ -120,6 +120,7 @@ async function updateAvatar(req: Request, res: Response) {
 async function updatePassword(req: Request, res: Response) {
 	const data = req.body;
 	const id = res.locals.userId;
+	console.log(data)
 
 	const result = await userService.updatePassword(+id, data);
 

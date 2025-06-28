@@ -1,7 +1,7 @@
 model chat_app_chatgroup {
   id               BigInt                       @id @default(autoincrement())
   name             String                       @db.VarChar(255)
-  is_personal_chat Boolean                      @default(false)
+  is_personal_chat Boolean
   avatar           String?                      @db.VarChar(100)
   admin_id         BigInt
   admin            user_app_profile             @relation(fields: [admin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "chat_app_chatgroup_admin_id_0f503322_fk_user_app_profile_id")

@@ -95,7 +95,7 @@ model django_session {
 model chat_app_chatgroup {
   id               BigInt                       @id @default(autoincrement())
   name             String                       @db.VarChar(255)
-  is_personal_chat Boolean                      @default(false)
+  is_personal_chat Boolean
   avatar           String?                      @db.VarChar(100)
   admin_id         BigInt
   admin            user_app_profile             @relation(fields: [admin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "chat_app_chatgroup_admin_id_0f503322_fk_user_app_profile_id")
@@ -134,6 +134,7 @@ model post_app_post {
   id        BigInt                 @id @default(autoincrement())
   title     String                 @db.VarChar(255)
   content   String                 @db.LongText
+  topic     String                 @db.VarChar(255)
   author_id BigInt
   links     post_app_link[]
   author    user_app_profile       @relation("post_authored", fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_post_author_id_4cf2f14d_fk_user_app_profile_id")
@@ -226,16 +227,19 @@ model post_app_post_likes {
 }
 
 model post_app_album {
-  id            BigInt                  @id @default(autoincrement())
-  name          String                  @db.VarChar(255)
-  created_at    DateTime                @db.DateTime(6)
-  preview_image String?                 @db.VarChar(100)
-  shown         Boolean                 @default(true)
-  topic_id      BigInt
-  topic         post_app_tag            @relation(fields: [topic_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_album_topic_id_97be9a8b_fk_post_app_tag_id")
-  images        post_app_album_images[]
+  id               BigInt                  @id @default(autoincrement())
+  name             String                  @db.VarChar(255)
+  created_at       DateTime                @db.DateTime(6)
+  preview_image    String?                 @db.VarChar(100)
+  shown            Boolean
+  author_id        BigInt
+  topic_id         BigInt
+  user_app_profile user_app_profile        @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_album_author_id_caa87140_fk_user_app_profile_id")
+  topic            post_app_tag            @relation(fields: [topic_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_album_topic_id_97be9a8b_fk_post_app_tag_id")
+  images           post_app_album_images[]
 
   @@index([topic_id], map: "post_app_album_topic_id_97be9a8b_fk_post_app_tag_id")
+  @@index([author_id], map: "post_app_album_author_id_caa87140_fk_user_app_profile_id")
 }
 
 model auth_user {
@@ -264,6 +268,7 @@ model user_app_profile {
   admin_in_chats       chat_app_chatgroup[]
   in_chatgroups        chat_app_chatgroup_members[]
   messages             chat_app_chatmessage[]
+  post_app_album       post_app_album[]
   posts                post_app_post[]              @relation("post_authored")
   likes                post_app_post_likes[]
   views                post_app_post_views[]
@@ -276,8 +281,8 @@ model user_app_profile {
 model user_app_avatar {
   id         BigInt           @id @default(autoincrement())
   image      String           @db.VarChar(100)
-  active     Boolean          @default(true)
-  shown      Boolean          @default(true)
+  active     Boolean
+  shown      Boolean
   profile_id BigInt
   profile    user_app_profile @relation(fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_app_avatar_profile_id_126a14a3_fk_user_app_profile_id")
 
@@ -286,7 +291,7 @@ model user_app_avatar {
 
 model user_app_friendship {
   id          BigInt           @id @default(autoincrement())
-  accepted    Boolean          @default(false)
+  accepted    Boolean
   profile1_id BigInt
   profile2_id BigInt
   profile1    user_app_profile @relation("friendship_sent_request", fields: [profile1_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_app_friendship_profile1_id_9b85a45d_fk_user_app_profile_id")

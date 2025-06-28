@@ -71,7 +71,7 @@ async function checkEmailCode(req: Request, res: Response): Promise<any> {
 async function updateFirstLogin(req: Request, res: Response) {
 	const { ...data } = req.body;
 	const id = res.locals.userId;
-	console.log(data, id)
+	console.log(data, id);
 	Object.entries(data).forEach(([key, object]) => {
 		if (data[key] === "") {
 			data[key] = null;
@@ -120,7 +120,7 @@ async function updateAvatar(req: Request, res: Response) {
 async function updatePassword(req: Request, res: Response) {
 	const data = req.body;
 	const id = res.locals.userId;
-	console.log(data)
+	console.log(data);
 
 	const result = await userService.updatePassword(+id, data);
 
@@ -129,12 +129,71 @@ async function updatePassword(req: Request, res: Response) {
 
 async function getUserById(req: Request, res: Response) {
 	const id = Number(req.params.id);
-	if (isNaN(id))
+	const userId = res.locals.userId
+	if (isNaN(id)) {
 		res.status(400).json({ status: "error", message: "Некоректний ID" });
+		return;
+	}
 
 	const result = await userService.getUserById(id);
 	if (result.status === "error") {
+		console.log(result);
 		res.status(404).json(result);
+		return;
+	}
+
+	res.json(result);
+}
+
+async function getUserProfileById(req: Request, res: Response) {
+	const id = Number(req.params.id);
+	const userId = res.locals.userId
+	if (isNaN(id)) {
+		res.status(400).json({ status: "error", message: "Некоректний ID" });
+		return;
+	}
+
+	const result = await userService.getUserProfileById(id, userId);
+	if (result.status === "error") {
+		console.log(result);
+		res.status(404).json(result);
+		return;
+	}
+
+	res.json(result);
+}
+
+async function getMeById(req: Request, res: Response) {
+	const id = res.locals.userId;
+
+	if (isNaN(id)) {
+		res.status(400).json({ status: "error", message: "Некоректний ID" });
+		return;
+	}
+
+	const result = await userService.getMeById(id);
+	if (result.status === "error") {
+		console.log(result);
+		res.status(404).json(result);
+		return;
+	}
+
+	res.json(result);
+}
+
+async function getAnotherUserById(req: Request, res: Response) {
+	const id = req.params.id
+
+	if (isNaN(+id)) {
+		res.status(400).json({ status: "error", message: "Некоректний ID" });
+		return;
+	}
+
+	const result = await userService.getAnotherUserById(+id);
+	if (result.status === "error") {
+		console.log(result);
+		res.status(404).json(result);
+		return;
 	}
 
 	res.json(result);
@@ -151,7 +210,10 @@ const userController = {
 	updateFirstLogin: updateFirstLogin,
 	getUserById: getUserById,
 	updatePassword: updatePassword,
-	createUser
+	createUser,
+	getMeById,
+	getAnotherUserById,
+	getUserProfileById
 };
 
 export default userController;

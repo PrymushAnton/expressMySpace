@@ -15,6 +15,12 @@ userRouter.post("/update", authTokenMiddleware, userController.update)
 userRouter.post("/update-first-login", authTokenMiddleware, userController.updateFirstLogin)
 userRouter.post("/update-avatar", authTokenMiddleware, userController.updateAvatar)
 userRouter.post("/update-password", authTokenMiddleware, userController.updatePassword)
-userRouter.get("/:id", userController.getUserById)
+userRouter.get("/me/profile", authTokenMiddleware, userController.getMeById)
+userRouter.get("/profile/:id", authTokenMiddleware, userController.getAnotherUserById)
+userRouter.get("/friend/:id", authTokenMiddleware, userController.getUserProfileById)
+userRouter.get("/:id", authTokenMiddleware, userController.getUserById)
+
+
+
 
 export default userRouter 

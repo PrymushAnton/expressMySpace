@@ -207,6 +207,7 @@ exports.Prisma.Post_app_postScalarFieldEnum = {
   id: 'id',
   title: 'title',
   content: 'content',
+  topic: 'topic',
   author_id: 'author_id'
 };
 
@@ -264,6 +265,7 @@ exports.Prisma.Post_app_albumScalarFieldEnum = {
   created_at: 'created_at',
   preview_image: 'preview_image',
   shown: 'shown',
+  author_id: 'author_id',
   topic_id: 'topic_id'
 };
 
@@ -362,7 +364,8 @@ exports.Prisma.chat_app_chatmessageOrderByRelevanceFieldEnum = {
 
 exports.Prisma.post_app_postOrderByRelevanceFieldEnum = {
   title: 'title',
-  content: 'content'
+  content: 'content',
+  topic: 'topic'
 };
 
 exports.Prisma.post_app_imageOrderByRelevanceFieldEnum = {

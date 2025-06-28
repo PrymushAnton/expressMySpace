@@ -33,16 +33,16 @@ export function initSocketServer(httpServer: HttpServer) {
 		});
 
 		socket.on("sendMessage", async (data) => {
-			const { message, chatId, image } = data;
+			const { message, chatId, attachedImage } = data;
 			const userId = socket.data.userId;
 			try {
 				const newMessage = await chatSocketController.createMessage(
 					message,
 					chatId,
 					userId,
-					image
+					attachedImage
 				);
-
+				console.log("send", chatId)
 				ioServer.to(`chat:${chatId}`).emit("newMessage", {
 					message: JSON.parse(
 						JSON.stringify(newMessage, (_, v) =>

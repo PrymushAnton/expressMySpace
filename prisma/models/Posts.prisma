@@ -2,6 +2,7 @@ model post_app_post {
   id        BigInt                 @id @default(autoincrement())
   title     String                 @db.VarChar(255)
   content   String                 @db.LongText
+  topic     String                 @db.VarChar(255)
   author_id BigInt
   links     post_app_link[]
   author    user_app_profile       @relation("post_authored", fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_post_author_id_4cf2f14d_fk_user_app_profile_id")
@@ -94,14 +95,17 @@ model post_app_post_likes {
 }
 
 model post_app_album {
-  id            BigInt                  @id @default(autoincrement())
-  name          String                  @db.VarChar(255)
-  created_at    DateTime                @db.DateTime(6)
-  preview_image String?                 @db.VarChar(100)
-  shown         Boolean                 @default(true)
-  topic_id      BigInt                  
-  topic         post_app_tag            @relation(fields: [topic_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_album_topic_id_97be9a8b_fk_post_app_tag_id")
-  images        post_app_album_images[]
+  id               BigInt                  @id @default(autoincrement())
+  name             String                  @db.VarChar(255)
+  created_at       DateTime                @db.DateTime(6)
+  preview_image    String?                 @db.VarChar(100)
+  shown            Boolean
+  author_id        BigInt
+  topic_id         BigInt
+  user_app_profile user_app_profile        @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_album_author_id_caa87140_fk_user_app_profile_id")
+  topic            post_app_tag            @relation(fields: [topic_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_album_topic_id_97be9a8b_fk_post_app_tag_id")
+  images           post_app_album_images[]
 
   @@index([topic_id], map: "post_app_album_topic_id_97be9a8b_fk_post_app_tag_id")
+  @@index([author_id], map: "post_app_album_author_id_caa87140_fk_user_app_profile_id")
 }

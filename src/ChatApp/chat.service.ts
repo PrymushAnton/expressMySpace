@@ -22,9 +22,22 @@ async function createMessage(
 	message: string,
 	chatId: number,
 	userId: number,
-	image?: string
+	image: string
 ) {
-	return chatRepository.createMessage(message, chatId, userId, image);
+	let uploadedImage
+	console.log(image)
+	if (image !== "") {
+		uploadedImage = (await uploadImage(image, "messages")).file;
+	} else {
+		uploadedImage = ""
+	}
+
+	return chatRepository.createMessage(
+		message,
+		chatId,
+		userId,
+		uploadedImage
+	);
 }
 
 async function createChatGroup(
@@ -81,7 +94,7 @@ const friendService = {
 	getGroupChats,
 	getChatInfo,
 	updateChatGroup,
-	deleteChatGroup
+	deleteChatGroup,
 };
 
 export default friendService;

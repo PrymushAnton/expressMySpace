@@ -330,7 +330,64 @@ async function getUserById(id: number) {
 	const user = await userRepository.getUserById(id);
 	if (!user) return { status: "error", message: "Користувача не знайдено" };
 	if (typeof user === "string") return { status: "error", message: user };
-	return { status: "success", data: user };
+
+
+	return {
+		status: "success",
+		data: JSON.parse(
+			JSON.stringify(user, (_, v) =>
+				typeof v === "bigint" ? Number(v) : v
+			)
+		),
+	};
+}
+
+async function getUserProfileById(id: number, userId: number) {
+	const user = await userRepository.getUserProfileById(id, userId);
+	if (!user) return { status: "error", message: "Користувача не знайдено" };
+	if (typeof user === "string") return { status: "error", message: user };
+
+
+	return {
+		status: "success",
+		data: JSON.parse(
+			JSON.stringify(user, (_, v) =>
+				typeof v === "bigint" ? Number(v) : v
+			)
+		),
+	};
+}
+
+async function getAnotherUserById(id: number) {
+	const user = await userRepository.getAnotherUserById(id);
+	if (!user) return { status: "error", message: "Користувача не знайдено" };
+	if (typeof user === "string") return { status: "error", message: user };
+
+
+	return {
+		status: "success",
+		data: JSON.parse(
+			JSON.stringify(user, (_, v) =>
+				typeof v === "bigint" ? Number(v) : v
+			)
+		),
+	};
+}
+
+async function getMeById(id: number) {
+	const user = await userRepository.getMeById(id);
+	if (!user) return { status: "error", message: "Користувача не знайдено" };
+	if (typeof user === "string") return { status: "error", message: user };
+
+
+	return {
+		status: "success",
+		data: JSON.parse(
+			JSON.stringify(user, (_, v) =>
+				typeof v === "bigint" ? Number(v) : v
+			)
+		),
+	};
 }
 
 async function createUser(data: UserRegPayload): Promise<Response<string>> {
@@ -366,6 +423,9 @@ const userService = {
 	updatePassword: updatePassword,
 	getUserById: getUserById,
 	createUser,
+	getMeById,
+	getAnotherUserById,
+	getUserProfileById
 };
 
 export default userService;

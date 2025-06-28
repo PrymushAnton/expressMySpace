@@ -155,6 +155,7 @@ async function getGroupChats(currentUserId: number) {
 			id: true,
 			name: true,
 			avatar: true,
+			admin_id: true,
 			members: {
 				where: {
 					NOT: {
@@ -252,7 +253,7 @@ async function createMessage(
 	message: string,
 	chatId: number,
 	userId: number,
-	image?: string
+	image: string
 ) {
 	try {
 		const profile = await client.user_app_profile.findUnique({
@@ -268,7 +269,7 @@ async function createMessage(
 				chat_group_id: chatId,
 				content: message,
 				author_id: profile.id,
-				attached_image: image ? image : null,
+				attached_image: image !== "" ? image : null,
 				sent_at: new Date(),
 			},
 			include: {

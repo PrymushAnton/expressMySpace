@@ -3409,6 +3409,7 @@ export namespace Prisma {
     admin_in_chats: number
     in_chatgroups: number
     messages: number
+    post_app_album: number
     posts: number
     likes: number
     views: number
@@ -3421,6 +3422,7 @@ export namespace Prisma {
     admin_in_chats?: boolean | User_app_profileCountOutputTypeCountAdmin_in_chatsArgs
     in_chatgroups?: boolean | User_app_profileCountOutputTypeCountIn_chatgroupsArgs
     messages?: boolean | User_app_profileCountOutputTypeCountMessagesArgs
+    post_app_album?: boolean | User_app_profileCountOutputTypeCountPost_app_albumArgs
     posts?: boolean | User_app_profileCountOutputTypeCountPostsArgs
     likes?: boolean | User_app_profileCountOutputTypeCountLikesArgs
     views?: boolean | User_app_profileCountOutputTypeCountViewsArgs
@@ -3459,6 +3461,13 @@ export namespace Prisma {
    */
   export type User_app_profileCountOutputTypeCountMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: chat_app_chatmessageWhereInput
+  }
+
+  /**
+   * User_app_profileCountOutputType without action
+   */
+  export type User_app_profileCountOutputTypeCountPost_app_albumArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: post_app_albumWhereInput
   }
 
   /**
@@ -15146,6 +15155,7 @@ export namespace Prisma {
     id: bigint | null
     title: string | null
     content: string | null
+    topic: string | null
     author_id: bigint | null
   }
 
@@ -15153,6 +15163,7 @@ export namespace Prisma {
     id: bigint | null
     title: string | null
     content: string | null
+    topic: string | null
     author_id: bigint | null
   }
 
@@ -15160,6 +15171,7 @@ export namespace Prisma {
     id: number
     title: number
     content: number
+    topic: number
     author_id: number
     _all: number
   }
@@ -15179,6 +15191,7 @@ export namespace Prisma {
     id?: true
     title?: true
     content?: true
+    topic?: true
     author_id?: true
   }
 
@@ -15186,6 +15199,7 @@ export namespace Prisma {
     id?: true
     title?: true
     content?: true
+    topic?: true
     author_id?: true
   }
 
@@ -15193,6 +15207,7 @@ export namespace Prisma {
     id?: true
     title?: true
     content?: true
+    topic?: true
     author_id?: true
     _all?: true
   }
@@ -15287,6 +15302,7 @@ export namespace Prisma {
     id: bigint
     title: string
     content: string
+    topic: string
     author_id: bigint
     _count: Post_app_postCountAggregateOutputType | null
     _avg: Post_app_postAvgAggregateOutputType | null
@@ -15313,6 +15329,7 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     content?: boolean
+    topic?: boolean
     author_id?: boolean
     links?: boolean | post_app_post$linksArgs<ExtArgs>
     author?: boolean | user_app_profileDefaultArgs<ExtArgs>
@@ -15329,10 +15346,11 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     content?: boolean
+    topic?: boolean
     author_id?: boolean
   }
 
-  export type post_app_postOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "author_id", ExtArgs["result"]["post_app_post"]>
+  export type post_app_postOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "topic" | "author_id", ExtArgs["result"]["post_app_post"]>
   export type post_app_postInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     links?: boolean | post_app_post$linksArgs<ExtArgs>
     author?: boolean | user_app_profileDefaultArgs<ExtArgs>
@@ -15357,6 +15375,7 @@ export namespace Prisma {
       id: bigint
       title: string
       content: string
+      topic: string
       author_id: bigint
     }, ExtArgs["result"]["post_app_post"]>
     composites: {}
@@ -15736,6 +15755,7 @@ export namespace Prisma {
     readonly id: FieldRef<"post_app_post", 'BigInt'>
     readonly title: FieldRef<"post_app_post", 'String'>
     readonly content: FieldRef<"post_app_post", 'String'>
+    readonly topic: FieldRef<"post_app_post", 'String'>
     readonly author_id: FieldRef<"post_app_post", 'BigInt'>
   }
     
@@ -23932,11 +23952,13 @@ export namespace Prisma {
 
   export type Post_app_albumAvgAggregateOutputType = {
     id: number | null
+    author_id: number | null
     topic_id: number | null
   }
 
   export type Post_app_albumSumAggregateOutputType = {
     id: bigint | null
+    author_id: bigint | null
     topic_id: bigint | null
   }
 
@@ -23946,6 +23968,7 @@ export namespace Prisma {
     created_at: Date | null
     preview_image: string | null
     shown: boolean | null
+    author_id: bigint | null
     topic_id: bigint | null
   }
 
@@ -23955,6 +23978,7 @@ export namespace Prisma {
     created_at: Date | null
     preview_image: string | null
     shown: boolean | null
+    author_id: bigint | null
     topic_id: bigint | null
   }
 
@@ -23964,6 +23988,7 @@ export namespace Prisma {
     created_at: number
     preview_image: number
     shown: number
+    author_id: number
     topic_id: number
     _all: number
   }
@@ -23971,11 +23996,13 @@ export namespace Prisma {
 
   export type Post_app_albumAvgAggregateInputType = {
     id?: true
+    author_id?: true
     topic_id?: true
   }
 
   export type Post_app_albumSumAggregateInputType = {
     id?: true
+    author_id?: true
     topic_id?: true
   }
 
@@ -23985,6 +24012,7 @@ export namespace Prisma {
     created_at?: true
     preview_image?: true
     shown?: true
+    author_id?: true
     topic_id?: true
   }
 
@@ -23994,6 +24022,7 @@ export namespace Prisma {
     created_at?: true
     preview_image?: true
     shown?: true
+    author_id?: true
     topic_id?: true
   }
 
@@ -24003,6 +24032,7 @@ export namespace Prisma {
     created_at?: true
     preview_image?: true
     shown?: true
+    author_id?: true
     topic_id?: true
     _all?: true
   }
@@ -24099,6 +24129,7 @@ export namespace Prisma {
     created_at: Date
     preview_image: string | null
     shown: boolean
+    author_id: bigint
     topic_id: bigint
     _count: Post_app_albumCountAggregateOutputType | null
     _avg: Post_app_albumAvgAggregateOutputType | null
@@ -24127,7 +24158,9 @@ export namespace Prisma {
     created_at?: boolean
     preview_image?: boolean
     shown?: boolean
+    author_id?: boolean
     topic_id?: boolean
+    user_app_profile?: boolean | user_app_profileDefaultArgs<ExtArgs>
     topic?: boolean | post_app_tagDefaultArgs<ExtArgs>
     images?: boolean | post_app_album$imagesArgs<ExtArgs>
     _count?: boolean | Post_app_albumCountOutputTypeDefaultArgs<ExtArgs>
@@ -24141,11 +24174,13 @@ export namespace Prisma {
     created_at?: boolean
     preview_image?: boolean
     shown?: boolean
+    author_id?: boolean
     topic_id?: boolean
   }
 
-  export type post_app_albumOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "created_at" | "preview_image" | "shown" | "topic_id", ExtArgs["result"]["post_app_album"]>
+  export type post_app_albumOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "created_at" | "preview_image" | "shown" | "author_id" | "topic_id", ExtArgs["result"]["post_app_album"]>
   export type post_app_albumInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user_app_profile?: boolean | user_app_profileDefaultArgs<ExtArgs>
     topic?: boolean | post_app_tagDefaultArgs<ExtArgs>
     images?: boolean | post_app_album$imagesArgs<ExtArgs>
     _count?: boolean | Post_app_albumCountOutputTypeDefaultArgs<ExtArgs>
@@ -24154,6 +24189,7 @@ export namespace Prisma {
   export type $post_app_albumPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "post_app_album"
     objects: {
+      user_app_profile: Prisma.$user_app_profilePayload<ExtArgs>
       topic: Prisma.$post_app_tagPayload<ExtArgs>
       images: Prisma.$post_app_album_imagesPayload<ExtArgs>[]
     }
@@ -24163,6 +24199,7 @@ export namespace Prisma {
       created_at: Date
       preview_image: string | null
       shown: boolean
+      author_id: bigint
       topic_id: bigint
     }, ExtArgs["result"]["post_app_album"]>
     composites: {}
@@ -24504,6 +24541,7 @@ export namespace Prisma {
    */
   export interface Prisma__post_app_albumClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    user_app_profile<T extends user_app_profileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, user_app_profileDefaultArgs<ExtArgs>>): Prisma__user_app_profileClient<$Result.GetResult<Prisma.$user_app_profilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     topic<T extends post_app_tagDefaultArgs<ExtArgs> = {}>(args?: Subset<T, post_app_tagDefaultArgs<ExtArgs>>): Prisma__post_app_tagClient<$Result.GetResult<Prisma.$post_app_tagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     images<T extends post_app_album$imagesArgs<ExtArgs> = {}>(args?: Subset<T, post_app_album$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$post_app_album_imagesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -24540,6 +24578,7 @@ export namespace Prisma {
     readonly created_at: FieldRef<"post_app_album", 'DateTime'>
     readonly preview_image: FieldRef<"post_app_album", 'String'>
     readonly shown: FieldRef<"post_app_album", 'Boolean'>
+    readonly author_id: FieldRef<"post_app_album", 'BigInt'>
     readonly topic_id: FieldRef<"post_app_album", 'BigInt'>
   }
     
@@ -26257,6 +26296,7 @@ export namespace Prisma {
     admin_in_chats?: boolean | user_app_profile$admin_in_chatsArgs<ExtArgs>
     in_chatgroups?: boolean | user_app_profile$in_chatgroupsArgs<ExtArgs>
     messages?: boolean | user_app_profile$messagesArgs<ExtArgs>
+    post_app_album?: boolean | user_app_profile$post_app_albumArgs<ExtArgs>
     posts?: boolean | user_app_profile$postsArgs<ExtArgs>
     likes?: boolean | user_app_profile$likesArgs<ExtArgs>
     views?: boolean | user_app_profile$viewsArgs<ExtArgs>
@@ -26281,6 +26321,7 @@ export namespace Prisma {
     admin_in_chats?: boolean | user_app_profile$admin_in_chatsArgs<ExtArgs>
     in_chatgroups?: boolean | user_app_profile$in_chatgroupsArgs<ExtArgs>
     messages?: boolean | user_app_profile$messagesArgs<ExtArgs>
+    post_app_album?: boolean | user_app_profile$post_app_albumArgs<ExtArgs>
     posts?: boolean | user_app_profile$postsArgs<ExtArgs>
     likes?: boolean | user_app_profile$likesArgs<ExtArgs>
     views?: boolean | user_app_profile$viewsArgs<ExtArgs>
@@ -26297,6 +26338,7 @@ export namespace Prisma {
       admin_in_chats: Prisma.$chat_app_chatgroupPayload<ExtArgs>[]
       in_chatgroups: Prisma.$chat_app_chatgroup_membersPayload<ExtArgs>[]
       messages: Prisma.$chat_app_chatmessagePayload<ExtArgs>[]
+      post_app_album: Prisma.$post_app_albumPayload<ExtArgs>[]
       posts: Prisma.$post_app_postPayload<ExtArgs>[]
       likes: Prisma.$post_app_post_likesPayload<ExtArgs>[]
       views: Prisma.$post_app_post_viewsPayload<ExtArgs>[]
@@ -26653,6 +26695,7 @@ export namespace Prisma {
     admin_in_chats<T extends user_app_profile$admin_in_chatsArgs<ExtArgs> = {}>(args?: Subset<T, user_app_profile$admin_in_chatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$chat_app_chatgroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     in_chatgroups<T extends user_app_profile$in_chatgroupsArgs<ExtArgs> = {}>(args?: Subset<T, user_app_profile$in_chatgroupsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$chat_app_chatgroup_membersPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     messages<T extends user_app_profile$messagesArgs<ExtArgs> = {}>(args?: Subset<T, user_app_profile$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$chat_app_chatmessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    post_app_album<T extends user_app_profile$post_app_albumArgs<ExtArgs> = {}>(args?: Subset<T, user_app_profile$post_app_albumArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$post_app_albumPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     posts<T extends user_app_profile$postsArgs<ExtArgs> = {}>(args?: Subset<T, user_app_profile$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$post_app_postPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     likes<T extends user_app_profile$likesArgs<ExtArgs> = {}>(args?: Subset<T, user_app_profile$likesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$post_app_post_likesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     views<T extends user_app_profile$viewsArgs<ExtArgs> = {}>(args?: Subset<T, user_app_profile$viewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$post_app_post_viewsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -27105,6 +27148,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Chat_app_chatmessageScalarFieldEnum | Chat_app_chatmessageScalarFieldEnum[]
+  }
+
+  /**
+   * user_app_profile.post_app_album
+   */
+  export type user_app_profile$post_app_albumArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the post_app_album
+     */
+    select?: post_app_albumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the post_app_album
+     */
+    omit?: post_app_albumOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: post_app_albumInclude<ExtArgs> | null
+    where?: post_app_albumWhereInput
+    orderBy?: post_app_albumOrderByWithRelationInput | post_app_albumOrderByWithRelationInput[]
+    cursor?: post_app_albumWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Post_app_albumScalarFieldEnum | Post_app_albumScalarFieldEnum[]
   }
 
   /**
@@ -30243,6 +30310,7 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     content: 'content',
+    topic: 'topic',
     author_id: 'author_id'
   };
 
@@ -30327,6 +30395,7 @@ export namespace Prisma {
     created_at: 'created_at',
     preview_image: 'preview_image',
     shown: 'shown',
+    author_id: 'author_id',
     topic_id: 'topic_id'
   };
 
@@ -30473,7 +30542,8 @@ export namespace Prisma {
 
   export const post_app_postOrderByRelevanceFieldEnum: {
     title: 'title',
-    content: 'content'
+    content: 'content',
+    topic: 'topic'
   };
 
   export type post_app_postOrderByRelevanceFieldEnum = (typeof post_app_postOrderByRelevanceFieldEnum)[keyof typeof post_app_postOrderByRelevanceFieldEnum]
@@ -31260,6 +31330,7 @@ export namespace Prisma {
     id?: BigIntFilter<"post_app_post"> | bigint | number
     title?: StringFilter<"post_app_post"> | string
     content?: StringFilter<"post_app_post"> | string
+    topic?: StringFilter<"post_app_post"> | string
     author_id?: BigIntFilter<"post_app_post"> | bigint | number
     links?: Post_app_linkListRelationFilter
     author?: XOR<User_app_profileScalarRelationFilter, user_app_profileWhereInput>
@@ -31273,6 +31344,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     content?: SortOrder
+    topic?: SortOrder
     author_id?: SortOrder
     links?: post_app_linkOrderByRelationAggregateInput
     author?: user_app_profileOrderByWithRelationInput
@@ -31290,6 +31362,7 @@ export namespace Prisma {
     NOT?: post_app_postWhereInput | post_app_postWhereInput[]
     title?: StringFilter<"post_app_post"> | string
     content?: StringFilter<"post_app_post"> | string
+    topic?: StringFilter<"post_app_post"> | string
     author_id?: BigIntFilter<"post_app_post"> | bigint | number
     links?: Post_app_linkListRelationFilter
     author?: XOR<User_app_profileScalarRelationFilter, user_app_profileWhereInput>
@@ -31303,6 +31376,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     content?: SortOrder
+    topic?: SortOrder
     author_id?: SortOrder
     _count?: post_app_postCountOrderByAggregateInput
     _avg?: post_app_postAvgOrderByAggregateInput
@@ -31318,6 +31392,7 @@ export namespace Prisma {
     id?: BigIntWithAggregatesFilter<"post_app_post"> | bigint | number
     title?: StringWithAggregatesFilter<"post_app_post"> | string
     content?: StringWithAggregatesFilter<"post_app_post"> | string
+    topic?: StringWithAggregatesFilter<"post_app_post"> | string
     author_id?: BigIntWithAggregatesFilter<"post_app_post"> | bigint | number
   }
 
@@ -31735,7 +31810,9 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"post_app_album"> | Date | string
     preview_image?: StringNullableFilter<"post_app_album"> | string | null
     shown?: BoolFilter<"post_app_album"> | boolean
+    author_id?: BigIntFilter<"post_app_album"> | bigint | number
     topic_id?: BigIntFilter<"post_app_album"> | bigint | number
+    user_app_profile?: XOR<User_app_profileScalarRelationFilter, user_app_profileWhereInput>
     topic?: XOR<Post_app_tagScalarRelationFilter, post_app_tagWhereInput>
     images?: Post_app_album_imagesListRelationFilter
   }
@@ -31746,7 +31823,9 @@ export namespace Prisma {
     created_at?: SortOrder
     preview_image?: SortOrderInput | SortOrder
     shown?: SortOrder
+    author_id?: SortOrder
     topic_id?: SortOrder
+    user_app_profile?: user_app_profileOrderByWithRelationInput
     topic?: post_app_tagOrderByWithRelationInput
     images?: post_app_album_imagesOrderByRelationAggregateInput
     _relevance?: post_app_albumOrderByRelevanceInput
@@ -31761,7 +31840,9 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"post_app_album"> | Date | string
     preview_image?: StringNullableFilter<"post_app_album"> | string | null
     shown?: BoolFilter<"post_app_album"> | boolean
+    author_id?: BigIntFilter<"post_app_album"> | bigint | number
     topic_id?: BigIntFilter<"post_app_album"> | bigint | number
+    user_app_profile?: XOR<User_app_profileScalarRelationFilter, user_app_profileWhereInput>
     topic?: XOR<Post_app_tagScalarRelationFilter, post_app_tagWhereInput>
     images?: Post_app_album_imagesListRelationFilter
   }, "id">
@@ -31772,6 +31853,7 @@ export namespace Prisma {
     created_at?: SortOrder
     preview_image?: SortOrderInput | SortOrder
     shown?: SortOrder
+    author_id?: SortOrder
     topic_id?: SortOrder
     _count?: post_app_albumCountOrderByAggregateInput
     _avg?: post_app_albumAvgOrderByAggregateInput
@@ -31789,6 +31871,7 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter<"post_app_album"> | Date | string
     preview_image?: StringNullableWithAggregatesFilter<"post_app_album"> | string | null
     shown?: BoolWithAggregatesFilter<"post_app_album"> | boolean
+    author_id?: BigIntWithAggregatesFilter<"post_app_album"> | bigint | number
     topic_id?: BigIntWithAggregatesFilter<"post_app_album"> | bigint | number
   }
 
@@ -31900,6 +31983,7 @@ export namespace Prisma {
     admin_in_chats?: Chat_app_chatgroupListRelationFilter
     in_chatgroups?: Chat_app_chatgroup_membersListRelationFilter
     messages?: Chat_app_chatmessageListRelationFilter
+    post_app_album?: Post_app_albumListRelationFilter
     posts?: Post_app_postListRelationFilter
     likes?: Post_app_post_likesListRelationFilter
     views?: Post_app_post_viewsListRelationFilter
@@ -31917,6 +32001,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupOrderByRelationAggregateInput
     in_chatgroups?: chat_app_chatgroup_membersOrderByRelationAggregateInput
     messages?: chat_app_chatmessageOrderByRelationAggregateInput
+    post_app_album?: post_app_albumOrderByRelationAggregateInput
     posts?: post_app_postOrderByRelationAggregateInput
     likes?: post_app_post_likesOrderByRelationAggregateInput
     views?: post_app_post_viewsOrderByRelationAggregateInput
@@ -31938,6 +32023,7 @@ export namespace Prisma {
     admin_in_chats?: Chat_app_chatgroupListRelationFilter
     in_chatgroups?: Chat_app_chatgroup_membersListRelationFilter
     messages?: Chat_app_chatmessageListRelationFilter
+    post_app_album?: Post_app_albumListRelationFilter
     posts?: Post_app_postListRelationFilter
     likes?: Post_app_post_likesListRelationFilter
     views?: Post_app_post_viewsListRelationFilter
@@ -32558,7 +32644,7 @@ export namespace Prisma {
   export type chat_app_chatgroupCreateInput = {
     id?: bigint | number
     name: string
-    is_personal_chat?: boolean
+    is_personal_chat: boolean
     avatar?: string | null
     admin: user_app_profileCreateNestedOneWithoutAdmin_in_chatsInput
     members?: chat_app_chatgroup_membersCreateNestedManyWithoutChatgroupInput
@@ -32568,7 +32654,7 @@ export namespace Prisma {
   export type chat_app_chatgroupUncheckedCreateInput = {
     id?: bigint | number
     name: string
-    is_personal_chat?: boolean
+    is_personal_chat: boolean
     avatar?: string | null
     admin_id: bigint | number
     members?: chat_app_chatgroup_membersUncheckedCreateNestedManyWithoutChatgroupInput
@@ -32598,7 +32684,7 @@ export namespace Prisma {
   export type chat_app_chatgroupCreateManyInput = {
     id?: bigint | number
     name: string
-    is_personal_chat?: boolean
+    is_personal_chat: boolean
     avatar?: string | null
     admin_id: bigint | number
   }
@@ -32723,6 +32809,7 @@ export namespace Prisma {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     links?: post_app_linkCreateNestedManyWithoutPostInput
     author: user_app_profileCreateNestedOneWithoutPostsInput
     images?: post_app_post_imagesCreateNestedManyWithoutPostInput
@@ -32735,6 +32822,7 @@ export namespace Prisma {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     author_id: bigint | number
     links?: post_app_linkUncheckedCreateNestedManyWithoutPostInput
     images?: post_app_post_imagesUncheckedCreateNestedManyWithoutPostInput
@@ -32747,6 +32835,7 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     links?: post_app_linkUpdateManyWithoutPostNestedInput
     author?: user_app_profileUpdateOneRequiredWithoutPostsNestedInput
     images?: post_app_post_imagesUpdateManyWithoutPostNestedInput
@@ -32759,6 +32848,7 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     author_id?: BigIntFieldUpdateOperationsInput | bigint | number
     links?: post_app_linkUncheckedUpdateManyWithoutPostNestedInput
     images?: post_app_post_imagesUncheckedUpdateManyWithoutPostNestedInput
@@ -32771,6 +32861,7 @@ export namespace Prisma {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     author_id: bigint | number
   }
 
@@ -32778,12 +32869,14 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
   }
 
   export type post_app_postUncheckedUpdateManyInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     author_id?: BigIntFieldUpdateOperationsInput | bigint | number
   }
 
@@ -33133,7 +33226,8 @@ export namespace Prisma {
     name: string
     created_at: Date | string
     preview_image?: string | null
-    shown?: boolean
+    shown: boolean
+    user_app_profile: user_app_profileCreateNestedOneWithoutPost_app_albumInput
     topic: post_app_tagCreateNestedOneWithoutAlbumsInput
     images?: post_app_album_imagesCreateNestedManyWithoutAlbumInput
   }
@@ -33143,7 +33237,8 @@ export namespace Prisma {
     name: string
     created_at: Date | string
     preview_image?: string | null
-    shown?: boolean
+    shown: boolean
+    author_id: bigint | number
     topic_id: bigint | number
     images?: post_app_album_imagesUncheckedCreateNestedManyWithoutAlbumInput
   }
@@ -33154,6 +33249,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     preview_image?: NullableStringFieldUpdateOperationsInput | string | null
     shown?: BoolFieldUpdateOperationsInput | boolean
+    user_app_profile?: user_app_profileUpdateOneRequiredWithoutPost_app_albumNestedInput
     topic?: post_app_tagUpdateOneRequiredWithoutAlbumsNestedInput
     images?: post_app_album_imagesUpdateManyWithoutAlbumNestedInput
   }
@@ -33164,6 +33260,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     preview_image?: NullableStringFieldUpdateOperationsInput | string | null
     shown?: BoolFieldUpdateOperationsInput | boolean
+    author_id?: BigIntFieldUpdateOperationsInput | bigint | number
     topic_id?: BigIntFieldUpdateOperationsInput | bigint | number
     images?: post_app_album_imagesUncheckedUpdateManyWithoutAlbumNestedInput
   }
@@ -33173,7 +33270,8 @@ export namespace Prisma {
     name: string
     created_at: Date | string
     preview_image?: string | null
-    shown?: boolean
+    shown: boolean
+    author_id: bigint | number
     topic_id: bigint | number
   }
 
@@ -33191,6 +33289,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     preview_image?: NullableStringFieldUpdateOperationsInput | string | null
     shown?: BoolFieldUpdateOperationsInput | boolean
+    author_id?: BigIntFieldUpdateOperationsInput | bigint | number
     topic_id?: BigIntFieldUpdateOperationsInput | bigint | number
   }
 
@@ -33312,6 +33411,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsCreateNestedManyWithoutProfileInput
@@ -33329,6 +33429,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageUncheckedCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumUncheckedCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postUncheckedCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesUncheckedCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsUncheckedCreateNestedManyWithoutProfileInput
@@ -33344,6 +33445,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUpdateManyWithoutProfileNestedInput
@@ -33361,6 +33463,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUncheckedUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUncheckedUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUncheckedUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUncheckedUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUncheckedUpdateManyWithoutProfileNestedInput
@@ -33392,16 +33495,16 @@ export namespace Prisma {
   export type user_app_avatarCreateInput = {
     id?: bigint | number
     image: string
-    active?: boolean
-    shown?: boolean
+    active: boolean
+    shown: boolean
     profile: user_app_profileCreateNestedOneWithoutAvatarsInput
   }
 
   export type user_app_avatarUncheckedCreateInput = {
     id?: bigint | number
     image: string
-    active?: boolean
-    shown?: boolean
+    active: boolean
+    shown: boolean
     profile_id: bigint | number
   }
 
@@ -33424,8 +33527,8 @@ export namespace Prisma {
   export type user_app_avatarCreateManyInput = {
     id?: bigint | number
     image: string
-    active?: boolean
-    shown?: boolean
+    active: boolean
+    shown: boolean
     profile_id: bigint | number
   }
 
@@ -33446,14 +33549,14 @@ export namespace Prisma {
 
   export type user_app_friendshipCreateInput = {
     id?: bigint | number
-    accepted?: boolean
+    accepted: boolean
     profile1: user_app_profileCreateNestedOneWithoutFriendships_sentInput
     profile2: user_app_profileCreateNestedOneWithoutFriendships_receivedInput
   }
 
   export type user_app_friendshipUncheckedCreateInput = {
     id?: bigint | number
-    accepted?: boolean
+    accepted: boolean
     profile1_id: bigint | number
     profile2_id: bigint | number
   }
@@ -33474,7 +33577,7 @@ export namespace Prisma {
 
   export type user_app_friendshipCreateManyInput = {
     id?: bigint | number
-    accepted?: boolean
+    accepted: boolean
     profile1_id: bigint | number
     profile2_id: bigint | number
   }
@@ -34340,6 +34443,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     content?: SortOrder
+    topic?: SortOrder
     author_id?: SortOrder
   }
 
@@ -34352,6 +34456,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     content?: SortOrder
+    topic?: SortOrder
     author_id?: SortOrder
   }
 
@@ -34359,6 +34464,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     content?: SortOrder
+    topic?: SortOrder
     author_id?: SortOrder
   }
 
@@ -34692,11 +34798,13 @@ export namespace Prisma {
     created_at?: SortOrder
     preview_image?: SortOrder
     shown?: SortOrder
+    author_id?: SortOrder
     topic_id?: SortOrder
   }
 
   export type post_app_albumAvgOrderByAggregateInput = {
     id?: SortOrder
+    author_id?: SortOrder
     topic_id?: SortOrder
   }
 
@@ -34706,6 +34814,7 @@ export namespace Prisma {
     created_at?: SortOrder
     preview_image?: SortOrder
     shown?: SortOrder
+    author_id?: SortOrder
     topic_id?: SortOrder
   }
 
@@ -34715,11 +34824,13 @@ export namespace Prisma {
     created_at?: SortOrder
     preview_image?: SortOrder
     shown?: SortOrder
+    author_id?: SortOrder
     topic_id?: SortOrder
   }
 
   export type post_app_albumSumOrderByAggregateInput = {
     id?: SortOrder
+    author_id?: SortOrder
     topic_id?: SortOrder
   }
 
@@ -36114,6 +36225,12 @@ export namespace Prisma {
     update?: XOR<XOR<user_app_profileUpdateToOneWithWhereWithoutLikesInput, user_app_profileUpdateWithoutLikesInput>, user_app_profileUncheckedUpdateWithoutLikesInput>
   }
 
+  export type user_app_profileCreateNestedOneWithoutPost_app_albumInput = {
+    create?: XOR<user_app_profileCreateWithoutPost_app_albumInput, user_app_profileUncheckedCreateWithoutPost_app_albumInput>
+    connectOrCreate?: user_app_profileCreateOrConnectWithoutPost_app_albumInput
+    connect?: user_app_profileWhereUniqueInput
+  }
+
   export type post_app_tagCreateNestedOneWithoutAlbumsInput = {
     create?: XOR<post_app_tagCreateWithoutAlbumsInput, post_app_tagUncheckedCreateWithoutAlbumsInput>
     connectOrCreate?: post_app_tagCreateOrConnectWithoutAlbumsInput
@@ -36132,6 +36249,14 @@ export namespace Prisma {
     connectOrCreate?: post_app_album_imagesCreateOrConnectWithoutAlbumInput | post_app_album_imagesCreateOrConnectWithoutAlbumInput[]
     createMany?: post_app_album_imagesCreateManyAlbumInputEnvelope
     connect?: post_app_album_imagesWhereUniqueInput | post_app_album_imagesWhereUniqueInput[]
+  }
+
+  export type user_app_profileUpdateOneRequiredWithoutPost_app_albumNestedInput = {
+    create?: XOR<user_app_profileCreateWithoutPost_app_albumInput, user_app_profileUncheckedCreateWithoutPost_app_albumInput>
+    connectOrCreate?: user_app_profileCreateOrConnectWithoutPost_app_albumInput
+    upsert?: user_app_profileUpsertWithoutPost_app_albumInput
+    connect?: user_app_profileWhereUniqueInput
+    update?: XOR<XOR<user_app_profileUpdateToOneWithWhereWithoutPost_app_albumInput, user_app_profileUpdateWithoutPost_app_albumInput>, user_app_profileUncheckedUpdateWithoutPost_app_albumInput>
   }
 
   export type post_app_tagUpdateOneRequiredWithoutAlbumsNestedInput = {
@@ -36353,6 +36478,13 @@ export namespace Prisma {
     connect?: chat_app_chatmessageWhereUniqueInput | chat_app_chatmessageWhereUniqueInput[]
   }
 
+  export type post_app_albumCreateNestedManyWithoutUser_app_profileInput = {
+    create?: XOR<post_app_albumCreateWithoutUser_app_profileInput, post_app_albumUncheckedCreateWithoutUser_app_profileInput> | post_app_albumCreateWithoutUser_app_profileInput[] | post_app_albumUncheckedCreateWithoutUser_app_profileInput[]
+    connectOrCreate?: post_app_albumCreateOrConnectWithoutUser_app_profileInput | post_app_albumCreateOrConnectWithoutUser_app_profileInput[]
+    createMany?: post_app_albumCreateManyUser_app_profileInputEnvelope
+    connect?: post_app_albumWhereUniqueInput | post_app_albumWhereUniqueInput[]
+  }
+
   export type post_app_postCreateNestedManyWithoutAuthorInput = {
     create?: XOR<post_app_postCreateWithoutAuthorInput, post_app_postUncheckedCreateWithoutAuthorInput> | post_app_postCreateWithoutAuthorInput[] | post_app_postUncheckedCreateWithoutAuthorInput[]
     connectOrCreate?: post_app_postCreateOrConnectWithoutAuthorInput | post_app_postCreateOrConnectWithoutAuthorInput[]
@@ -36420,6 +36552,13 @@ export namespace Prisma {
     connectOrCreate?: chat_app_chatmessageCreateOrConnectWithoutAuthorInput | chat_app_chatmessageCreateOrConnectWithoutAuthorInput[]
     createMany?: chat_app_chatmessageCreateManyAuthorInputEnvelope
     connect?: chat_app_chatmessageWhereUniqueInput | chat_app_chatmessageWhereUniqueInput[]
+  }
+
+  export type post_app_albumUncheckedCreateNestedManyWithoutUser_app_profileInput = {
+    create?: XOR<post_app_albumCreateWithoutUser_app_profileInput, post_app_albumUncheckedCreateWithoutUser_app_profileInput> | post_app_albumCreateWithoutUser_app_profileInput[] | post_app_albumUncheckedCreateWithoutUser_app_profileInput[]
+    connectOrCreate?: post_app_albumCreateOrConnectWithoutUser_app_profileInput | post_app_albumCreateOrConnectWithoutUser_app_profileInput[]
+    createMany?: post_app_albumCreateManyUser_app_profileInputEnvelope
+    connect?: post_app_albumWhereUniqueInput | post_app_albumWhereUniqueInput[]
   }
 
   export type post_app_postUncheckedCreateNestedManyWithoutAuthorInput = {
@@ -36504,6 +36643,20 @@ export namespace Prisma {
     update?: chat_app_chatmessageUpdateWithWhereUniqueWithoutAuthorInput | chat_app_chatmessageUpdateWithWhereUniqueWithoutAuthorInput[]
     updateMany?: chat_app_chatmessageUpdateManyWithWhereWithoutAuthorInput | chat_app_chatmessageUpdateManyWithWhereWithoutAuthorInput[]
     deleteMany?: chat_app_chatmessageScalarWhereInput | chat_app_chatmessageScalarWhereInput[]
+  }
+
+  export type post_app_albumUpdateManyWithoutUser_app_profileNestedInput = {
+    create?: XOR<post_app_albumCreateWithoutUser_app_profileInput, post_app_albumUncheckedCreateWithoutUser_app_profileInput> | post_app_albumCreateWithoutUser_app_profileInput[] | post_app_albumUncheckedCreateWithoutUser_app_profileInput[]
+    connectOrCreate?: post_app_albumCreateOrConnectWithoutUser_app_profileInput | post_app_albumCreateOrConnectWithoutUser_app_profileInput[]
+    upsert?: post_app_albumUpsertWithWhereUniqueWithoutUser_app_profileInput | post_app_albumUpsertWithWhereUniqueWithoutUser_app_profileInput[]
+    createMany?: post_app_albumCreateManyUser_app_profileInputEnvelope
+    set?: post_app_albumWhereUniqueInput | post_app_albumWhereUniqueInput[]
+    disconnect?: post_app_albumWhereUniqueInput | post_app_albumWhereUniqueInput[]
+    delete?: post_app_albumWhereUniqueInput | post_app_albumWhereUniqueInput[]
+    connect?: post_app_albumWhereUniqueInput | post_app_albumWhereUniqueInput[]
+    update?: post_app_albumUpdateWithWhereUniqueWithoutUser_app_profileInput | post_app_albumUpdateWithWhereUniqueWithoutUser_app_profileInput[]
+    updateMany?: post_app_albumUpdateManyWithWhereWithoutUser_app_profileInput | post_app_albumUpdateManyWithWhereWithoutUser_app_profileInput[]
+    deleteMany?: post_app_albumScalarWhereInput | post_app_albumScalarWhereInput[]
   }
 
   export type post_app_postUpdateManyWithoutAuthorNestedInput = {
@@ -36638,6 +36791,20 @@ export namespace Prisma {
     update?: chat_app_chatmessageUpdateWithWhereUniqueWithoutAuthorInput | chat_app_chatmessageUpdateWithWhereUniqueWithoutAuthorInput[]
     updateMany?: chat_app_chatmessageUpdateManyWithWhereWithoutAuthorInput | chat_app_chatmessageUpdateManyWithWhereWithoutAuthorInput[]
     deleteMany?: chat_app_chatmessageScalarWhereInput | chat_app_chatmessageScalarWhereInput[]
+  }
+
+  export type post_app_albumUncheckedUpdateManyWithoutUser_app_profileNestedInput = {
+    create?: XOR<post_app_albumCreateWithoutUser_app_profileInput, post_app_albumUncheckedCreateWithoutUser_app_profileInput> | post_app_albumCreateWithoutUser_app_profileInput[] | post_app_albumUncheckedCreateWithoutUser_app_profileInput[]
+    connectOrCreate?: post_app_albumCreateOrConnectWithoutUser_app_profileInput | post_app_albumCreateOrConnectWithoutUser_app_profileInput[]
+    upsert?: post_app_albumUpsertWithWhereUniqueWithoutUser_app_profileInput | post_app_albumUpsertWithWhereUniqueWithoutUser_app_profileInput[]
+    createMany?: post_app_albumCreateManyUser_app_profileInputEnvelope
+    set?: post_app_albumWhereUniqueInput | post_app_albumWhereUniqueInput[]
+    disconnect?: post_app_albumWhereUniqueInput | post_app_albumWhereUniqueInput[]
+    delete?: post_app_albumWhereUniqueInput | post_app_albumWhereUniqueInput[]
+    connect?: post_app_albumWhereUniqueInput | post_app_albumWhereUniqueInput[]
+    update?: post_app_albumUpdateWithWhereUniqueWithoutUser_app_profileInput | post_app_albumUpdateWithWhereUniqueWithoutUser_app_profileInput[]
+    updateMany?: post_app_albumUpdateManyWithWhereWithoutUser_app_profileInput | post_app_albumUpdateManyWithWhereWithoutUser_app_profileInput[]
+    deleteMany?: post_app_albumScalarWhereInput | post_app_albumScalarWhereInput[]
   }
 
   export type post_app_postUncheckedUpdateManyWithoutAuthorNestedInput = {
@@ -37783,6 +37950,7 @@ export namespace Prisma {
     signature?: string | null
     in_chatgroups?: chat_app_chatgroup_membersCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsCreateNestedManyWithoutProfileInput
@@ -37799,6 +37967,7 @@ export namespace Prisma {
     user_id: number
     in_chatgroups?: chat_app_chatgroup_membersUncheckedCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageUncheckedCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumUncheckedCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postUncheckedCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesUncheckedCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsUncheckedCreateNestedManyWithoutProfileInput
@@ -37875,6 +38044,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     in_chatgroups?: chat_app_chatgroup_membersUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUpdateManyWithoutProfileNestedInput
@@ -37891,6 +38061,7 @@ export namespace Prisma {
     user_id?: IntFieldUpdateOperationsInput | number
     in_chatgroups?: chat_app_chatgroup_membersUncheckedUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUncheckedUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUncheckedUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUncheckedUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUncheckedUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUncheckedUpdateManyWithoutProfileNestedInput
@@ -37955,7 +38126,7 @@ export namespace Prisma {
   export type chat_app_chatgroupCreateWithoutMembersInput = {
     id?: bigint | number
     name: string
-    is_personal_chat?: boolean
+    is_personal_chat: boolean
     avatar?: string | null
     admin: user_app_profileCreateNestedOneWithoutAdmin_in_chatsInput
     messages?: chat_app_chatmessageCreateNestedManyWithoutChat_groupInput
@@ -37964,7 +38135,7 @@ export namespace Prisma {
   export type chat_app_chatgroupUncheckedCreateWithoutMembersInput = {
     id?: bigint | number
     name: string
-    is_personal_chat?: boolean
+    is_personal_chat: boolean
     avatar?: string | null
     admin_id: bigint | number
     messages?: chat_app_chatmessageUncheckedCreateNestedManyWithoutChat_groupInput
@@ -37981,6 +38152,7 @@ export namespace Prisma {
     signature?: string | null
     admin_in_chats?: chat_app_chatgroupCreateNestedManyWithoutAdminInput
     messages?: chat_app_chatmessageCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsCreateNestedManyWithoutProfileInput
@@ -37997,6 +38169,7 @@ export namespace Prisma {
     user_id: number
     admin_in_chats?: chat_app_chatgroupUncheckedCreateNestedManyWithoutAdminInput
     messages?: chat_app_chatmessageUncheckedCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumUncheckedCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postUncheckedCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesUncheckedCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsUncheckedCreateNestedManyWithoutProfileInput
@@ -38056,6 +38229,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     admin_in_chats?: chat_app_chatgroupUpdateManyWithoutAdminNestedInput
     messages?: chat_app_chatmessageUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUpdateManyWithoutProfileNestedInput
@@ -38072,6 +38246,7 @@ export namespace Prisma {
     user_id?: IntFieldUpdateOperationsInput | number
     admin_in_chats?: chat_app_chatgroupUncheckedUpdateManyWithoutAdminNestedInput
     messages?: chat_app_chatmessageUncheckedUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUncheckedUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUncheckedUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUncheckedUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUncheckedUpdateManyWithoutProfileNestedInput
@@ -38086,6 +38261,7 @@ export namespace Prisma {
     signature?: string | null
     admin_in_chats?: chat_app_chatgroupCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersCreateNestedManyWithoutProfileInput
+    post_app_album?: post_app_albumCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsCreateNestedManyWithoutProfileInput
@@ -38102,6 +38278,7 @@ export namespace Prisma {
     user_id: number
     admin_in_chats?: chat_app_chatgroupUncheckedCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedCreateNestedManyWithoutProfileInput
+    post_app_album?: post_app_albumUncheckedCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postUncheckedCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesUncheckedCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsUncheckedCreateNestedManyWithoutProfileInput
@@ -38118,7 +38295,7 @@ export namespace Prisma {
   export type chat_app_chatgroupCreateWithoutMessagesInput = {
     id?: bigint | number
     name: string
-    is_personal_chat?: boolean
+    is_personal_chat: boolean
     avatar?: string | null
     admin: user_app_profileCreateNestedOneWithoutAdmin_in_chatsInput
     members?: chat_app_chatgroup_membersCreateNestedManyWithoutChatgroupInput
@@ -38127,7 +38304,7 @@ export namespace Prisma {
   export type chat_app_chatgroupUncheckedCreateWithoutMessagesInput = {
     id?: bigint | number
     name: string
-    is_personal_chat?: boolean
+    is_personal_chat: boolean
     avatar?: string | null
     admin_id: bigint | number
     members?: chat_app_chatgroup_membersUncheckedCreateNestedManyWithoutChatgroupInput
@@ -38155,6 +38332,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     admin_in_chats?: chat_app_chatgroupUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUpdateManyWithoutProfileNestedInput
+    post_app_album?: post_app_albumUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUpdateManyWithoutProfileNestedInput
@@ -38171,6 +38349,7 @@ export namespace Prisma {
     user_id?: IntFieldUpdateOperationsInput | number
     admin_in_chats?: chat_app_chatgroupUncheckedUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedUpdateManyWithoutProfileNestedInput
+    post_app_album?: post_app_albumUncheckedUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUncheckedUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUncheckedUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUncheckedUpdateManyWithoutProfileNestedInput
@@ -38235,6 +38414,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumCreateNestedManyWithoutUser_app_profileInput
     likes?: post_app_post_likesCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsCreateNestedManyWithoutProfileInput
     avatars?: user_app_avatarCreateNestedManyWithoutProfileInput
@@ -38251,6 +38431,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageUncheckedCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumUncheckedCreateNestedManyWithoutUser_app_profileInput
     likes?: post_app_post_likesUncheckedCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsUncheckedCreateNestedManyWithoutProfileInput
     avatars?: user_app_avatarUncheckedCreateNestedManyWithoutProfileInput
@@ -38386,6 +38567,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUpdateManyWithoutUser_app_profileNestedInput
     likes?: post_app_post_likesUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUpdateManyWithoutProfileNestedInput
     avatars?: user_app_avatarUpdateManyWithoutProfileNestedInput
@@ -38402,6 +38584,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUncheckedUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUncheckedUpdateManyWithoutUser_app_profileNestedInput
     likes?: post_app_post_likesUncheckedUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUncheckedUpdateManyWithoutProfileNestedInput
     avatars?: user_app_avatarUncheckedUpdateManyWithoutProfileNestedInput
@@ -38615,6 +38798,7 @@ export namespace Prisma {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     links?: post_app_linkCreateNestedManyWithoutPostInput
     author: user_app_profileCreateNestedOneWithoutPostsInput
     likes?: post_app_post_likesCreateNestedManyWithoutPostInput
@@ -38626,6 +38810,7 @@ export namespace Prisma {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     author_id: bigint | number
     links?: post_app_linkUncheckedCreateNestedManyWithoutPostInput
     likes?: post_app_post_likesUncheckedCreateNestedManyWithoutPostInput
@@ -38680,6 +38865,7 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     links?: post_app_linkUpdateManyWithoutPostNestedInput
     author?: user_app_profileUpdateOneRequiredWithoutPostsNestedInput
     likes?: post_app_post_likesUpdateManyWithoutPostNestedInput
@@ -38691,6 +38877,7 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     author_id?: BigIntFieldUpdateOperationsInput | bigint | number
     links?: post_app_linkUncheckedUpdateManyWithoutPostNestedInput
     likes?: post_app_post_likesUncheckedUpdateManyWithoutPostNestedInput
@@ -38703,7 +38890,8 @@ export namespace Prisma {
     name: string
     created_at: Date | string
     preview_image?: string | null
-    shown?: boolean
+    shown: boolean
+    user_app_profile: user_app_profileCreateNestedOneWithoutPost_app_albumInput
     topic: post_app_tagCreateNestedOneWithoutAlbumsInput
   }
 
@@ -38712,7 +38900,8 @@ export namespace Prisma {
     name: string
     created_at: Date | string
     preview_image?: string | null
-    shown?: boolean
+    shown: boolean
+    author_id: bigint | number
     topic_id: bigint | number
   }
 
@@ -38759,6 +38948,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     preview_image?: NullableStringFieldUpdateOperationsInput | string | null
     shown?: BoolFieldUpdateOperationsInput | boolean
+    user_app_profile?: user_app_profileUpdateOneRequiredWithoutPost_app_albumNestedInput
     topic?: post_app_tagUpdateOneRequiredWithoutAlbumsNestedInput
   }
 
@@ -38768,6 +38958,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     preview_image?: NullableStringFieldUpdateOperationsInput | string | null
     shown?: BoolFieldUpdateOperationsInput | boolean
+    author_id?: BigIntFieldUpdateOperationsInput | bigint | number
     topic_id?: BigIntFieldUpdateOperationsInput | bigint | number
   }
 
@@ -38803,7 +38994,8 @@ export namespace Prisma {
     name: string
     created_at: Date | string
     preview_image?: string | null
-    shown?: boolean
+    shown: boolean
+    user_app_profile: user_app_profileCreateNestedOneWithoutPost_app_albumInput
     images?: post_app_album_imagesCreateNestedManyWithoutAlbumInput
   }
 
@@ -38812,7 +39004,8 @@ export namespace Prisma {
     name: string
     created_at: Date | string
     preview_image?: string | null
-    shown?: boolean
+    shown: boolean
+    author_id: bigint | number
     images?: post_app_album_imagesUncheckedCreateNestedManyWithoutAlbumInput
   }
 
@@ -38871,6 +39064,7 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"post_app_album"> | Date | string
     preview_image?: StringNullableFilter<"post_app_album"> | string | null
     shown?: BoolFilter<"post_app_album"> | boolean
+    author_id?: BigIntFilter<"post_app_album"> | bigint | number
     topic_id?: BigIntFilter<"post_app_album"> | bigint | number
   }
 
@@ -38894,6 +39088,7 @@ export namespace Prisma {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     links?: post_app_linkCreateNestedManyWithoutPostInput
     author: user_app_profileCreateNestedOneWithoutPostsInput
     images?: post_app_post_imagesCreateNestedManyWithoutPostInput
@@ -38905,6 +39100,7 @@ export namespace Prisma {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     author_id: bigint | number
     links?: post_app_linkUncheckedCreateNestedManyWithoutPostInput
     images?: post_app_post_imagesUncheckedCreateNestedManyWithoutPostInput
@@ -38949,6 +39145,7 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     links?: post_app_linkUpdateManyWithoutPostNestedInput
     author?: user_app_profileUpdateOneRequiredWithoutPostsNestedInput
     images?: post_app_post_imagesUpdateManyWithoutPostNestedInput
@@ -38960,6 +39157,7 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     author_id?: BigIntFieldUpdateOperationsInput | bigint | number
     links?: post_app_linkUncheckedUpdateManyWithoutPostNestedInput
     images?: post_app_post_imagesUncheckedUpdateManyWithoutPostNestedInput
@@ -38994,6 +39192,7 @@ export namespace Prisma {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     author: user_app_profileCreateNestedOneWithoutPostsInput
     images?: post_app_post_imagesCreateNestedManyWithoutPostInput
     likes?: post_app_post_likesCreateNestedManyWithoutPostInput
@@ -39005,6 +39204,7 @@ export namespace Prisma {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     author_id: bigint | number
     images?: post_app_post_imagesUncheckedCreateNestedManyWithoutPostInput
     likes?: post_app_post_likesUncheckedCreateNestedManyWithoutPostInput
@@ -39032,6 +39232,7 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     author?: user_app_profileUpdateOneRequiredWithoutPostsNestedInput
     images?: post_app_post_imagesUpdateManyWithoutPostNestedInput
     likes?: post_app_post_likesUpdateManyWithoutPostNestedInput
@@ -39043,6 +39244,7 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     author_id?: BigIntFieldUpdateOperationsInput | bigint | number
     images?: post_app_post_imagesUncheckedUpdateManyWithoutPostNestedInput
     likes?: post_app_post_likesUncheckedUpdateManyWithoutPostNestedInput
@@ -39054,6 +39256,7 @@ export namespace Prisma {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     links?: post_app_linkCreateNestedManyWithoutPostInput
     author: user_app_profileCreateNestedOneWithoutPostsInput
     images?: post_app_post_imagesCreateNestedManyWithoutPostInput
@@ -39065,6 +39268,7 @@ export namespace Prisma {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     author_id: bigint | number
     links?: post_app_linkUncheckedCreateNestedManyWithoutPostInput
     images?: post_app_post_imagesUncheckedCreateNestedManyWithoutPostInput
@@ -39084,6 +39288,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesCreateNestedManyWithoutProfileInput
     avatars?: user_app_avatarCreateNestedManyWithoutProfileInput
@@ -39100,6 +39305,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageUncheckedCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumUncheckedCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postUncheckedCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesUncheckedCreateNestedManyWithoutProfileInput
     avatars?: user_app_avatarUncheckedCreateNestedManyWithoutProfileInput
@@ -39127,6 +39333,7 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     links?: post_app_linkUpdateManyWithoutPostNestedInput
     author?: user_app_profileUpdateOneRequiredWithoutPostsNestedInput
     images?: post_app_post_imagesUpdateManyWithoutPostNestedInput
@@ -39138,6 +39345,7 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     author_id?: BigIntFieldUpdateOperationsInput | bigint | number
     links?: post_app_linkUncheckedUpdateManyWithoutPostNestedInput
     images?: post_app_post_imagesUncheckedUpdateManyWithoutPostNestedInput
@@ -39163,6 +39371,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUpdateManyWithoutProfileNestedInput
     avatars?: user_app_avatarUpdateManyWithoutProfileNestedInput
@@ -39179,6 +39388,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUncheckedUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUncheckedUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUncheckedUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUncheckedUpdateManyWithoutProfileNestedInput
     avatars?: user_app_avatarUncheckedUpdateManyWithoutProfileNestedInput
@@ -39190,6 +39400,7 @@ export namespace Prisma {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     links?: post_app_linkCreateNestedManyWithoutPostInput
     author: user_app_profileCreateNestedOneWithoutPostsInput
     images?: post_app_post_imagesCreateNestedManyWithoutPostInput
@@ -39201,6 +39412,7 @@ export namespace Prisma {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     author_id: bigint | number
     links?: post_app_linkUncheckedCreateNestedManyWithoutPostInput
     images?: post_app_post_imagesUncheckedCreateNestedManyWithoutPostInput
@@ -39220,6 +39432,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postCreateNestedManyWithoutAuthorInput
     views?: post_app_post_viewsCreateNestedManyWithoutProfileInput
     avatars?: user_app_avatarCreateNestedManyWithoutProfileInput
@@ -39236,6 +39449,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageUncheckedCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumUncheckedCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postUncheckedCreateNestedManyWithoutAuthorInput
     views?: post_app_post_viewsUncheckedCreateNestedManyWithoutProfileInput
     avatars?: user_app_avatarUncheckedCreateNestedManyWithoutProfileInput
@@ -39263,6 +39477,7 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     links?: post_app_linkUpdateManyWithoutPostNestedInput
     author?: user_app_profileUpdateOneRequiredWithoutPostsNestedInput
     images?: post_app_post_imagesUpdateManyWithoutPostNestedInput
@@ -39274,6 +39489,7 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     author_id?: BigIntFieldUpdateOperationsInput | bigint | number
     links?: post_app_linkUncheckedUpdateManyWithoutPostNestedInput
     images?: post_app_post_imagesUncheckedUpdateManyWithoutPostNestedInput
@@ -39299,6 +39515,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUpdateManyWithoutAuthorNestedInput
     views?: post_app_post_viewsUpdateManyWithoutProfileNestedInput
     avatars?: user_app_avatarUpdateManyWithoutProfileNestedInput
@@ -39315,11 +39532,49 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUncheckedUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUncheckedUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUncheckedUpdateManyWithoutAuthorNestedInput
     views?: post_app_post_viewsUncheckedUpdateManyWithoutProfileNestedInput
     avatars?: user_app_avatarUncheckedUpdateManyWithoutProfileNestedInput
     friendships_sent?: user_app_friendshipUncheckedUpdateManyWithoutProfile1NestedInput
     friendships_received?: user_app_friendshipUncheckedUpdateManyWithoutProfile2NestedInput
+  }
+
+  export type user_app_profileCreateWithoutPost_app_albumInput = {
+    id?: bigint | number
+    date_of_birth: Date | string
+    signature?: string | null
+    admin_in_chats?: chat_app_chatgroupCreateNestedManyWithoutAdminInput
+    in_chatgroups?: chat_app_chatgroup_membersCreateNestedManyWithoutProfileInput
+    messages?: chat_app_chatmessageCreateNestedManyWithoutAuthorInput
+    posts?: post_app_postCreateNestedManyWithoutAuthorInput
+    likes?: post_app_post_likesCreateNestedManyWithoutProfileInput
+    views?: post_app_post_viewsCreateNestedManyWithoutProfileInput
+    avatars?: user_app_avatarCreateNestedManyWithoutProfileInput
+    friendships_sent?: user_app_friendshipCreateNestedManyWithoutProfile1Input
+    friendships_received?: user_app_friendshipCreateNestedManyWithoutProfile2Input
+    user: auth_userCreateNestedOneWithoutProfileInput
+  }
+
+  export type user_app_profileUncheckedCreateWithoutPost_app_albumInput = {
+    id?: bigint | number
+    date_of_birth: Date | string
+    signature?: string | null
+    user_id: number
+    admin_in_chats?: chat_app_chatgroupUncheckedCreateNestedManyWithoutAdminInput
+    in_chatgroups?: chat_app_chatgroup_membersUncheckedCreateNestedManyWithoutProfileInput
+    messages?: chat_app_chatmessageUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: post_app_postUncheckedCreateNestedManyWithoutAuthorInput
+    likes?: post_app_post_likesUncheckedCreateNestedManyWithoutProfileInput
+    views?: post_app_post_viewsUncheckedCreateNestedManyWithoutProfileInput
+    avatars?: user_app_avatarUncheckedCreateNestedManyWithoutProfileInput
+    friendships_sent?: user_app_friendshipUncheckedCreateNestedManyWithoutProfile1Input
+    friendships_received?: user_app_friendshipUncheckedCreateNestedManyWithoutProfile2Input
+  }
+
+  export type user_app_profileCreateOrConnectWithoutPost_app_albumInput = {
+    where: user_app_profileWhereUniqueInput
+    create: XOR<user_app_profileCreateWithoutPost_app_albumInput, user_app_profileUncheckedCreateWithoutPost_app_albumInput>
   }
 
   export type post_app_tagCreateWithoutAlbumsInput = {
@@ -39357,6 +39612,49 @@ export namespace Prisma {
   export type post_app_album_imagesCreateManyAlbumInputEnvelope = {
     data: post_app_album_imagesCreateManyAlbumInput | post_app_album_imagesCreateManyAlbumInput[]
     skipDuplicates?: boolean
+  }
+
+  export type user_app_profileUpsertWithoutPost_app_albumInput = {
+    update: XOR<user_app_profileUpdateWithoutPost_app_albumInput, user_app_profileUncheckedUpdateWithoutPost_app_albumInput>
+    create: XOR<user_app_profileCreateWithoutPost_app_albumInput, user_app_profileUncheckedCreateWithoutPost_app_albumInput>
+    where?: user_app_profileWhereInput
+  }
+
+  export type user_app_profileUpdateToOneWithWhereWithoutPost_app_albumInput = {
+    where?: user_app_profileWhereInput
+    data: XOR<user_app_profileUpdateWithoutPost_app_albumInput, user_app_profileUncheckedUpdateWithoutPost_app_albumInput>
+  }
+
+  export type user_app_profileUpdateWithoutPost_app_albumInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    admin_in_chats?: chat_app_chatgroupUpdateManyWithoutAdminNestedInput
+    in_chatgroups?: chat_app_chatgroup_membersUpdateManyWithoutProfileNestedInput
+    messages?: chat_app_chatmessageUpdateManyWithoutAuthorNestedInput
+    posts?: post_app_postUpdateManyWithoutAuthorNestedInput
+    likes?: post_app_post_likesUpdateManyWithoutProfileNestedInput
+    views?: post_app_post_viewsUpdateManyWithoutProfileNestedInput
+    avatars?: user_app_avatarUpdateManyWithoutProfileNestedInput
+    friendships_sent?: user_app_friendshipUpdateManyWithoutProfile1NestedInput
+    friendships_received?: user_app_friendshipUpdateManyWithoutProfile2NestedInput
+    user?: auth_userUpdateOneRequiredWithoutProfileNestedInput
+  }
+
+  export type user_app_profileUncheckedUpdateWithoutPost_app_albumInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    user_id?: IntFieldUpdateOperationsInput | number
+    admin_in_chats?: chat_app_chatgroupUncheckedUpdateManyWithoutAdminNestedInput
+    in_chatgroups?: chat_app_chatgroup_membersUncheckedUpdateManyWithoutProfileNestedInput
+    messages?: chat_app_chatmessageUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: post_app_postUncheckedUpdateManyWithoutAuthorNestedInput
+    likes?: post_app_post_likesUncheckedUpdateManyWithoutProfileNestedInput
+    views?: post_app_post_viewsUncheckedUpdateManyWithoutProfileNestedInput
+    avatars?: user_app_avatarUncheckedUpdateManyWithoutProfileNestedInput
+    friendships_sent?: user_app_friendshipUncheckedUpdateManyWithoutProfile1NestedInput
+    friendships_received?: user_app_friendshipUncheckedUpdateManyWithoutProfile2NestedInput
   }
 
   export type post_app_tagUpsertWithoutAlbumsInput = {
@@ -39474,6 +39772,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsCreateNestedManyWithoutProfileInput
@@ -39489,6 +39788,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageUncheckedCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumUncheckedCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postUncheckedCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesUncheckedCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsUncheckedCreateNestedManyWithoutProfileInput
@@ -39568,6 +39868,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUpdateManyWithoutProfileNestedInput
@@ -39583,6 +39884,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUncheckedUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUncheckedUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUncheckedUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUncheckedUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUncheckedUpdateManyWithoutProfileNestedInput
@@ -39594,7 +39896,7 @@ export namespace Prisma {
   export type chat_app_chatgroupCreateWithoutAdminInput = {
     id?: bigint | number
     name: string
-    is_personal_chat?: boolean
+    is_personal_chat: boolean
     avatar?: string | null
     members?: chat_app_chatgroup_membersCreateNestedManyWithoutChatgroupInput
     messages?: chat_app_chatmessageCreateNestedManyWithoutChat_groupInput
@@ -39603,7 +39905,7 @@ export namespace Prisma {
   export type chat_app_chatgroupUncheckedCreateWithoutAdminInput = {
     id?: bigint | number
     name: string
-    is_personal_chat?: boolean
+    is_personal_chat: boolean
     avatar?: string | null
     members?: chat_app_chatgroup_membersUncheckedCreateNestedManyWithoutChatgroupInput
     messages?: chat_app_chatmessageUncheckedCreateNestedManyWithoutChat_groupInput
@@ -39665,10 +39967,41 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type post_app_albumCreateWithoutUser_app_profileInput = {
+    id?: bigint | number
+    name: string
+    created_at: Date | string
+    preview_image?: string | null
+    shown: boolean
+    topic: post_app_tagCreateNestedOneWithoutAlbumsInput
+    images?: post_app_album_imagesCreateNestedManyWithoutAlbumInput
+  }
+
+  export type post_app_albumUncheckedCreateWithoutUser_app_profileInput = {
+    id?: bigint | number
+    name: string
+    created_at: Date | string
+    preview_image?: string | null
+    shown: boolean
+    topic_id: bigint | number
+    images?: post_app_album_imagesUncheckedCreateNestedManyWithoutAlbumInput
+  }
+
+  export type post_app_albumCreateOrConnectWithoutUser_app_profileInput = {
+    where: post_app_albumWhereUniqueInput
+    create: XOR<post_app_albumCreateWithoutUser_app_profileInput, post_app_albumUncheckedCreateWithoutUser_app_profileInput>
+  }
+
+  export type post_app_albumCreateManyUser_app_profileInputEnvelope = {
+    data: post_app_albumCreateManyUser_app_profileInput | post_app_albumCreateManyUser_app_profileInput[]
+    skipDuplicates?: boolean
+  }
+
   export type post_app_postCreateWithoutAuthorInput = {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     links?: post_app_linkCreateNestedManyWithoutPostInput
     images?: post_app_post_imagesCreateNestedManyWithoutPostInput
     likes?: post_app_post_likesCreateNestedManyWithoutPostInput
@@ -39680,6 +40013,7 @@ export namespace Prisma {
     id?: bigint | number
     title: string
     content: string
+    topic: string
     links?: post_app_linkUncheckedCreateNestedManyWithoutPostInput
     images?: post_app_post_imagesUncheckedCreateNestedManyWithoutPostInput
     likes?: post_app_post_likesUncheckedCreateNestedManyWithoutPostInput
@@ -39740,15 +40074,15 @@ export namespace Prisma {
   export type user_app_avatarCreateWithoutProfileInput = {
     id?: bigint | number
     image: string
-    active?: boolean
-    shown?: boolean
+    active: boolean
+    shown: boolean
   }
 
   export type user_app_avatarUncheckedCreateWithoutProfileInput = {
     id?: bigint | number
     image: string
-    active?: boolean
-    shown?: boolean
+    active: boolean
+    shown: boolean
   }
 
   export type user_app_avatarCreateOrConnectWithoutProfileInput = {
@@ -39763,13 +40097,13 @@ export namespace Prisma {
 
   export type user_app_friendshipCreateWithoutProfile1Input = {
     id?: bigint | number
-    accepted?: boolean
+    accepted: boolean
     profile2: user_app_profileCreateNestedOneWithoutFriendships_receivedInput
   }
 
   export type user_app_friendshipUncheckedCreateWithoutProfile1Input = {
     id?: bigint | number
-    accepted?: boolean
+    accepted: boolean
     profile2_id: bigint | number
   }
 
@@ -39785,13 +40119,13 @@ export namespace Prisma {
 
   export type user_app_friendshipCreateWithoutProfile2Input = {
     id?: bigint | number
-    accepted?: boolean
+    accepted: boolean
     profile1: user_app_profileCreateNestedOneWithoutFriendships_sentInput
   }
 
   export type user_app_friendshipUncheckedCreateWithoutProfile2Input = {
     id?: bigint | number
-    accepted?: boolean
+    accepted: boolean
     profile1_id: bigint | number
   }
 
@@ -39902,6 +40236,22 @@ export namespace Prisma {
     data: XOR<chat_app_chatmessageUpdateManyMutationInput, chat_app_chatmessageUncheckedUpdateManyWithoutAuthorInput>
   }
 
+  export type post_app_albumUpsertWithWhereUniqueWithoutUser_app_profileInput = {
+    where: post_app_albumWhereUniqueInput
+    update: XOR<post_app_albumUpdateWithoutUser_app_profileInput, post_app_albumUncheckedUpdateWithoutUser_app_profileInput>
+    create: XOR<post_app_albumCreateWithoutUser_app_profileInput, post_app_albumUncheckedCreateWithoutUser_app_profileInput>
+  }
+
+  export type post_app_albumUpdateWithWhereUniqueWithoutUser_app_profileInput = {
+    where: post_app_albumWhereUniqueInput
+    data: XOR<post_app_albumUpdateWithoutUser_app_profileInput, post_app_albumUncheckedUpdateWithoutUser_app_profileInput>
+  }
+
+  export type post_app_albumUpdateManyWithWhereWithoutUser_app_profileInput = {
+    where: post_app_albumScalarWhereInput
+    data: XOR<post_app_albumUpdateManyMutationInput, post_app_albumUncheckedUpdateManyWithoutUser_app_profileInput>
+  }
+
   export type post_app_postUpsertWithWhereUniqueWithoutAuthorInput = {
     where: post_app_postWhereUniqueInput
     update: XOR<post_app_postUpdateWithoutAuthorInput, post_app_postUncheckedUpdateWithoutAuthorInput>
@@ -39925,6 +40275,7 @@ export namespace Prisma {
     id?: BigIntFilter<"post_app_post"> | bigint | number
     title?: StringFilter<"post_app_post"> | string
     content?: StringFilter<"post_app_post"> | string
+    topic?: StringFilter<"post_app_post"> | string
     author_id?: BigIntFilter<"post_app_post"> | bigint | number
   }
 
@@ -40080,6 +40431,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsCreateNestedManyWithoutProfileInput
@@ -40096,6 +40448,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageUncheckedCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumUncheckedCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postUncheckedCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesUncheckedCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsUncheckedCreateNestedManyWithoutProfileInput
@@ -40126,6 +40479,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUpdateManyWithoutProfileNestedInput
@@ -40142,6 +40496,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUncheckedUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUncheckedUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUncheckedUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUncheckedUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUncheckedUpdateManyWithoutProfileNestedInput
@@ -40156,6 +40511,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsCreateNestedManyWithoutProfileInput
@@ -40172,6 +40528,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageUncheckedCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumUncheckedCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postUncheckedCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesUncheckedCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsUncheckedCreateNestedManyWithoutProfileInput
@@ -40191,6 +40548,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsCreateNestedManyWithoutProfileInput
@@ -40207,6 +40565,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedCreateNestedManyWithoutAdminInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedCreateNestedManyWithoutProfileInput
     messages?: chat_app_chatmessageUncheckedCreateNestedManyWithoutAuthorInput
+    post_app_album?: post_app_albumUncheckedCreateNestedManyWithoutUser_app_profileInput
     posts?: post_app_postUncheckedCreateNestedManyWithoutAuthorInput
     likes?: post_app_post_likesUncheckedCreateNestedManyWithoutProfileInput
     views?: post_app_post_viewsUncheckedCreateNestedManyWithoutProfileInput
@@ -40237,6 +40596,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUpdateManyWithoutProfileNestedInput
@@ -40253,6 +40613,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUncheckedUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUncheckedUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUncheckedUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUncheckedUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUncheckedUpdateManyWithoutProfileNestedInput
@@ -40278,6 +40639,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUpdateManyWithoutProfileNestedInput
@@ -40294,6 +40656,7 @@ export namespace Prisma {
     admin_in_chats?: chat_app_chatgroupUncheckedUpdateManyWithoutAdminNestedInput
     in_chatgroups?: chat_app_chatgroup_membersUncheckedUpdateManyWithoutProfileNestedInput
     messages?: chat_app_chatmessageUncheckedUpdateManyWithoutAuthorNestedInput
+    post_app_album?: post_app_albumUncheckedUpdateManyWithoutUser_app_profileNestedInput
     posts?: post_app_postUncheckedUpdateManyWithoutAuthorNestedInput
     likes?: post_app_post_likesUncheckedUpdateManyWithoutProfileNestedInput
     views?: post_app_post_viewsUncheckedUpdateManyWithoutProfileNestedInput
@@ -40644,7 +41007,8 @@ export namespace Prisma {
     name: string
     created_at: Date | string
     preview_image?: string | null
-    shown?: boolean
+    shown: boolean
+    author_id: bigint | number
   }
 
   export type post_app_post_tagsCreateManyTagInput = {
@@ -40658,6 +41022,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     preview_image?: NullableStringFieldUpdateOperationsInput | string | null
     shown?: BoolFieldUpdateOperationsInput | boolean
+    user_app_profile?: user_app_profileUpdateOneRequiredWithoutPost_app_albumNestedInput
     images?: post_app_album_imagesUpdateManyWithoutAlbumNestedInput
   }
 
@@ -40667,6 +41032,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     preview_image?: NullableStringFieldUpdateOperationsInput | string | null
     shown?: BoolFieldUpdateOperationsInput | boolean
+    author_id?: BigIntFieldUpdateOperationsInput | bigint | number
     images?: post_app_album_imagesUncheckedUpdateManyWithoutAlbumNestedInput
   }
 
@@ -40676,6 +41042,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     preview_image?: NullableStringFieldUpdateOperationsInput | string | null
     shown?: BoolFieldUpdateOperationsInput | boolean
+    author_id?: BigIntFieldUpdateOperationsInput | bigint | number
   }
 
   export type post_app_post_tagsUpdateWithoutTagInput = {
@@ -40795,7 +41162,7 @@ export namespace Prisma {
   export type chat_app_chatgroupCreateManyAdminInput = {
     id?: bigint | number
     name: string
-    is_personal_chat?: boolean
+    is_personal_chat: boolean
     avatar?: string | null
   }
 
@@ -40812,10 +41179,20 @@ export namespace Prisma {
     chat_group_id: bigint | number
   }
 
+  export type post_app_albumCreateManyUser_app_profileInput = {
+    id?: bigint | number
+    name: string
+    created_at: Date | string
+    preview_image?: string | null
+    shown: boolean
+    topic_id: bigint | number
+  }
+
   export type post_app_postCreateManyAuthorInput = {
     id?: bigint | number
     title: string
     content: string
+    topic: string
   }
 
   export type post_app_post_likesCreateManyProfileInput = {
@@ -40831,19 +41208,19 @@ export namespace Prisma {
   export type user_app_avatarCreateManyProfileInput = {
     id?: bigint | number
     image: string
-    active?: boolean
-    shown?: boolean
+    active: boolean
+    shown: boolean
   }
 
   export type user_app_friendshipCreateManyProfile1Input = {
     id?: bigint | number
-    accepted?: boolean
+    accepted: boolean
     profile2_id: bigint | number
   }
 
   export type user_app_friendshipCreateManyProfile2Input = {
     id?: bigint | number
-    accepted?: boolean
+    accepted: boolean
     profile1_id: bigint | number
   }
 
@@ -40911,10 +41288,40 @@ export namespace Prisma {
     chat_group_id?: BigIntFieldUpdateOperationsInput | bigint | number
   }
 
+  export type post_app_albumUpdateWithoutUser_app_profileInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    preview_image?: NullableStringFieldUpdateOperationsInput | string | null
+    shown?: BoolFieldUpdateOperationsInput | boolean
+    topic?: post_app_tagUpdateOneRequiredWithoutAlbumsNestedInput
+    images?: post_app_album_imagesUpdateManyWithoutAlbumNestedInput
+  }
+
+  export type post_app_albumUncheckedUpdateWithoutUser_app_profileInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    preview_image?: NullableStringFieldUpdateOperationsInput | string | null
+    shown?: BoolFieldUpdateOperationsInput | boolean
+    topic_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    images?: post_app_album_imagesUncheckedUpdateManyWithoutAlbumNestedInput
+  }
+
+  export type post_app_albumUncheckedUpdateManyWithoutUser_app_profileInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    preview_image?: NullableStringFieldUpdateOperationsInput | string | null
+    shown?: BoolFieldUpdateOperationsInput | boolean
+    topic_id?: BigIntFieldUpdateOperationsInput | bigint | number
+  }
+
   export type post_app_postUpdateWithoutAuthorInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     links?: post_app_linkUpdateManyWithoutPostNestedInput
     images?: post_app_post_imagesUpdateManyWithoutPostNestedInput
     likes?: post_app_post_likesUpdateManyWithoutPostNestedInput
@@ -40926,6 +41333,7 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
     links?: post_app_linkUncheckedUpdateManyWithoutPostNestedInput
     images?: post_app_post_imagesUncheckedUpdateManyWithoutPostNestedInput
     likes?: post_app_post_likesUncheckedUpdateManyWithoutPostNestedInput
@@ -40937,6 +41345,7 @@ export namespace Prisma {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
   }
 
   export type post_app_post_likesUpdateWithoutProfileInput = {

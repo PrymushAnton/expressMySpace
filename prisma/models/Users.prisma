@@ -24,6 +24,7 @@ model user_app_profile {
   admin_in_chats       chat_app_chatgroup[]
   in_chatgroups        chat_app_chatgroup_members[]
   messages             chat_app_chatmessage[]
+  post_app_album       post_app_album[]
   posts                post_app_post[]              @relation("post_authored")
   likes                post_app_post_likes[]
   views                post_app_post_views[]
@@ -36,8 +37,8 @@ model user_app_profile {
 model user_app_avatar {
   id         BigInt           @id @default(autoincrement())
   image      String           @db.VarChar(100)
-  active     Boolean          @default(true)
-  shown      Boolean          @default(true)
+  active     Boolean
+  shown      Boolean
   profile_id BigInt
   profile    user_app_profile @relation(fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_app_avatar_profile_id_126a14a3_fk_user_app_profile_id")
 
@@ -46,7 +47,7 @@ model user_app_avatar {
 
 model user_app_friendship {
   id          BigInt           @id @default(autoincrement())
-  accepted    Boolean          @default(false)
+  accepted    Boolean
   profile1_id BigInt
   profile2_id BigInt
   profile1    user_app_profile @relation("friendship_sent_request", fields: [profile1_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_app_friendship_profile1_id_9b85a45d_fk_user_app_profile_id")

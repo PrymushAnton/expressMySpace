@@ -35,6 +35,7 @@ async function createPost(data: CreatePost, userId: number) {
 				links: {
 					create: link.map((url) => ({ url })),
 				},
+				topic: ""
 			},
 			include: {
 				tags: true,
@@ -311,6 +312,9 @@ const userRepository = {
 
 			const posts = await client.post_app_post.findMany({
 				where: { author_id: profile.id },
+				orderBy: {
+					id: "desc"
+				},
 				include: {
 					tags: {
 						select: {
@@ -380,6 +384,9 @@ const userRepository = {
 	findAllPosts: async function () {
 		try {
 			const posts = await client.post_app_post.findMany({
+				orderBy: {
+					id: "desc"
+				},
 				include: {
 					tags: {
 						select: {

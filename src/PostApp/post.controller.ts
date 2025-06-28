@@ -49,6 +49,7 @@ async function findPostById(req: Request, res: Response){
 
 async function findAllPosts(req: Request, res: Response){
     const result = await postService.findAllPosts()
+    
 
     res.json(result)
 }

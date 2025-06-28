@@ -1,0 +1,37 @@
+model chat_app_chatgroup {
+  id               BigInt                       @id @default(autoincrement())
+  name             String                       @db.VarChar(255)
+  is_personal_chat Boolean
+  avatar           String?                      @db.VarChar(100)
+  admin_id         BigInt
+  admin            user_app_profile             @relation(fields: [admin_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "chat_app_chatgroup_admin_id_0f503322_fk_user_app_profile_id")
+  members          chat_app_chatgroup_members[]
+  messages         chat_app_chatmessage[]
+
+  @@index([admin_id], map: "chat_app_chatgroup_admin_id_0f503322_fk_user_app_profile_id")
+}
+
+model chat_app_chatgroup_members {
+  id           BigInt             @id @default(autoincrement())
+  chatgroup_id BigInt
+  profile_id   BigInt
+  chatgroup    chat_app_chatgroup @relation(fields: [chatgroup_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "chat_app_chatgroup_m_chatgroup_id_1fa0254f_fk_chat_app_")
+  profile      user_app_profile   @relation(fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "chat_app_chatgroup_m_profile_id_bf7e915c_fk_user_app_")
+
+  @@unique([chatgroup_id, profile_id], map: "chat_app_chatgroup_members_chatgroup_id_profile_id_9979eb06_uniq")
+  @@index([profile_id], map: "chat_app_chatgroup_m_profile_id_bf7e915c_fk_user_app_")
+}
+
+model chat_app_chatmessage {
+  id             BigInt             @id @default(autoincrement())
+  content        String             @db.LongText
+  sent_at        DateTime           @db.DateTime(6)
+  attached_image String?            @db.VarChar(100)
+  author_id      BigInt
+  chat_group_id  BigInt
+  author         user_app_profile   @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "chat_app_chatmessage_author_id_d86dfb00_fk_user_app_profile_id")
+  chat_group     chat_app_chatgroup @relation(fields: [chat_group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "chat_app_chatmessage_chat_group_id_cb5c2937_fk_chat_app_")
+
+  @@index([author_id], map: "chat_app_chatmessage_author_id_d86dfb00_fk_user_app_profile_id")
+  @@index([chat_group_id], map: "chat_app_chatmessage_chat_group_id_cb5c2937_fk_chat_app_")
+}

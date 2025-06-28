@@ -114,57 +114,202 @@ Prisma.NullTypes = {
  */
 
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
-exports.Prisma.FriendRequestScalarFieldEnum = {
-  id: 'id',
-  fromUser: 'fromUser',
-  toUser: 'toUser',
-  isAccepted: 'isAccepted'
-};
-
-exports.Prisma.ImageScalarFieldEnum = {
-  id: 'id',
-  base64: 'base64',
-  postId: 'postId'
-};
-
-exports.Prisma.PostScalarFieldEnum = {
-  id: 'id',
-  title: 'title',
-  text: 'text',
-  views: 'views',
-  likes: 'likes',
-  userId: 'userId'
-};
-
-exports.Prisma.LinkScalarFieldEnum = {
-  id: 'id',
-  url: 'url',
-  postId: 'postId'
-};
-
-exports.Prisma.TagToPostScalarFieldEnum = {
-  tagId: 'tagId',
-  postId: 'postId'
-};
-
-exports.Prisma.TagScalarFieldEnum = {
+exports.Prisma.Auth_groupScalarFieldEnum = {
   id: 'id',
   name: 'name'
 };
 
-exports.Prisma.UserScalarFieldEnum = {
+exports.Prisma.Auth_group_permissionsScalarFieldEnum = {
+  id: 'id',
+  group_id: 'group_id',
+  permission_id: 'permission_id'
+};
+
+exports.Prisma.Auth_permissionScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  surname: 'surname',
-  email: 'email',
-  phoneNumber: 'phoneNumber',
-  birthDate: 'birthDate',
-  image: 'image',
+  content_type_id: 'content_type_id',
+  codename: 'codename'
+};
+
+exports.Prisma.Auth_user_groupsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  group_id: 'group_id'
+};
+
+exports.Prisma.Auth_user_user_permissionsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  permission_id: 'permission_id'
+};
+
+exports.Prisma.Django_admin_logScalarFieldEnum = {
+  id: 'id',
+  action_time: 'action_time',
+  object_id: 'object_id',
+  object_repr: 'object_repr',
+  action_flag: 'action_flag',
+  change_message: 'change_message',
+  content_type_id: 'content_type_id',
+  user_id: 'user_id'
+};
+
+exports.Prisma.Django_content_typeScalarFieldEnum = {
+  id: 'id',
+  app_label: 'app_label',
+  model: 'model'
+};
+
+exports.Prisma.Django_migrationsScalarFieldEnum = {
+  id: 'id',
+  app: 'app',
+  name: 'name',
+  applied: 'applied'
+};
+
+exports.Prisma.Django_sessionScalarFieldEnum = {
+  session_key: 'session_key',
+  session_data: 'session_data',
+  expire_date: 'expire_date'
+};
+
+exports.Prisma.Chat_app_chatgroupScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  is_personal_chat: 'is_personal_chat',
+  avatar: 'avatar',
+  admin_id: 'admin_id'
+};
+
+exports.Prisma.Chat_app_chatgroup_membersScalarFieldEnum = {
+  id: 'id',
+  chatgroup_id: 'chatgroup_id',
+  profile_id: 'profile_id'
+};
+
+exports.Prisma.Chat_app_chatmessageScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  sent_at: 'sent_at',
+  attached_image: 'attached_image',
+  author_id: 'author_id',
+  chat_group_id: 'chat_group_id'
+};
+
+exports.Prisma.Post_app_postScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  content: 'content',
+  topic: 'topic',
+  author_id: 'author_id'
+};
+
+exports.Prisma.Post_app_imageScalarFieldEnum = {
+  id: 'id',
+  filename: 'filename',
+  file: 'file',
+  uploaded_at: 'uploaded_at'
+};
+
+exports.Prisma.Post_app_post_imagesScalarFieldEnum = {
+  id: 'id',
+  post_id: 'post_id',
+  image_id: 'image_id'
+};
+
+exports.Prisma.Post_app_album_imagesScalarFieldEnum = {
+  id: 'id',
+  album_id: 'album_id',
+  image_id: 'image_id'
+};
+
+exports.Prisma.Post_app_tagScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+};
+
+exports.Prisma.Post_app_post_tagsScalarFieldEnum = {
+  id: 'id',
+  post_id: 'post_id',
+  tag_id: 'tag_id'
+};
+
+exports.Prisma.Post_app_linkScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  post_id: 'post_id'
+};
+
+exports.Prisma.Post_app_post_viewsScalarFieldEnum = {
+  id: 'id',
+  post_id: 'post_id',
+  profile_id: 'profile_id'
+};
+
+exports.Prisma.Post_app_post_likesScalarFieldEnum = {
+  id: 'id',
+  post_id: 'post_id',
+  profile_id: 'profile_id'
+};
+
+exports.Prisma.Post_app_albumScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  created_at: 'created_at',
+  preview_image: 'preview_image',
+  shown: 'shown',
+  author_id: 'author_id',
+  topic_id: 'topic_id'
+};
+
+exports.Prisma.Auth_userScalarFieldEnum = {
+  id: 'id',
   password: 'password',
-  username: 'username'
+  last_login: 'last_login',
+  is_superuser: 'is_superuser',
+  username: 'username',
+  first_name: 'first_name',
+  last_name: 'last_name',
+  email: 'email',
+  is_staff: 'is_staff',
+  is_active: 'is_active',
+  date_joined: 'date_joined'
+};
+
+exports.Prisma.User_app_profileScalarFieldEnum = {
+  id: 'id',
+  date_of_birth: 'date_of_birth',
+  signature: 'signature',
+  user_id: 'user_id'
+};
+
+exports.Prisma.User_app_avatarScalarFieldEnum = {
+  id: 'id',
+  image: 'image',
+  active: 'active',
+  shown: 'shown',
+  profile_id: 'profile_id'
+};
+
+exports.Prisma.User_app_friendshipScalarFieldEnum = {
+  id: 'id',
+  accepted: 'accepted',
+  profile1_id: 'profile1_id',
+  profile2_id: 'profile2_id'
+};
+
+exports.Prisma.User_app_verificationcodeScalarFieldEnum = {
+  id: 'id',
+  username: 'username',
+  code: 'code',
+  created_at: 'created_at'
 };
 
 exports.Prisma.SortOrder = {
@@ -172,20 +317,125 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.auth_groupOrderByRelevanceFieldEnum = {
+  name: 'name'
+};
+
+exports.Prisma.auth_permissionOrderByRelevanceFieldEnum = {
+  name: 'name',
+  codename: 'codename'
+};
+
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
 
+exports.Prisma.django_admin_logOrderByRelevanceFieldEnum = {
+  object_id: 'object_id',
+  object_repr: 'object_repr',
+  change_message: 'change_message'
+};
+
+exports.Prisma.django_content_typeOrderByRelevanceFieldEnum = {
+  app_label: 'app_label',
+  model: 'model'
+};
+
+exports.Prisma.django_migrationsOrderByRelevanceFieldEnum = {
+  app: 'app',
+  name: 'name'
+};
+
+exports.Prisma.django_sessionOrderByRelevanceFieldEnum = {
+  session_key: 'session_key',
+  session_data: 'session_data'
+};
+
+exports.Prisma.chat_app_chatgroupOrderByRelevanceFieldEnum = {
+  name: 'name',
+  avatar: 'avatar'
+};
+
+exports.Prisma.chat_app_chatmessageOrderByRelevanceFieldEnum = {
+  content: 'content',
+  attached_image: 'attached_image'
+};
+
+exports.Prisma.post_app_postOrderByRelevanceFieldEnum = {
+  title: 'title',
+  content: 'content',
+  topic: 'topic'
+};
+
+exports.Prisma.post_app_imageOrderByRelevanceFieldEnum = {
+  filename: 'filename',
+  file: 'file'
+};
+
+exports.Prisma.post_app_tagOrderByRelevanceFieldEnum = {
+  name: 'name'
+};
+
+exports.Prisma.post_app_linkOrderByRelevanceFieldEnum = {
+  url: 'url'
+};
+
+exports.Prisma.post_app_albumOrderByRelevanceFieldEnum = {
+  name: 'name',
+  preview_image: 'preview_image'
+};
+
+exports.Prisma.auth_userOrderByRelevanceFieldEnum = {
+  password: 'password',
+  username: 'username',
+  first_name: 'first_name',
+  last_name: 'last_name',
+  email: 'email'
+};
+
+exports.Prisma.user_app_profileOrderByRelevanceFieldEnum = {
+  signature: 'signature'
+};
+
+exports.Prisma.user_app_avatarOrderByRelevanceFieldEnum = {
+  image: 'image'
+};
+
+exports.Prisma.user_app_verificationcodeOrderByRelevanceFieldEnum = {
+  username: 'username',
+  code: 'code'
+};
+
 
 exports.Prisma.ModelName = {
-  FriendRequest: 'FriendRequest',
-  Image: 'Image',
-  Post: 'Post',
-  Link: 'Link',
-  TagToPost: 'TagToPost',
-  Tag: 'Tag',
-  User: 'User'
+  auth_group: 'auth_group',
+  auth_group_permissions: 'auth_group_permissions',
+  auth_permission: 'auth_permission',
+  auth_user_groups: 'auth_user_groups',
+  auth_user_user_permissions: 'auth_user_user_permissions',
+  django_admin_log: 'django_admin_log',
+  django_content_type: 'django_content_type',
+  django_migrations: 'django_migrations',
+  django_session: 'django_session',
+  chat_app_chatgroup: 'chat_app_chatgroup',
+  chat_app_chatgroup_members: 'chat_app_chatgroup_members',
+  chat_app_chatmessage: 'chat_app_chatmessage',
+  post_app_post: 'post_app_post',
+  post_app_image: 'post_app_image',
+  post_app_post_images: 'post_app_post_images',
+  post_app_album_images: 'post_app_album_images',
+  post_app_tag: 'post_app_tag',
+  post_app_post_tags: 'post_app_post_tags',
+  post_app_link: 'post_app_link',
+  post_app_post_views: 'post_app_post_views',
+  post_app_post_likes: 'post_app_post_likes',
+  post_app_album: 'post_app_album',
+  auth_user: 'auth_user',
+  user_app_profile: 'user_app_profile',
+  user_app_avatar: 'user_app_avatar',
+  user_app_friendship: 'user_app_friendship',
+  user_app_verificationcode: 'user_app_verificationcode'
 };
 
 /**

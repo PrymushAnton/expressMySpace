@@ -10,6 +10,8 @@ postRouter.get("/find-all-posts", postController.findAllPosts)
 postRouter.get("/find-all-tags", postController.findAllTags)
 postRouter.get("/find-post-by-id/:id", postController.findPostById)
 
+postRouter.get("/get-base64-from-url/:url", postController.getBase64FromUrl)
+
 
 
 

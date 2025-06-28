@@ -1,0 +1,111 @@
+model post_app_post {
+  id        BigInt                 @id @default(autoincrement())
+  title     String                 @db.VarChar(255)
+  content   String                 @db.LongText
+  topic     String                 @db.VarChar(255)
+  author_id BigInt
+  links     post_app_link[]
+  author    user_app_profile       @relation("post_authored", fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_post_author_id_4cf2f14d_fk_user_app_profile_id")
+  images    post_app_post_images[]
+  likes     post_app_post_likes[]
+  tags      post_app_post_tags[]
+  views     post_app_post_views[]
+
+  @@index([author_id], map: "post_app_post_author_id_4cf2f14d_fk_user_app_profile_id")
+}
+
+model post_app_image {
+  id          BigInt                  @id @default(autoincrement())
+  filename    String                  @db.VarChar(150)
+  file        String                  @db.VarChar(100)
+  uploaded_at DateTime                @db.DateTime(6)
+  albums      post_app_album_images[]
+  posts       post_app_post_images[]
+}
+
+model post_app_post_images {
+  id       BigInt         @id @default(autoincrement())
+  post_id  BigInt
+  image_id BigInt
+  image    post_app_image @relation(fields: [image_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_post_images_image_id_4c32a1d3_fk_post_app_image_id")
+  post     post_app_post  @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_post_images_post_id_57de509f_fk_post_app_post_id")
+
+  @@unique([post_id, image_id], map: "post_app_post_images_post_id_image_id_66ada371_uniq")
+  @@index([image_id], map: "post_app_post_images_image_id_4c32a1d3_fk_post_app_image_id")
+}
+
+model post_app_album_images {
+  id       BigInt         @id @default(autoincrement())
+  album_id BigInt
+  image_id BigInt
+  album    post_app_album @relation(fields: [album_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_album_images_album_id_e4a65934_fk_post_app_album_id")
+  image    post_app_image @relation(fields: [image_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_album_images_image_id_0e0fa881_fk_post_app_image_id")
+
+  @@unique([album_id, image_id], map: "post_app_album_images_album_id_image_id_b0db7dd5_uniq")
+  @@index([image_id], map: "post_app_album_images_image_id_0e0fa881_fk_post_app_image_id")
+}
+
+model post_app_tag {
+  id     BigInt               @id @default(autoincrement())
+  name   String               @unique(map: "name") @db.VarChar(50)
+  albums post_app_album[]
+  posts  post_app_post_tags[]
+}
+
+model post_app_post_tags {
+  id      BigInt        @id @default(autoincrement())
+  post_id BigInt
+  tag_id  BigInt
+  post    post_app_post @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_post_tags_post_id_b72298ea_fk_post_app_post_id")
+  tag     post_app_tag  @relation(fields: [tag_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_post_tags_tag_id_df0ee56c_fk_post_app_tag_id")
+
+  @@unique([post_id, tag_id], map: "post_app_post_tags_post_id_tag_id_f9d7c733_uniq")
+  @@index([tag_id], map: "post_app_post_tags_tag_id_df0ee56c_fk_post_app_tag_id")
+}
+
+model post_app_link {
+  id      BigInt        @id @default(autoincrement())
+  url     String        @db.VarChar(200)
+  post_id BigInt
+  post    post_app_post @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_link_post_id_fc5d7e2e_fk_post_app_post_id")
+
+  @@index([post_id], map: "post_app_link_post_id_fc5d7e2e_fk_post_app_post_id")
+}
+
+model post_app_post_views {
+  id         BigInt           @id @default(autoincrement())
+  post_id    BigInt
+  profile_id BigInt
+  post       post_app_post    @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_post_views_post_id_390fa3b5_fk_post_app_post_id")
+  profile    user_app_profile @relation(fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_post_views_profile_id_9a080786_fk_user_app_profile_id")
+
+  @@unique([post_id, profile_id], map: "post_app_post_views_post_id_profile_id_fb5adf39_uniq")
+  @@index([profile_id], map: "post_app_post_views_profile_id_9a080786_fk_user_app_profile_id")
+}
+
+model post_app_post_likes {
+  id         BigInt           @id @default(autoincrement())
+  post_id    BigInt
+  profile_id BigInt
+  post       post_app_post    @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_post_likes_post_id_6832916a_fk_post_app_post_id")
+  profile    user_app_profile @relation(fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_post_likes_profile_id_be0f76a4_fk_user_app_profile_id")
+
+  @@unique([post_id, profile_id], map: "post_app_post_likes_post_id_profile_id_3545bfa9_uniq")
+  @@index([profile_id], map: "post_app_post_likes_profile_id_be0f76a4_fk_user_app_profile_id")
+}
+
+model post_app_album {
+  id               BigInt                  @id @default(autoincrement())
+  name             String                  @db.VarChar(255)
+  created_at       DateTime                @db.DateTime(6)
+  preview_image    String?                 @db.VarChar(100)
+  shown            Boolean
+  author_id        BigInt
+  topic_id         BigInt
+  user_app_profile user_app_profile        @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_album_author_id_caa87140_fk_user_app_profile_id")
+  topic            post_app_tag            @relation(fields: [topic_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_app_album_topic_id_97be9a8b_fk_post_app_tag_id")
+  images           post_app_album_images[]
+
+  @@index([topic_id], map: "post_app_album_topic_id_97be9a8b_fk_post_app_tag_id")
+  @@index([author_id], map: "post_app_album_author_id_caa87140_fk_user_app_profile_id")
+}

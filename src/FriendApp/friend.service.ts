@@ -8,7 +8,7 @@ async function sendFriendRequest(fromUser: number, toUser: number) {
 		fromUser,
 		toUser
 	);
-	if (existing) throw new Error("Request already exists");
+	if (existing) return "Friend request already exists"
 
 	return friendRepository.createFriendRequest(fromUser, toUser);
 }
@@ -36,6 +36,8 @@ async function getAllFriends(userId: number) {
 async function deleteFriend(currentUserId: number, friendId: number) {
 	return friendRepository.deleteFriend(currentUserId, friendId);
 }
+
+
 
 const friendService = {
 	sendFriendRequest,

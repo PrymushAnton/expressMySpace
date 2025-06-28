@@ -1,0 +1,65 @@
+model auth_user {
+  id                         Int                          @id @default(autoincrement())
+  password                   String                       @db.VarChar(128)
+  last_login                 DateTime?                    @db.DateTime(6)
+  is_superuser               Boolean                      @default(false)
+  username                   String                       @unique(map: "username") @db.VarChar(150)
+  first_name                 String                       @db.VarChar(150)
+  last_name                  String                       @db.VarChar(150)
+  email                      String                       @db.VarChar(254)
+  is_staff                   Boolean                      @default(false)
+  is_active                  Boolean                      @default(true)
+  date_joined                DateTime                     @db.DateTime(6) @default(now())
+  auth_user_groups           auth_user_groups[]
+  auth_user_user_permissions auth_user_user_permissions[]
+  django_admin_log           django_admin_log[]
+  profile                    user_app_profile?
+}
+
+model user_app_profile {
+  id                   BigInt                       @id @default(autoincrement())
+  date_of_birth        DateTime                     @db.Date
+  signature            String?                      @db.VarChar(100)
+  user_id              Int                          @unique(map: "user_id")
+  admin_in_chats       chat_app_chatgroup[]
+  in_chatgroups        chat_app_chatgroup_members[]
+  messages             chat_app_chatmessage[]
+  post_app_album       post_app_album[]
+  posts                post_app_post[]              @relation("post_authored")
+  likes                post_app_post_likes[]
+  views                post_app_post_views[]
+  avatars              user_app_avatar[]
+  friendships_sent     user_app_friendship[]        @relation("friendship_sent_request")
+  friendships_received user_app_friendship[]        @relation("friendship_accepted_request")
+  user                 auth_user                    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_app_profile_user_id_ec83034b_fk_auth_user_id")
+}
+
+model user_app_avatar {
+  id         BigInt           @id @default(autoincrement())
+  image      String           @db.VarChar(100)
+  active     Boolean
+  shown      Boolean
+  profile_id BigInt
+  profile    user_app_profile @relation(fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_app_avatar_profile_id_126a14a3_fk_user_app_profile_id")
+
+  @@index([profile_id], map: "user_app_avatar_profile_id_126a14a3_fk_user_app_profile_id")
+}
+
+model user_app_friendship {
+  id          BigInt           @id @default(autoincrement())
+  accepted    Boolean
+  profile1_id BigInt
+  profile2_id BigInt
+  profile1    user_app_profile @relation("friendship_sent_request", fields: [profile1_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_app_friendship_profile1_id_9b85a45d_fk_user_app_profile_id")
+  profile2    user_app_profile @relation("friendship_accepted_request", fields: [profile2_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_app_friendship_profile2_id_530d5ef0_fk_user_app_profile_id")
+
+  @@index([profile1_id], map: "user_app_friendship_profile1_id_9b85a45d_fk_user_app_profile_id")
+  @@index([profile2_id], map: "user_app_friendship_profile2_id_530d5ef0_fk_user_app_profile_id")
+}
+
+model user_app_verificationcode {
+  id         BigInt   @id @default(autoincrement())
+  username   String   @db.VarChar(150)
+  code       String   @db.VarChar(255)
+  created_at DateTime @db.DateTime(6)
+}
